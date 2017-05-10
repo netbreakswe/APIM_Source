@@ -1,0 +1,100 @@
+<div class="row">
+    <div class="col-xs-10 col-sm-10 col-md-3 col-xs-offset-1 col-sm-offset-1 col-md-offset-0">
+
+        <div class="well">
+          Mark Twain
+        </div>
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading">Gestione profilo</div>
+          <!-- List group -->
+          <ul class="list-group" >
+            <li class="list-group-item"><a href="#!/account">Dati personali</a></li>
+            <li class="list-group-item"><a href="#!/api_acquistate">API acquistate</a></li>
+            <li class="list-group-item"><a href="#!/api_registrate">API registrate</a></li>
+          </ul>
+        </div>
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading">Pagamenti</div>
+          <!-- List group -->
+          <ul class="list-group" >
+            <li class="list-group-item"><a href="#!/conto">Gestione conto</a></li>
+            <li class="list-group-item"><a href="#!/lista_transazioni">Transazioni</a></li>
+          </ul>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <div class="col-xs-10 col-sm-10 col-md-7 col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
+
+       <div class="row">
+          
+          <!-- UC12.1.1 e UC12.1.2-->
+          <div class="col-md-11" >
+            <div class="page-header">
+              <h1>Dati personali</h1>
+            </div>
+
+            <div class="panel panel-default mainPanelAccount">
+
+              <form class="datiPersonaliForm" >
+                  <div class="form-group">
+                      <label for="nomeInput">Avatar</label>
+                      <div class="thumbnail">
+                        <img style="max-width: 100px;" class="img-circle" src="{{Avatar}}" alt="apilogo">
+                      </div>
+                      <input type="file" id="exampleInputFile">
+                      <p class="help-block">Puoi scegliere un altro avatar</p>
+                  </div>
+                  <div class="form-group">
+                    <label for="nomeInput">Nome</label>
+                    <input type="text" class="form-control" ng-model="Name" >
+                  </div>
+
+                  <div class="form-group">
+                    <label for="cognomeInput">Cognome</label>
+                    <input type="text" class="form-control" ng-model="Surname" >
+                  </div>
+
+                  <div class="form-group">
+                    <label for="emailInput">Email</label>
+                    <input type="email" class="form-control" ng-model="Email" >
+                  </div>
+
+                  <div class="form-group">
+                    <label for="emailInput">AboutMe</label>
+                    <input type="email" class="form-control" ng-model="AboutMe" >
+                  </div>
+
+                  <div class="form-group">
+                    <label for="emailInput">LinkToSelf</label>
+                    <input type="email" class="form-control" ng-model="LinkToSelf" >
+                  </div>
+
+                  <div class="form-group">
+                    <label for="emailInput">Paypal</label>
+                    <input type="email" class="form-control" ng-model="Paypal" >
+                  </div>
+
+
+                  <p>
+                    La tua tipologia di account &egrave; <span class="label label-primary">/</span>
+                  </p>
+
+                  <button type="submit" class="btn btn-default">Salva</button>
+              </form>
+              
+            </div>
+            
+          </div>
+
+        </div>
+    </div>
+  </div>

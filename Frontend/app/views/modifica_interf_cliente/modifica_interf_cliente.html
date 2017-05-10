@@ -1,0 +1,40 @@
+<!-- Personalizzazione Interfaccia API -->
+<div class="row" >
+    <div class="col-xs-8 col-sm-6 col-md-4 col-xs-offset-2 col-sm-offset-3 col-md-offset-4">
+
+       <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading">Gestione API {{apicurr}}</div>
+          <!-- List group -->
+          <ul class="list-group" >
+            <li class="list-group-item"><a href="#!/modifica_interf_cliente/{{apicurr}}">Modifica Interfaccia Cliente</a></li>
+            <li class="list-group-item"><a href="#!/modifica_info_api/{{apicurr}}">Modifica Info API</a></li>
+            <li class="list-group-item"><a href="#!/modifica_interf_api/{{apicurr}}">Modifica Interfaccia API</a></li>
+          </ul>
+        </div>
+        </div>
+  <div class="col-xs-10 col-sm-8 col-md-8 col-xs-offset-1 col-sm-offset-2 col-md-offset-2">  
+        <div class="col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
+          <h2>Interfaccia API:</h2>
+
+          <h3>Info per l'uso:</h3>
+          <h4>OutputPort: {{Name}}_{{IdMS}}</h4>
+          <h4><button class="btn btn-success" ng-click="Download_Client_Interface()">.iol Client Interface</button></h4>
+
+          <h3>Lista Operation:</h3>
+          <div ng-repeat="operation in operations">
+              <h4>{{operation.name}}</h4>
+              <pre>{{operation.name}}( {{operation.request}} )( {{operation.response}} )</pre>
+              <textarea class="form-control" ng-model = "operation.description"></textarea>
+          </div>
+
+          <h3>Lista Tipi:</h3>
+
+          <div ng-repeat="type in types">
+              <h4>{{type.name}}</h4>
+              <pre>{{type.definition}}</pre>
+          </div>
+          <button type="submit" ng-click="confermaModifiche()" class="btn btn-default">Conferma Modifiche</button>
+      </div>  
+  </div>
+</div>

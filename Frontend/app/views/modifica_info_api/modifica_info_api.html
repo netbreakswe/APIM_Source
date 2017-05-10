@@ -1,0 +1,87 @@
+<div class="row">
+        <div class="col-xs-8 col-sm-6 col-md-4 col-xs-offset-2 col-sm-offset-3 col-md-offset-4">
+
+       <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading">Gestione API {{apicurr}}</div>
+          <!-- List group -->
+          <ul class="list-group" >
+            <li class="list-group-item"><a href="#!/modifica_interf_cliente/{{apicurr}}">Modifica Interfaccia Cliente</a></li>
+            <li class="list-group-item"><a href="#!/modifica_info_api/{{apicurr}}">Modifica Info API</a></li>
+            <li class="list-group-item"><a href="#!/modifica_interf_api/{{apicurr}}">Modifica Interfaccia API</a></li>
+          </ul>
+        </div>
+        </div>
+
+      <div class="col-xs-8 col-sm-6 col-md-4 col-xs-offset-2 col-sm-offset-3 col-md-offset-4">
+          <h3 class="text-center">Info Api:</h3>
+          <form>
+            <!-- Inserisci Nome API -->
+            <div class="form-group">
+              <label for="exampleInputEmail1">Nome API</label>
+              <input type="text" ng-model = "nomeapi" class="form-control" id="exampleInputEmail1">
+            </div>
+            <!-- Inserisci Descrizione API -->
+            <div class="form-group">
+                <label for="exampleInputPassword1">Descrizione</label>
+                <textarea ng-model = "descrizione" class="form-control" rows="3" ></textarea>
+            </div>
+            <!-- Scegli Categoria -->
+            <div class="form-group">
+              <label for="exampleInputPassword1">Categoria</label>
+              <button ng-repeat="category in categories" IdCategory="{{category.IdCategory}}" type="button" class="{{category.Class}}" data-ng-click="addNewCategory($event)">{{category.Name}}</button>  
+            </div>
+           
+            <!-- Inserisci documentazione pdf -->
+            <div class="form-group">
+                  <label for="exampleInputFile">Inserisci la documentazione in formato pdf</label>
+                  <input accept=".pdf" type="file" onchange="angular.element(this).scope().uploadpdf(this)">
+                  <p class="help-block">Descrivi meglio il tuo servizio inserendo una documentazione</p>
+            </div>
+            <!-- Inserisci documentazione esterna -->
+            <div class="form-group">
+                  <label for="exampleInputEmail1">Inserisci link a Documentazione Esterna</label>
+                  <input type="text" ng-model = "docexternal" class="form-control" id="exampleInputEmail1">
+            </div>
+            <!-- Scegli Policy -->
+            <div class="form-group">
+                <label for="exampleInputEmail1">Policy di Vendita</label>
+                  <!-- Sceglio Policy a chiamate -->
+                 <div class="radio">
+                  <label>
+                    <input type="radio" ng-model = "policy" name="optionsRadios" id="optionsRadios1" value="1" checked>
+                    <a href="#!/policy1">Per numero di chiamate</a>
+                  </label>
+                </div>
+                <!-- Sceglio Policy a tempo -->
+                <div class="radio">
+                  <label>
+                    <input type="radio" ng-model = "policy" name="optionsRadios" id="optionsRadios2" value="2">
+                    <a href="#!/policy3">Per tempo di utilizzo</a>
+                  </label>
+                </div>
+                <!-- Sceglio Policy per traffico -->
+                <div class="radio">
+                  <label>
+                    <input type="radio"  ng-model = "policy" name="optionsRadios" id="optionsRadios2" value="3">
+                    <a href="#!/policy2">Per tempo traffico</a>
+                  </label>
+                </div>
+            </div>
+            <!-- Inserisci Guadagno -->
+            <div class="form-group">
+                  <label for="exampleInputEmail1">Inserisci guadagno API</label>
+                  <input type="text" ng-model = "guadagno" class="form-control" id="exampleInputEmail1" >
+            </div>
+            <!-- Inserisci Logo -->
+            <div class="form-group">
+                  <img ng-src="{{logo_presentation}}" class="img-responsive" class="img-thumbnail" >
+                  <label for="exampleInputFile">Inserisci logo API</label>
+                  <input accept="image/*" type="file" onchange="angular.element(this).scope().uploadlogo(this)">
+                  <p class="help-block">Il logo deve essere in formato png, jpeg oppure gif</p>
+            </div>
+            <!-- Conferma -->
+            <button type="submit" ng-click="submit()" class="btn btn-default">Conferma modifiche</button>
+          </form>
+      </div>
+</div>

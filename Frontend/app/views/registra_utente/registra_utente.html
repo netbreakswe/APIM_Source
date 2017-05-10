@@ -1,0 +1,62 @@
+<div class="row">
+      <div class="col-xs-8 col-sm-6 col-md-4 col-xs-offset-2 col-sm-offset-3 col-md-offset-4">
+          <h3 class="text-center">Registrazione Utente:</h3>
+          <form>
+            <!-- Registrazione Utente -->
+            <div class="form-group">
+              <div class="alert alert-danger" ng-if="!ok" role="alert">
+                  <ul ng-repeat="error in errors">{{error}}</ul>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Nome:</label>
+              <input type="text" class="form-control" ng-model = "nome" placeholder="es. John">
+            </div>
+             <div class="form-group">
+              <label for="exampleInputEmail1">Cognome:</label>
+              <input type="text" class="form-control" ng-model = "cognome" placeholder="es. Doe">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Email:</label>
+              <input type="email" class="form-control" ng-model = "email" placeholder="es. johndoe85@forli.it">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Cittadinanza:</label>
+              <select class="form-control" ng-model = "cittadinanza">
+                <option ng-repeat="country in countries"  >{{country}}</option>
+              </select>
+             </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">About Me:</label>
+              <textarea class="form-control" rows="3" placeholder="Descrizione" ng-model = "aboutme"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Link a Sito:</label>
+              <input type="text" class="form-control" ng-model = "linksito" placeholder="es. http://johndoe85.com">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Password:</label>
+              <input type="password" class="form-control" ng-model = "password" placeholder="es. Am78.Klop">
+            </div>
+            <p class="help-block">La password deve essere composta da almeno 6 caratteri, deve contenere almeno un carattere appartenente alle lettere maiuscole (da A a Z), deve contenere almeno un carattere appartenente ai primi 10 numeri di base (da 0 a 9)</p>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Re-Inserisci Password:</label>
+              <input type="password" class="form-control" ng-model = "repassword" placeholder="es. Am78.Klop">
+            </div>
+            <div class="form-group">
+                  <label for="exampleInputFile">Scegli Avatar</label>
+                  <img ng-src="{{image_presentation}}" class="img-responsive" class="img-thumbnail" >
+                  <p class="help-block">L'avatar deve essere in formato png, jpeg oppure gif</p>
+                  <input ng-model="image" accept="image/*" type="file" onchange="angular.element(this).scope().uploadavatar(this)">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Email Paypal:</label>
+              <input type="email" class="form-control" ng-model = "paypal" placeholder="es. johndoe85@forli.it">
+            </div>
+            <!-- Conferma -->
+            <button type="submit" ng-click="submitForm()" class="btn btn-default">Registrati</button>
+            <!-- Codice per saltare una riga  --><div class="row"><p></p><p></p></div>
+            </div>
+          </form>
+      </div>
+  </div>

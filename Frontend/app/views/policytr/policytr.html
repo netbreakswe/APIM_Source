@@ -1,0 +1,31 @@
+<div class="row" >
+        <div class="col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
+          <div class="thumbnail">
+              <div class="caption">
+                <div class="jumbotron">
+                  <h3>Policy per traffico</h3>
+                  <p>Si paga per ogni chiamata e per il traffico generato. Questa policy e' stata pensata per API che richiedono il passaggio di dati pesanti (esempio: un rielaboratore di immagini). L'acquisto non avviene prima dell'uso, invece l'utilizzo viene monitorato per poi scalare l'importo dovuto dal conto dell'utente. C'e' la possibilita' di ricevere un'email ogni volta che si supera una threshold pre-stabilita di importo dovuto.
+                  <table class="table table-hover">
+                    <tr>
+                      <td>CM</td>
+                      <td>Costo mantenimento API Market per chiamata. Serve per evitare che API Market vada in perdita</td>
+                    </tr>
+                    <tr>
+                      <td>GpB</td>
+                      <td>Guadagno per Byte impostato dallo sviluppatore</td>
+                    </tr>
+                    <tr>
+                      <td>%APIMarket</td>
+                      <td>Percentuale trattenuta da API Market sul guadagno impostato</td>
+                    </tr>
+                    <tr>
+                      <td>NC</td>
+                      <td>Numero Byte di traffico (ottenuti da Byte dei parametri in entrata + di ritorno)</td>
+                    </tr>
+                  </table>
+                  <p>formula: CM + (GpB+%APIMarket) * NB</p>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>

@@ -1,0 +1,86 @@
+<div class="row" >
+        <div class="col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
+        <div class="thumbnail">
+              <img src="{{Logo}}" alt="apilogo">
+              <div class="caption">
+                <h3 class="text-center">{{Name}}</h3>
+                <p class="text-center">{{DeveloperId}}</p>
+                <button type="button" class="label label-default">Politics</button>
+                <button type="button" class="label label-primary">Network</button>
+                <button type="button" class="label label-info">Video</button>
+                <button type="button" class="label label-default">Cats</button>
+                <button type="button" class="label label-default">ImgProcessors</button>
+                <button type="button" class="label label-warning">Chats</button>
+                <button type="button" class="label label-primary">Utils</button>
+                <button type="button" class="label label-danger">Hackerz</button>
+                <div class="row"><p></p><p></p></div>
+                <div class="jumbotron">
+                  <h3>Descrizione</h3>
+                  <p>{{Description}}</p>
+                </div>
+                <table class="table table-striped">                 
+                <tr>
+                    <td>Versione</td>
+                    <td>{{Version}}</td>
+                 </tr>
+                 <tr>
+                    <td>Modificata</td>
+                    <td>{{LastUpdate}}</td>
+                 </tr>
+                 <tr>
+                    <td>Prezzo</td>
+                    <td>{{Profit}}</td>
+                 </tr>
+                 <tr>
+                    <td>Policy Vendita</td>
+                    <td><a href="#!/policytp">{{Policy}}</a></td>
+                 </tr>
+                 <tr>
+                    <td>Documentazione Pdf</td>
+                    <td><a href="test_files/intervisteproponente.pdf">link</a></td>
+                 </tr>
+                 <tr>
+                    <td>Documentazione Esterna</td>
+                    <td><a href="http://it.lipsum.com">link</a></td>
+                 </tr>
+                 <tr>
+                    <td>Numero Licenze Attive</td>
+                    <td>/</td>
+                 </tr>
+                 <tr>
+                    <td>SLA</td>
+                    <td>{{SLAGuaranteed}}</td>
+                 </tr>
+                </table> 
+                <a href="#!/acquista_api" class="btn btn-primary" role="button">Acquista</a>
+              </div>
+          </div>
+        </div>
+      </div>
+
+
+
+  <!-- Visualizzazione Interfaccia API -->
+  <div class="row">
+    <div class="col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
+      <h2>Interfaccia API:</h2>
+
+      <h3>Info per l'uso:</h3>
+      <h4>OutputPort: {{Name}}_{{IdMS}}</h4>
+      <h4><button class="btn btn-success" ng-click="Download_Client_Interface()">.iol Client Interface</button></h4>
+
+      <h3>Lista Operation:</h3>
+      <div ng-repeat="operation in operations">
+        <h4>{{operation.name}}</h4>
+        <pre>{{operation.name}}( {{operation.request}} )( {{operation.response}} )</pre>
+        <p>{{operation.description}}</p>
+      </div>
+
+      <h3>Lista Tipi:</h3>
+
+      <div ng-repeat="type in types">
+        <h4>{{type.name}}</h4>
+        <pre>{{type.definition}}</pre>
+      </div>
+    </div>  
+  </div>

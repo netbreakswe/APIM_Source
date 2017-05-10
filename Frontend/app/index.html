@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="APIM" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>APIMarket</title>
+    <meta name="description" content="Progetto Universitario fatto dal gruppo Netbreak per l'insegnamento SWE 2016/2017">
+    <link rel="stylesheet" href="css/app.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Logo APIMarket -->
+    <div class="navbar-header">
+      <!-- Pulsante con Menu per Mobile -->
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <!-- Logo APIMarket -->
+      <a class="navbar-brand" href="#!">APIMarket</a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+        <!-- UC6 - Ricerca API -->
+        <form class="navbar-form navbar-left">
+          <div class="form-group">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            <input type="text"  class="form-control" placeholder="Ricerca APIs">
+          </div>
+        </form>
+
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <!-- Immagine profilo Utente e menu navigazione -->
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span ng-if="!loggedin">Not Registered</span><span ng-if="loggedin">{{identity}}</span><span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#!/account" ng-if="loggedin">Gestione Account</a></li>
+              <li><a href="#!/login" ng-if="!loggedin">Login</a></li>
+              <li><a href="#!/registra_utente" ng-if="!loggedin">Registrati</a></li>
+              <li><a href="#!/registra_api" ng-if="loggedin">Aggiungi API</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#!/logout" ng-if="loggedin">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Qui si materializza la view  -->
+<div ng-view></div>
+
+<!-- Codice per saltare una riga  -->
+<div class="row"><p></p><p></p></div>
+<!-- Footer  -->
+<div class="panel-footer"><p class="text-center">APIM  <span app-version></span></p></div>
+
+<!-- angular and libraries -->
+<script src="//code.angularjs.org/1.2.20/angular.js"></script>
+<script src="//code.angularjs.org/1.2.20/angular-route.js"></script>
+<script src="//code.angularjs.org/1.2.13/angular-cookies.js"></script>
+
+<!-- app.js -->
+<script src="app.js"></script>
+	
+<!-- Controllers e services -->
+<script src="controllers/account/account.js"></script>
+<script src="controllers/api/api.js"></script>
+<script src="controllers/api_acquistate/api_acquistate.js"></script>
+<script src="controllers/api_registrate/api_registrate.js"></script>
+<script src="controllers/conferma_login/conferma_login.js"></script>
+<script src="controllers/conto/conto.js"></script>
+<script src="controllers/lista_api/lista_api.js"></script>
+<script src="controllers/lista_transazioni/lista_transazioni.js"></script>
+<script src="controllers/login/login.js"></script>
+<script src="controllers/logout/logout.js"></script>
+<script src="controllers/policych/policych.js"></script>
+<script src="controllers/policytp/policytp.js"></script>
+<script src="controllers/policytr/policytr.js"></script>
+<script src="controllers/recupero_password/recupero_password.js"></script>
+<script src="controllers/registra_api/registra_api.js"></script>
+<script src="controllers/registra_utente/registra_utente.js"></script>
+<script src="controllers/reset_password/reset_password.js"></script>
+<script src="controllers/modifica_interf_cliente/modifica_interf_cliente.js"></script>
+<script src="controllers/modifica_info_api/modifica_info_api.js"></script>
+<script src="controllers/modifica_interf_api/modifica_interf_api.js"></script>
+
+
+
+
+	
+<!-- Version -->
+<script src="components/version/version.js"></script>
+<script src="components/version/version-directive.js"></script>
+<script src="components/version/interpolate-filter.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+</body>
+</html>
