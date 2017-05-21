@@ -1,29 +1,49 @@
 <div class="row">
-    <div class="col-xs-10 col-sm-10 col-md-3 col-xs-offset-1 col-sm-offset-1 col-md-offset-0">
 
-        <div class="well">
-          Mark Twain
-        </div>
-        <div class="panel panel-default">
-          <!-- Default panel contents -->
-          <div class="panel-heading">Gestione profilo</div>
-          <!-- List group -->
-          <ul class="list-group" >
-            <li class="list-group-item"><a href="#!/account">Dati personali</a></li>
-            <li class="list-group-item"><a href="#!/api_acquistate">API acquistate</a></li>
-            <li class="list-group-item"><a href="#!/api_registrate">API registrate</a></li>
-          </ul>
-        </div>
-        <div class="panel panel-default">
-          <!-- Default panel contents -->
-          <div class="panel-heading">Pagamenti</div>
-          <!-- List group -->
-          <ul class="list-group" >
-            <li class="list-group-item"><a href="#!/conto">Gestione conto</a></li>
-            <li class="list-group-item"><a href="#!/lista_transazioni">Transazioni</a></li>
-          </ul>
-        </div>
-    </div>
+	<div class="col-xs-10 col-sm-10 col-md-3 col-xs-offset-1 col-sm-offset-1 col-md-offset-0">
+	
+		<div class="panel panel-primary">
+			<!-- Default panel contents -->
+			<div class="panel-heading">Gestione profilo</div>
+			<!-- List group -->
+			<ul class="list-group">
+				<li class="list-group-item"><a href="#!/account">Dati personali</a></li>
+				<li class="list-group-item"><a href="#!/api_acquistate">API acquistate</a></li>
+				<li class="list-group-item" ng-if="ClientType == 'Basic'">API registrate</li>
+				<li class="list-group-item" ng-if="ClientType == 'Developer'"><a href="#!/api_registrate">API registrate</a></li>
+			</ul>
+		</div>
+		
+		<div class="panel panel-primary">
+			<!-- Default panel contents -->
+			<div class="panel-heading">Crediti</div>
+			<!-- List group -->
+			<ul class="list-group">
+				<li class="list-group-item list-group-item-info"><b>Possiedi {{Credits}} crediti.</b></li>
+				<li class="list-group-item"><a href="#!/ricarica_crediti">Ricarica crediti</a></li>
+			</ul>
+		</div>
+		
+		<div class="panel panel-primary">
+			<!-- Default panel contents -->
+			<div class="panel-heading">Transazioni</div>
+			<!-- List group -->
+			<ul class="list-group">
+				<li class="list-group-item"><a href="#!/registro_transazioni">Registro transazioni</a></li>
+			</ul>
+		</div>
+		
+		<div class="panel panel-primary" ng-if="ClientType == 'Basic'">
+			<!-- Default panel contents -->
+			<div class="panel-heading">Altro</div>
+			<!-- List group -->
+			<ul class="list-group">
+				<li class="list-group-item"><a href="#!/upgrade_sviluppatore"><b>Diventa Sviluppatore!</b></a></li>
+			</ul>
+		</div>
+		
+	</div>
+	
     <div class="col-xs-10 col-sm-10 col-md-7 col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
 
        <div class="row">
@@ -32,13 +52,27 @@
           <div class="col-md-11" >
 
           <div class="page-header">
-            <h1>API Acquistate</h1>
+            <h1>API Acquistate (da implementare)</h1>
           </div>
 
             <div class="panel panel-default mainPanelAccount">
 
               <table class="table table-striped">
-                da implementare
+                <thead>
+                  <tr>
+                    <th>Nome API</th>
+                    <th>Numero licenze attive</th>
+					<th>Data Acquisto</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th class="text-center"><a href="#!/api/10">profileService</a></th>
+                    <th class="text-center">1</th>
+					<th lass="text-center">2017-05-01</th>
+                  </tr>
+
+                </tbody>
               </table>
 
             </div>
@@ -47,5 +81,5 @@
 
         </div>
     </div>
-  </div>
+</div>
 

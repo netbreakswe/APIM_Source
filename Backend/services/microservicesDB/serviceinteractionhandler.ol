@@ -22,7 +22,7 @@ define __isInArrayAndPos {
   }
 }
 
-/*2. manca check su apikey e sla survey (dipendenti da acquisto)
+/*2. manca check su apikey e sla survey (dipendenti da acquisto)*/
 
 
 init {

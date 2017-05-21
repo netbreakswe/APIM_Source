@@ -7,199 +7,229 @@ include "string_utils.iol"
 
 execution { sequential }
 
-/*basta questa port per comunicare con tutti i servizi*/
+
+// basta questa port per comunicare con tutti i servizi
 inputPort transactions_dbJSONInput {
   Location: "socket://localhost:8131"
   Protocol: http { 
-    //Access-Control-Allow-Origin response header to tell the browser that the content of this page is accessible to certain origins
+    // Access-Control-Allow-Origin response header to tell the browser that the content of this page is accessible to certain origins
     .response.headers.("Access-Control-Allow-Methods") = "POST,GET,OPTIONS";
     .response.headers.("Access-Control-Allow-Origin") = "*";
-    .response.headers.("Access-Control-Allow-Headers") = "Content-Type, Authentication";
+    .response.headers.("Access-Control-Allow-Headers") = "Content-Type, Authorization";
     .format = "json"
-    }
+  }
   Interfaces: transactions_dbInterface
 }
 
-/*1. procedura che verifica se l'api key generata e' univoca */
+// 1. procedura che verifica se l'api key generata sia univoca 
 define __checkIfAPIKeyUnique {
-  q_45_Y = "select * from apikeys where APIKey = :api";
-  q_45_Y.api = _API_45_Y;
-  query@Database( q_45_Y )( result_45_Y );
-  if (#result_45_Y.row == 0) {
-    _unique_45_Y = true;
-  } else {
-    _unique_45_Y = false;
-  }
+	// query
+	q_45_Y = "SELECT * FROM apikeys WHERE APIKey=:api";
+  	q_45_Y.api = _API_45_Y;
+  	query@Database( q_45_Y )( result_45_Y );
+  	if (#result_45_Y.row == 0) {
+  		_unique_45_Y = true
+  	} 
+  	else {
+  		_unique_45_Y = false
+  	}
 }
-
-
-
 
 
 init
 {
 	println@Console( "Transactions Db Microservice started" )();
 
-  //connect to transactions database (heroku)
-  with( connectionInfo ) {
-      .host = "zwgaqwfn759tj79r.chr7pe7iynqr.eu-west-1.rds.amazonaws.com"; 
-      .driver = "mysql";
-      .port = 3306;
-      .database = "yugmcjcg2hvudvwd";
-      .username = "z4c0c7kulqkmnvkk";
-      .password = "l68qvsy16uyg7e44"
+  	// connect to transactions database (heroku)
+ 	with( connectionInfo ) {
+ 	 	.host = "zwgaqwfn759tj79r.chr7pe7iynqr.eu-west-1.rds.amazonaws.com"; 
+      	.driver = "mysql";
+      	.port = 3306;
+      	.database = "yugmcjcg2hvudvwd";
+      	.username = "z4c0c7kulqkmnvkk";
+      	.password = "l68qvsy16uyg7e44"
     };
     connect@Database( connectionInfo )();
     println@Console("DB connected, connection is running on host:" + connectionInfo.host )()
 }
 
 
-
-
-
-
-
 main
 {
 
 
-  /*controlla esistenza apikey*/
-  [apikey_exists( request )( response ) {
-    _API_45_Y = random;
-    __checkIfAPIKeyUnique;
-     if (_unique_45_Y) {
-      response = true;
-      println@Console( "Exists" )()
-    } else {
-      response = false;
-      println@Console( "Not Exists")()
-    }
-  }]
+	// controlla esistenza apikey
+  	[apikey_exists( request )( response ) {
+    	_API_45_Y = random;
+    	__checkIfAPIKeyUnique;
+     	if (_unique_45_Y) {
+      		response = true;
+      		println@Console( "Exists" )()
+    	} 
+    	else {
+      		response = false;
+      		println@Console( "Not Exists")()
+    	}
+  	}]
+
+
+
+  	// recupera gli attributi di una apikey a partire dalla sua stringa univoca
+  	[retrieve_apikey_info( request )( response ) {
+
+    	//query
+    	q = "SELECT APIKey,IdMS,IdClient,Remaining FROM apikeys WHERE APIKey=:ak";
+    	q.ak = request.License;
+    	query@Database( q )( result );
+
+    	if ( #result.row == 0 ) {
+      		println@Console("APIKey not found")()
+    	}
+    	else {
+      		for ( i=0, i<#result.row, i++ ) {
+        		println@Console( "Got APIKey "+ request.License )();
+        		response << result.row[i]
+      		}
+    	};
+    	println@Console("Retrieved all info about the specific APIKey")()
+  	}]
+
+
+
+  	// recupera la lista delle transazioni di un utente
+  	[retrieve_purchases_list_from_userid( request )( response ) {
+
+    	// query
+    	q = "SELECT IdPurchase,APIKey,IdClient,Timestamp,Amount,Type FROM purchases WHERE IdClient=:i";
+    	q.i = request.Id;
+    	query@Database( q )( result );
+
+    	if ( #result.row == 0 ) {
+      		println@Console("Purchases not found")()
+    	}
+    	else {
+      		for ( i=0, i<#result.row, i++ ) {
+        		println@Console( "Got purchase number " + i )();
+        		response.purchaseslist[i] << result.row[i]
+      		}
+    	};
+    	println@Console("Retrieved purchases list of the user with id " + request.Id)()
+
+  	}]
+
+
+
+  	// recupera le apikey attive a partire dall'id di un utente
+  	[retrieve_active_apikey_from_userid( request )( response ) {
+
+  		// query
+  		q = "SELECT APIKey,IdMS,IdClient,Remaining FROM apikeys WHERE Remaining > 0 AND IdClient=:i";
+  		q.i = request.Id;
+  		query@Database( q )( result );
+
+    	if ( #result.row == 0 ) {
+      		println@Console("Active APIKeys not found")()
+    	}
+    	else {
+      		for ( i=0, i<#result.row, i++ ) {
+        		println@Console( "Got APIKey number " + i )();
+        		response.apikeyslist[i] << result.row[i]
+      		}
+    	};
+    	println@Console("Retrieved purchases list of the user with id " + request.Id)()
+
+  	}]
 
 
 
 
-  
-  [retrieve_apikey_info( request )( response ) {
+  	// recupera il numero di apikey attive a partire dall'id di un utente
+  	[retrieve_active_apikey_number_from_msid( request )( response ) {
 
-    //query
-    q = "SELECT IdMS,IdClient,Remaining FROM apikeys WHERE IdAPIKey=:iak";
-    q.iak = request.Id;
-    query@Database( q )( result );
+  		// query
+  		q = "SELECT IdMS FROM apikeys WHERE Remaining > 0 AND IdMS=:i";
+  		q.i = request.Id;
+  		query@Database( q )( result );
 
-    if ( #result.row == 0 ) {
-      println@Console("APIKey not found")()
-    }
-    else {
-      for ( i=0, i<#result.row, i++ ) {
-        println@Console( "Got APIKey with id "+ request.Id )();
-        response.APIKeyData[i] << result.row[i]
-      }
-    };
-    println@Console("Retrieved all info about the specific APIKey")()
-  }]
+    	if ( #result.row == 0 ) {
+      		println@Console("Active APIKeys not found")();
+      		response.IdMS = request.Id;
+    		response.Licenses = 0
+    	}
+    	else {
+    		println@Console( "Got APIKey number from ms " + result.row[i].IdMS )();
+    		response.IdMS = result.row[i].IdMS;
+    		response.Licenses = #result.row
+      	};
+    	println@Console("Retrieved " + response + " of active apikeys")()
 
-
-
-
+  	}]
 
 
 
 
-  [retrieve_purchases_list( request )( response ) {
+  	// registra una nuova apikey
+  	[apikey_registration( request )( response ) {
 
-    //query
-    q = "SELECT IdPurchase,Timestamp,Price,Amount FROM purchases WHERE IdClient=:i";
-    q.i = request.Id;
-    query@Database( q )( result );
+    	//genera api key
+    	getRandomUUID@StringUtils()( random );
+    	_API_45_Y = random;
+    	__checkIfAPIKeyUnique;
 
-    if ( #result.row == 0 ) {
-      println@Console("Purchase not found")()
-    }
-    else {
-      for ( i=0, i<#result.row, i++ ) {
-        println@Console( "Got purchase number " + i )();
-        response.PurchasesListData[i] << result.row[i]
-      }
-    };
-    println@Console("Retrieved purchases of the client with id " + request.Id)()
-  }]
-
-
-
-
-
-
-
-
-  [apikey_registration( request )( response ) {
-    //genera api key
-    getRandomUUID@StringUtils()( random );
-    _API_45_Y = random;
-    __checkIfAPIKeyUnique;
-
-    if (_unique_45_Y) {
-      //query
-      q = "INSERT INTO apikeys (IdMS, APIKeym IdClient,Remaining) VALUES (:ims,:apik, :ic,:r)";
-      with( request ) {
-        q.ims = .IdMS;
-        q.apik = random;
-        q.ic = .IdClient;
-        q.r = 50 //hard-coded: da sistemare per implementazione acquisto
-      };
-      update@Database( q )( result );
-      response = true;
-      println@Console( "Registering new apikey for microservice " + request.IdMS + " by client " + request.IdClient )()
-    } else {
-      response = false;
-    }
+    	if (_unique_45_Y) {
+     		//query
+      		q = "INSERT INTO apikeys (IdMS, APIKeym IdClient,Remaining) VALUES (:ims,:apik, :ic,:r)";
+      		with( request ) {
+        		q.ims = .IdMS;
+        		q.apik = random;
+        		q.ic = .IdClient;
+        		q.r = 50 // hard-coded: da sistemare per implementazione acquisto
+      		};
+      		update@Database( q )( result );
+      		response = true;
+      		println@Console( "Registering new apikey for microservice " + request.IdMS + " by client " + request.IdClient )()
+    	} 
+    	else {
+      		response = false
+    	}
     
-  }]
+  	}]
 
 
 
 
+  	// registra un nuovo acquisto di una apikey
+  	[purchase_registration( request )( response ) {
+
+    	//query
+    	q = "INSERT INTO purchases (APIKey,IdClient,Timestamp,Amount,Type) VALUES (:ak,:ic,:t,:a,:ty)";
+    	with( request ) {
+      		q.ak = .APIKey;
+      		q.ic = .IdClient;
+      		q.t = .Timestamp;
+      		q.a = .Amount;
+      		q.ty = .Type
+    	};
+    	update@Database( q )( result );
+    	println@Console( "Registering new purchase with apikey " + request.APIKey + " by client " + request.IdClient )()
+
+  	}]
 
 
 
 
+  	// aggiorna il campo remaining di una apikey (aggiunge o sottrae in base a number)
+  	[apikey_remaining_update( request )( response ) {
 
+    	//query
+    	q = "UPDATE apikeys SET Remaining=Remaining+:n WHERE APIKey=:i";
+    	with( request ) {
+      		q.i = .APIKey;
+      		q.n = .Number
+    	};
+    	update@Database( q )( result );
+    	println@Console( "Updating remaining of APIKey " + request.APIKey )()
 
-  [purchase_registration( request )( response ) {
-
-    //query
-    q = "INSERT INTO purchases (IdAPIKey,IdClient,Timestamp,Price,Amount) VALUES (:iak,:ic,:t,:p,:a)";
-    with( request ) {
-      q.iak = .IdAPIKey;
-      q.ic = .IdClient;
-      q.t = .Timestamp;
-      q.p = .Price;
-      q.a = .Amount
-    };
-    update@Database( q )( result );
-    println@Console( "Registering new purchase with apikey " + request.IdAPIKey + " by client " + request.IdClient )()
-  }]
-
-
-
-
-
-
-
-
-
-
-
-  [apikey_remaining_update( request )( response ) {
-
-    //query
-    q = "UPDATE apikeys SET Remaining=Remaining-:n WHERE IdAPIKey=:i";
-    with( request ) {
-      q.i = .IdAPIKey;
-      q.n = .Number
-    };
-    update@Database( q )( result );
-    println@Console( "Updating remaining of APIKey " + request.IdAPIKey )()
-  }]
+  	}]
 
 }

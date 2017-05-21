@@ -1,4 +1,4 @@
-include "interfaces/interactioninterfaceC.iol"
+include "interfaces/CommService_11.iol"
 include "console.iol"
 
 /*client per provare InteractionService, con id = 4, composto da:
@@ -17,20 +17,22 @@ main {
         .destination = "dan";
         .content = "contenuto fax per dan..."
     };
-    fax@InteractionService( rq_fax )(rs);
-    faxwithnoresponse@InteractionService( rq_fax );
+    fax@CommService_11( rq_fax )(rs);
+    faxwithnoresponse@CommService_11( rq_fax );
 
     with( rq_mail ) {
         .key = "1111";
         .mail = "tulliosuccaD@blackpower.sex";
         .content = "contenuto fax per Johnson..."
     };
-    mail@InteractionService( rq_mail )(rsl);
-    mailwithnoresponse@InteractionService( rq_mail );
+    mail@CommService_11( rq_mail )(rsl);
+    mailwithnoresponse@CommService_11( rq_mail );
 
+    println@Console("Print 1")();
     println@Console(rsl)();
+    println@Console("Print 2")();
     println@Console(rs)();
-    req1 = "dan";
+    /*req1 = "dan";
     with( req1 ) {
         .key = "1111"
     };
@@ -40,16 +42,17 @@ main {
     };
     /*end dati prova per richiesta*/
 
-    /*begin richieste*/
-    sayhello@InteractionService( req1 )(rs1);
-    saysuperhello@InteractionService( req1 )(rs2);
-    sayagreeting@InteractionService( req2 )(rs3);
+    /*begin richieste*//*
+    sayhello@CommService_11( req1 )(rs1);
+    saysuperhello@CommService_11( req1 )(rs2);
+    sayagreeting@CommService_11( req2 )(rs3);
     /*end richieste*/
 
     /*begin stampa risultati richieste*/
-    println@Console(rs1)();
-    println@Console(rs2)();
-    println@Console(rs3)()
+    println@Console("Print 3")();
+    println@Console(rsl)();
+    println@Console("Print 4")();
+    println@Console(rs)()
     /*end stampa risultati richieste*/
 
 

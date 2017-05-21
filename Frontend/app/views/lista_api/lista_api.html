@@ -1,30 +1,55 @@
 <div class="row">
+
     <!-- Lista Categorie API -->
     <div class="col-xs-10 col-sm-3 col-md-2 col-xs-offset-1 col-sm-offset-0 col-md-offset-0">
-        <div class="panel panel-default">
-          <div class="panel-heading">Categorie</div>
-          <div class="list-group">
-              <button ng-repeat="category in categories" IdCategory="{{category.IdCategory}}" type="button" class="list-group-item" data-ng-click="FilterCategory($event)">{{category.Name}}</button>  
-          </div>
- 
+        <div class="panel panel-primary">
+			<div class="panel-heading">Categorie</div>
+			<div class="list-group">
+				<button type="button" class="list-group-item" ng-click="FilterAll()">Tutte</button>
+				<button ng-repeat="category in categories" IdCategory="{{category.IdCategory}}" type="button" class="list-group-item" data-ng-click="FilterCategory($event)">{{category.Name}}</button>
+			</div>
         </div>
+		
+		<div class="panel panel-primary">
+			<div class="panel-heading">Ordine</div>
+			<div class="list-group">
+				<button type="button" ng-model="orderName" ng-click="OrderByName()" class="list-group-item">Alfabetico
+					<span ng-if="orderName == 'Name'">
+						<img src="http://localhost:8000/images/icons/arrowup.png" alt="freccia su" class="logosmall">
+					</span>
+					<span ng-if="orderName == '-Name'">
+						<img src="http://localhost:8000/images/icons/arrowdown.png" alt="freccia giù" class="logosmall">
+					</span>
+				</button>
+			</div>
+		</div>
     </div>
-
 
     <!--UC6.3: Visualizzazione lista risultati -->
     <div class="col-xs-12 col-sm-9 col-md-10">
-      <div class="row">
-          <div ng-repeat="service in services" ng-if="service.Display == true" class="col-xs-10 col-sm-6 col-md-4 col-xs-offset-1 col-sm-offset-0 col-md-offset-0">
-            <div class="thumbnail">
-              <a href="#!/api/{{service.IdMS}}"><img src="{{service.Logo}}" alt="img_description" style="max-height: 200px;"></a>
-              <div class="caption">
-                <h3 class="text-center">{{service.Name}}</h3>
-                <p class="text-center">{{service.Developer}}</p>
-                <p class="text-center"><a href="#!/api/{{service.IdMS}}" class="btn btn-primary" role="button">Scopri di Piu'</a></p>
-                <button ng-repeat="category in service.categories" type="button" class="label label-default">{{category}}</button>
-              </div>
-            </div>
-          </div>
-      </div>
-    </div>
+	
+		<div class="row">
+			<div class="col-xs-10 col-sm-6 col-md-4 col-xs-offset-1 col-sm-offset-0 col-md-offset-0">
+			<input ng-model="searchText" class="form-control" placeholder="Ricerca API" />
+			</div>
+		</div>
+		
+		<div class="row"><p></p><p></p></div>
+		
+		<div class="row">
+			<div ng-repeat="service in services | filter:searchText | orderBy:orderName" ng-if="service.Display == true" class="col-xs-10 col-sm-6 col-md-4 col-xs-offset-1 col-sm-offset-0 col-md-offset-0">
+				<div class="thumbnail">
+					<a href="#!/api/{{service.IdMS}}"><img ng-src="{{service.Logo}}" alt="logo api" class="logomedium"></a>
+					<div class="caption">
+						<h3 class="text-center">{{service.Name}}</h3>
+						<p class="text-center">Sviluppatore: <a href="#!/visualizza_utente/{{service.Developer}}">{{anagraphics[service.Developer]}}</a></p>
+						<p class="text-center"><a href="#!/api/{{service.IdMS}}" class="btn btn-primary" role="button">Scopri di Più</a></p>
+						<a ng-repeat="category in service.categories" href="#!/categoria/{{category.IdCategory}}" class="nounderline"><button type="button" class="label label-success">{{category.CatName}}</button><a/>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	
 </div>

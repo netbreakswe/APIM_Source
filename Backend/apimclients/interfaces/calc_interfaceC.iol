@@ -20,7 +20,7 @@ interface CalcServiceInterface {
 }
 
 outputPort CalcService_43 {
-  Location:"socket://localhost:2002/!/CalcService_43"
-  Protocol:sodep
+  Location: "socket://localhost:2002/!/CalcService_43"
+  Protocol: sodep
   Interfaces: CalcServiceInterface
 }

@@ -1,86 +1,87 @@
 <div class="row" >
-        <div class="col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
+    <div class="col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
         <div class="thumbnail">
-              <img src="{{Logo}}" alt="apilogo">
-              <div class="caption">
-                <h3 class="text-center">{{Name}}</h3>
-                <p class="text-center">{{DeveloperId}}</p>
-                <button type="button" class="label label-default">Politics</button>
-                <button type="button" class="label label-primary">Network</button>
-                <button type="button" class="label label-info">Video</button>
-                <button type="button" class="label label-default">Cats</button>
-                <button type="button" class="label label-default">ImgProcessors</button>
-                <button type="button" class="label label-warning">Chats</button>
-                <button type="button" class="label label-primary">Utils</button>
-                <button type="button" class="label label-danger">Hackerz</button>
+            <img src="{{Logo}}" alt="logo api" class="logomedium">
+            <div class="caption">
+				<h3 class="text-center">{{Name}}</h3>
+                <p class="text-center">Sviluppatore: <a href="#!/visualizza_utente/{{IdDeveloper}}">{{Developer}}</a></p>
+                <a ng-repeat="category in categories" href="#!/categoria/{{category.IdCategory}}" class="nounderline"><button type="button" class="label label-success">{{category.Name}}</button><a/>
+				
                 <div class="row"><p></p><p></p></div>
-                <div class="jumbotron">
-                  <h3>Descrizione</h3>
-                  <p>{{Description}}</p>
-                </div>
-                <table class="table table-striped">                 
+				
+				<div class="panel panel-default">
+					<div class="panel-heading"><b>Descrizione:</b></div>
+					<div class="panel-body">{{Description}}</div>
+				</div>
+                <table class="table table-striped table-bordered">
+				<thead>
+					<tr>
+						<th colspan="2">Scheda Informazioni:</th>
+					</tr>
+				</thead>
+				<tbody>
                 <tr>
-                    <td>Versione</td>
-                    <td>{{Version}}</td>
-                 </tr>
-                 <tr>
+					<td>Versione</td>
+                    <td>{{Version}}.0</td>
+                </tr>
+                <tr>
                     <td>Modificata</td>
                     <td>{{LastUpdate}}</td>
-                 </tr>
-                 <tr>
+                </tr>
+                <tr>
                     <td>Prezzo</td>
-                    <td>{{Profit}}</td>
-                 </tr>
-                 <tr>
+                    <td>{{Profit}}&euro;</td>
+                </tr>
+                <tr>
                     <td>Policy Vendita</td>
-                    <td><a href="#!/policytp">{{Policy}}</a></td>
-                 </tr>
-                 <tr>
+                    <td ng-if="Policy == 1" ng-cloak><a href="#!/policych">Per numero di chiamate</a></td>
+					<td ng-if="Policy == 2" ng-cloak><a href="#!/policytp">Per tempo di utilizzo</a></td>
+					<td ng-if="Policy == 3" ng-cloak><a href="#!/policytr">Per traffico dati</a></td>
+                </tr>
+                <tr>
                     <td>Documentazione Pdf</td>
-                    <td><a href="test_files/intervisteproponente.pdf">link</a></td>
-                 </tr>
-                 <tr>
+                    <td><a href="{{DocPDF}}">link</a></td>
+                </tr>
+                <tr>
                     <td>Documentazione Esterna</td>
-                    <td><a href="http://it.lipsum.com">link</a></td>
-                 </tr>
-                 <tr>
+                    <td><a href="{{DocExternal}}">link</a></td>
+                </tr>
+                <tr>
                     <td>Numero Licenze Attive</td>
-                    <td>/</td>
-                 </tr>
-                 <tr>
+                    <td>1 (da implementare)</td>
+                </tr>
+                <tr>
                     <td>SLA</td>
                     <td>{{SLAGuaranteed}}</td>
-                 </tr>
+                </tr>
+				</tbody>
                 </table> 
                 <a href="#!/acquista_api" class="btn btn-primary" role="button">Acquista</a>
-              </div>
-          </div>
+            </div>
         </div>
-      </div>
+    </div>
+</div>
 
-
-
-  <!-- Visualizzazione Interfaccia API -->
-  <div class="row">
+<!-- Visualizzazione Interfaccia API -->
+<div class="row">
     <div class="col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
-      <h2>Interfaccia API:</h2>
+		<h2>Interfaccia API:</h2>
+		<h3>Info per l'uso:</h3>
+		<h4>OutputPort: {{Name}}_{{IdMS}}</h4>
+		<h4><button class="btn btn-success" ng-click="Download_Client_Interface()">.iol Client Interface</button></h4>
 
-      <h3>Info per l'uso:</h3>
-      <h4>OutputPort: {{Name}}_{{IdMS}}</h4>
-      <h4><button class="btn btn-success" ng-click="Download_Client_Interface()">.iol Client Interface</button></h4>
+		<h3>Lista Operation:</h3>
+		<div ng-repeat="operation in operations">
+			<h4>{{operation.name}}</h4>
+			<pre>{{operation.name}}( {{operation.request}} ) <span ng-if="operation.response != void">( {{operation.response}} )</span></pre>
+			<p>{{operation.description}}</p>
+		</div>
 
-      <h3>Lista Operation:</h3>
-      <div ng-repeat="operation in operations">
-        <h4>{{operation.name}}</h4>
-        <pre>{{operation.name}}( {{operation.request}} )( {{operation.response}} )</pre>
-        <p>{{operation.description}}</p>
-      </div>
+		<h3>Lista Tipi:</h3>
 
-      <h3>Lista Tipi:</h3>
-
-      <div ng-repeat="type in types">
-        <h4>{{type.name}}</h4>
-        <pre>{{type.definition}}</pre>
-      </div>
+		<div ng-repeat="type in types">
+			<h4>{{type.name}}</h4>
+			<pre>{{type.definition}}</pre>
+		</div>
     </div>  
-  </div>
+</div>

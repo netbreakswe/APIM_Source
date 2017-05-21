@@ -1,70 +1,90 @@
-// strutture dati con solo id
 
-type apikeyid: void {
+// id
+
+type id: void {
 	.Id: int
 }
 
-type clientid: void {
-	.Id: int
-}
-
-// retrieve apikey info
+// rappresentazione di una apikey
 
 type apikeydata: void {
+	.APIKey: string
 	.IdMS: int
 	.IdClient: int
 	.Remaining: int
 }
+
+// rappr di una apikey
 
 type apikey: void {
 	.APIKeyData: apikeydata
 }
 
-// retrieve purchases list of a client
+// rappr di una stringa univoca della licenza di una apikey
 
-type purchaseslistdata: void {
+type apikeylicense: void {
+	.License: string
+}
+
+// rappr di un acquisto
+
+type purchasedata: void {
 	.IdPurchase: int
+	.APIKey: string
+	.IdClient: int
 	.Timestamp: string
-	.Price: int
 	.Amount: int
+	.Type: string
 } 
 
+// rappr di una lista di acquisti
+
 type purchaseslist: void {
-	.PurchasesListData [0,*]: purchaseslistdata
+	.purchaseslist[0,*]: purchasedata
 }
 
-// apikey registration
+// rappr di una lista di apikey
 
-type apikeydataw: void {
+type apikeyslist: void {
+	.apikeyslist[0,*]: apikeydata
+}
+
+// rappr del numero di licenze attive di un ms con il rispettivo id ms
+
+type apikeynumber: void {
 	.IdMS: int
-	.IdClient: int
-	.Remaining: int
+	.Licenses: int
 }
 
-// purchase registration
-type purchasedata: void {
-	.IdAPIKey: int
+// rappr di un acquisto (senza id)
+
+type smallpurchasedata: void {
+	.APIKey: string
 	.IdClient: int
 	.Timestamp: string
-	.Price: int
 	.Amount: int
-}
+	.Type: string
+} 
 
 // apikey remaining update
+
 type apikeyremainingdata: void {
-	.IdAPIKey: int
+	.APIKey: string
 	.Number: int
 }
 
+
+// read e write
+
 interface transactions_dbInterface {
 	RequestResponse:
-	    //GETTERS
-		apikey_exists(apikey)(bool),
-		retrieve_apikey_info( apikeyid )( apikey ),
-		retrieve_purchases_list( clientid )( purchaseslist ),
+		apikey_exists( apikey )( bool ),
+		retrieve_apikey_info( apikeylicense )( apikeydata ),
+		retrieve_purchases_list_from_userid( id )( purchaseslist ),
+		retrieve_active_apikey_from_userid( id )( apikeyslist ),
+		retrieve_active_apikey_number_from_msid( id )( apikeynumber ),
 
-        //SETTERS
-		apikey_registration( apikeydataw )( void ),
-		purchase_registration( purchasedata )( void ),
+		apikey_registration( apikeydata )( void ),
+		purchase_registration( smallpurchasedata )( void ),
 		apikey_remaining_update( apikeyremainingdata )( void )
 }

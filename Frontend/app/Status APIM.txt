@@ -1,0 +1,85 @@
+
+Sessioni:
+Ok.
+
+Homepage:
+Quasi.
+
++ La ricerca per keywords agisce anche su campi inutili (idMS,Name,IdDeveloper,Logo,Categorie): da raffinare tramite js
++ Migliorare la grafica del box ricerca
+
+Login:
+Quasi.
+
+- Controllare la gestione errori
+
++ Decidere se le info developer-only rimangono tali, oppure se possono venire impostate anche da utenti basic (aboutme, cittadinanza, linktoself, paypal)
+
+Homepage loggati:
+Ok.
+
+Pagina singola API:
+Ok (compreso il download) e la mancanza dell'acquisto.
+
+- Mancanza di qualsiasi tipo di procedura d'acquisto
+- Controllare correttezza
+- Segnalare se l'API è acquistata (licenza attiva)
+
+Pagina singola Policy:
+Quasi.
+
+- Da controllare correttezza del testo e formula
+
+Pagina singolo Utente:
+Ok.
+
+Gestione Account:
+Quasi.
+
+- Le immagini vengono salvate sul server appena si apre la preview e non al salvataggio, provocando affollamento. Accade in ogni inserimento di immagine (reg utenti/api)
+- Le immagini non vengono cancellate se le si cambia. Accade in ogni inserimento di immagine (reg utenti/api)
+- Controllare la gestione errori
+
++ Manca la preview della nuova immagine
++ Valgono altri formati oltre a png, jpeg, gif tipo btm
+
+API Registrate:
+Ok.
+
+API Acquistate:
+Da implementare.
+
+- Serve riferirsi a TransactionsDB
+
+Upgrade account:
+Da implementare.
+
+Registra API:
+Non ho effettivamente registrato nulla perchè dovrei fare un servizio e non so come funzioni il gateway e casini, ma sembrano esserci tutte le funzioni necessarie.
+
+- Descrizione leggermente funny
+- Da correggere ed organizzare meglio testo e codice
+- Controllare la gestione errori
+
+Registrazione utente:
+Quasi.
+
+- Controllare la gestione errori
+
+Recupero password:
+Da implementare.
+
+Ricarica crediti:
+Quasi.
+
+- Da collegare a PayPal le varie icone ed effettuare la vera gestione dell'acquisto e dell'attribuzione dei crediti
+
+Registro transazioni:
+Insomma.
+
+- Da implementare anche i pagamenti al developer ed integrarli in view e controller
+- Da mettere il servizio al posto della APIKey come valore nella tabella
+
+Parte Admin:
+Da implementare.
+

@@ -3,8 +3,8 @@
 angular.module('APIM.registra_utente')
 
 .controller('registra_utente_ctrl', function($scope, $http, $window, $location) {
-  /*lista Paesi del mondo:*/
-  /**********************************************/
+	
+  // lista Paesi del mondo
   $scope.countries = [
     "Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica",
     "Antigua and Barbuda", "Argentina","Armenia", "Aruba", "Australia", "Austria", "Azerbaijan","Bahamas",
@@ -36,16 +36,16 @@ angular.module('APIM.registra_utente')
     "United States","United States Minor Outlying Islands","Uruguay","Uzbekistan","Vanuatu","Vatican City",
     "Venezuela","Vietnam","Virgin Islands, British","Virgin Islands, U.S.","Wallis and Futuna","Western Sahara",
     "Yemen","Zambia", "Zimbabwe"];
-  /**********************************************/
 
-  /*funzione interna per validare le email con regex*/
+  // funzione per validare le email con regex
   function validateEmail(email) {
     var re = /\S+@\S+\.\S+/;
     return re.test(email);
   }
 
+  // funzione per validare la password
   function checkPassword(str) {
-    //almeno un numero, un minuscolo, un maiuscolo, almeno 6 char
+    // almeno un numero, un minuscolo, un maiuscolo, almeno 6 char
     var re = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
     return re.test(str);
   }
@@ -56,13 +56,14 @@ angular.module('APIM.registra_utente')
   $scope.ok = true;
 
 
-  /*funzione che invia immagini/file a filehandler Jolie subito dopo che immagine caricata*/
-   $scope.submitForm = function() {
+  // funzione che invia immagini/file a filehandler Jolie subito dopo che l'immagine viene caricata
+  $scope.submitForm = function() {
 
-        /*rimuovo/inizializzo errori residui dall'interfaccia grafica*/
+        // rimuove/inizializza errori dell'interfaccia grafica
         $scope.errors = [];
-        /*lunga lista di gestione errori lato client*/
-        
+		
+        // lunga lista di gestione errori lato client
+		
         if ($scope.nome == null ) {$scope.errors.push("Nome obbligatorio"); $scope.ok = false;}
         if ($scope.cognome == null ) {$scope.errors.push("Cognome obbligatorio"); $scope.ok = false;}
         if ($scope.email == null  || !validateEmail($scope.email)) {$scope.errors.push("Email non fornita o non valida"); $scope.ok = false;}
@@ -72,16 +73,16 @@ angular.module('APIM.registra_utente')
         if ($scope.password != $scope.repassword || !checkPassword($scope.password)) {$scope.errors.push("Password non coincidono o del formato sbagliato"); $scope.ok = false;}
         if ($scope.paypal == null  || !validateEmail($scope.paypal)) {$scope.errors.push("Email Paypal non fornita o non valida"); $scope.ok = false;}
         if ($scope.avataruri == null) {$scope.errors.push("Avatar non e' stato caricato con successo o non scelto"); $scope.ok = false;}
-        if (!$scope.ok) {$window.scrollTo(0, 0);}
-        /*se non ci sono errori*/
+        if (!$scope.ok) {
+          $window.scrollTo(0, 0);
+        }
+		$scope.ok = true;
+        // se non ci sono errori
         if ($scope.ok) {
-          /*applica ad hash formato md5*/
+          // applica hash con formato md5
           var passmd5 = (MD5($scope.password));
 
-          /*e' stato scelto questo metodo di inviare i dati, alla fine, a causa di problemi
-          molto gravi di interfacciamento con Jolie, causati da HTTP access control (CORS)
-          che, nonostante gestito lato server, non permetteva comunque lo scambio di dati,
-          poiche' vi era un inconsistenza nell'handshake iniziale client/server*/
+          // è stato scelto questo metodo di inviare i dati, alla fine, a causa di problemi molto gravi di interfacciamento con Jolie, causati da HTTP access control (CORS) che, nonostante gestito lato server, non permetteva comunque lo scambio di dati, poichè vi era un inconsistenza nell'handshake iniziale client/server
 
           $http.post("http://localhost:8101/basicclient_registration?"
             +"Name="+$scope.nome
@@ -94,9 +95,9 @@ angular.module('APIM.registra_utente')
             +"&AboutMe="+$scope.aboutme
             +"&LinkToSelf="+$scope.linksito
             ).then(function(response) {
-                /*l'utente esiste gia'?*/
+                // l'utente esiste già?
                 if (response.data.$ == false) {
-                    $location.path( "/login" );   
+                    $location.path("/conferma_registrazione");   
                 } else {
                     $scope.ok = false;
                     $scope.errors.push("Utente con questa mail gia' registrato");
@@ -107,39 +108,35 @@ angular.module('APIM.registra_utente')
         }        
     };
 
-
-    /*funzione che invia immagini/file a filehandler Jolie subito dopo che immagine caricata*/
-    /**********************************************/
+    // funzione che invia immagini/file a filehandler Jolie subito dopo che l'immagine viene caricata
     $scope.uploadavatar = function(element) {
+		var reader = new FileReader();
 
-        var reader = new FileReader();
-
-        reader.onload = function(event) {
-          //metti path immagine scelta nell'href dell'avatar
-          $scope.image_presentation = event.target.result
-          //ricava estensione
-          var extension = element.files[0].name.split('.').pop();
-          /*chiamata http a servizio Jolie filehandler.ol*/
-          var uri = $http({
-              method  : 'POST',
-              url     : 'http://localhost:8004/setFile?'+'extension='+extension, //location+operation Jolie
-              /*inserisco l'immagine secondo pratica http post piu' efficiente*/
-              transformRequest: function (data) {
-                  var formData = new FormData();
-                  formData.append("file", element.files[0]);  //'file' nome del sottotipo che Jolie si aspetta
-                  return formData;  
-              },  
-              /*per i file inviati tramite form il Content-Type va messo undefined*/
-              headers: { 'Content-Type': undefined }
-           }).then(function(response){
-              /*ritorno uri del file ottenuto dalla response di Jolie*/
-              $scope.avataruri = 'http://localhost:8004/'+response.data.$;
+		reader.onload = function(event) {
+			// mette il path immagine scelta nell'href dell'avatar
+			$scope.image_presentation = event.target.result
+			// ricava estensione
+			var extension = element.files[0].name.split('.').pop();
+			// chiamata http al servizio Jolie filehandler.ol
+			var uri = $http({
+				method  : 'POST',
+				url     : 'http://localhost:8004/setFile?'+'extension='+extension, 
+				// location + operation Jolie
+				// inserisce l'immagine secondo pratica http post più efficiente
+				transformRequest: function (data) {
+					var formData = new FormData();
+					formData.append("file", element.files[0]);  // file nome del sottotipo che Jolie si aspetta
+					return formData;  
+				},
+				// per i file inviati tramite form il Content-Type va messo undefined
+				headers: { 'Content-Type': undefined }
+			}).then(function(response){
+				// ritorna l'uri del file ottenuto dalla response di Jolie
+				$scope.avataruri = 'http://localhost:8000/images/avatar utenti/'+response.data.$;
            });
        }
-       //leggo immagine come URL
+       // legge l'immagine come URL
        reader.readAsDataURL(element.files[0]);
-  }
-  /**********************************************/
-
+	};
 
 });

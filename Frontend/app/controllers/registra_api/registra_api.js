@@ -41,14 +41,30 @@ angular.module('APIM.registra_api')
   /*aggiungi subservizio a lista subservizi nel form. se gia' selezionato rimuovi*/              
   $scope.addNewCategory = function(event) {
      var i = 0; var ok = false;
+     //controllo se categoria gia' selezionata
      for (i = 0; i < $scope.selected_cat.length && !ok; i++) {
+        //se si rimuovila dalle categorie selezionate
         if ($scope.selected_cat[i] == event.target.attributes.IdCategory.value) {
             $scope.selected_cat.splice(i, 1); //rimuove elemento a indice i
+            //desezionala dalla view
             ok = true;
-        }
+            for (i = 0; i < $scope.categories.length; i++) {
+              if (event.target.attributes.IdCategory.value == $scope.categories[i].IdCategory) {
+                $scope.categories[i].Class = "label label-default";
+              }
+            }
+        } 
      }
-     if (!ok) {$scope.selected_cat.push(event.target.attributes.IdCategory.value);}
-     console.log($scope.selected_cat);
+     //se no allora inseriscila nella array delle categorie selezionate
+     if (!ok) {
+      $scope.selected_cat.push(event.target.attributes.IdCategory.value);
+      //tutte le categorie selezionate avranno un look differente (Class) per far capire all'utente
+      for (i = 0; i < $scope.categories.length; i++) {
+        if (event.target.attributes.IdCategory.value == $scope.categories[i].IdCategory) {
+          $scope.categories[i].Class = "label label-success";
+        }
+      }
+    }
   };
 
 
@@ -164,6 +180,8 @@ angular.module('APIM.registra_api')
   //submit servizio
   /**********************************************/
   $scope.submit = function() {
+      console.log( $scope.subservices); //testing subservices -> see log
+
       var data = {
         subservices : $scope.subservices,
         categories: $scope.selected_cat,

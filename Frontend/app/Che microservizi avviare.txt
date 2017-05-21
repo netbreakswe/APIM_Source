@@ -1,0 +1,14 @@
+npm start sempre
+
+microservices_db.ol ed users_db.ol sempre
+
+filehandler.ol nel caso si vogliano upploadare immagini (registrazione/modifica profilo)
+
+transactions_db.ol per le visualizzare licenze e transazioni
+
+
+Andare al localhost che ti dice npm, controllare che i servizi jolie siano connessi e dovrebbe funzionare tutto.
+
+Per aggiungere immagini, nel percorso /images.
+Le immagini uploadate sono in /avatar utenti.
+Le altre immagini vengono utilizzate nel sito.

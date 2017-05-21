@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>APIMarket</title>
-    <meta name="description" content="Progetto Universitario fatto dal gruppo Netbreak per l'insegnamento SWE 2016/2017">
+    <meta name="description" content="Progetto Universitario del gruppo Netbreak per l'insegnamento SWE 2016/2017">
     <link rel="stylesheet" href="css/app.css">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -15,6 +15,7 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/buzzout.css">
 </head>
 <body>
 
@@ -35,29 +36,27 @@
       <a class="navbar-brand" href="#!">APIMarket</a>
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-        <!-- UC6 - Ricerca API -->
-        <form class="navbar-form navbar-left">
-          <div class="form-group">
-            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-            <input type="text"  class="form-control" placeholder="Ricerca APIs">
-          </div>
-        </form>
-
-        <ul class="nav navbar-nav navbar-right">
-          <li class="dropdown">
-            <!-- Immagine profilo Utente e menu navigazione -->
-            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span ng-if="!loggedin">Not Registered</span><span ng-if="loggedin">{{identity}}</span><span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="#!/account" ng-if="loggedin">Gestione Account</a></li>
-              <li><a href="#!/login" ng-if="!loggedin">Login</a></li>
-              <li><a href="#!/registra_utente" ng-if="!loggedin">Registrati</a></li>
-              <li><a href="#!/registra_api" ng-if="loggedin">Aggiungi API</a></li>
-              <li role="separator" class="divider"></li>
-              <li><a href="#!/logout" ng-if="loggedin">Logout</a></li>
-            </ul>
-          </li>
-        </ul>
+		
+		<nav class="nav navbar-nav navbar-right">
+			<div ng-controller="auth_ctrl" class="container-fluid">
+				<!-- navbar right da autenticato -->
+				<ul class="nav navbar-nav" ng-if="getSession()" ng-cloak>
+					<li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img class="img-circle imagesmall avatarmarginr" ng-src="{{Avatar}}" alt="apilogo">{{Name}} {{Surname}}<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="#!/account">Gestione Account</a></li>
+						<li><a href="#!/registra_api">Registrazione nuova API</a></li>
+						<li role="separator" class="divider"></li>
+						<li><a href="#!/logout">Logout</a></li>
+					</ul>
+				</ul>
+				<!-- navbar right da guest -->
+				<ul class="nav navbar-nav" ng-if="!getSession()" ng-cloak>
+					<li><a href="#!/login">Login</a></li>
+					<li><a href="#!/registra_utente">Registrati</a></li>
+				</ul>
+			</div>
+		</nav>
     </div>
   </div>
 </nav>
@@ -80,28 +79,29 @@
 	
 <!-- Controllers e services -->
 <script src="controllers/account/account.js"></script>
+<!--<script src="controllers/acquista_api/acquista_api.js"></script>-->
 <script src="controllers/api/api.js"></script>
 <script src="controllers/api_acquistate/api_acquistate.js"></script>
 <script src="controllers/api_registrate/api_registrate.js"></script>
+<script src="controllers/categoria/categoria.js"></script>
 <script src="controllers/conferma_login/conferma_login.js"></script>
-<script src="controllers/conto/conto.js"></script>
+<script src="controllers/conferma_registrazione/conferma_registrazione.js"></script>
 <script src="controllers/lista_api/lista_api.js"></script>
-<script src="controllers/lista_transazioni/lista_transazioni.js"></script>
 <script src="controllers/login/login.js"></script>
 <script src="controllers/logout/logout.js"></script>
+<script src="controllers/modifica_info_api/modifica_info_api.js"></script>
+<script src="controllers/modifica_interf_api/modifica_interf_api.js"></script>
+<script src="controllers/modifica_interf_cliente/modifica_interf_cliente.js"></script>
 <script src="controllers/policych/policych.js"></script>
 <script src="controllers/policytp/policytp.js"></script>
 <script src="controllers/policytr/policytr.js"></script>
 <script src="controllers/recupero_password/recupero_password.js"></script>
 <script src="controllers/registra_api/registra_api.js"></script>
 <script src="controllers/registra_utente/registra_utente.js"></script>
+<script src="controllers/registro_transazioni/registro_transazioni.js"></script>
 <script src="controllers/reset_password/reset_password.js"></script>
-<script src="controllers/modifica_interf_cliente/modifica_interf_cliente.js"></script>
-<script src="controllers/modifica_info_api/modifica_info_api.js"></script>
-<script src="controllers/modifica_interf_api/modifica_interf_api.js"></script>
-
-
-
+<script src="controllers/ricarica_crediti/ricarica_crediti.js"></script>
+<script src="controllers/visualizza_utente/visualizza_utente.js"></script>
 
 	
 <!-- Version -->

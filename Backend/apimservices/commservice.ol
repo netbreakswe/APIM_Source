@@ -1,6 +1,7 @@
 include "interfaces/faxinterface.iol"
 include "interfaces/mailinterface.iol"
 include "console.iol"
+include "smtp.iol"
 
 execution { concurrent }
 
@@ -19,6 +20,14 @@ main
 	     println@Console("Faxing to " + request.destination + "\n. Content: " + request.content + "\n")()
 	}
 	[mail( request )(response) {
+		 /*with (mail_request) {
+		 	.content = request.content;
+		    .to = request.mail;
+		    .subject = "JOLIE-TEST";
+		    .host = "localhost";
+		    .from = "dan.ser.1992@gmail.com"
+		 };
+		 sendMail@SMTP( mail_request )();*/
 	     response = "Mailing to " + request.mail + "\n. Content: " + request.content + "\n ok mail mandata" 
 	}]
 	[mailwithnoresponse( request )] {

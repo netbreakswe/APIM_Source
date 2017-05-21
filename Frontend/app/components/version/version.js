@@ -5,4 +5,4 @@ angular.module('APIM.version', [
   'APIM.version.version-directive'
 ])
 
-.value('version', '0.8');
+.value('version', 'v1.0');

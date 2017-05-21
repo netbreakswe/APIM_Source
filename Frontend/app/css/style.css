@@ -1,10 +1,31 @@
 .categories {
-    background-color: lightblue;
+	background-color: lightblue;
 }
 
-.mainPanelAccount{
-	padding:  0.5%;
+.mainPanelAccount {
+	padding: 0.5%;
 }
-.datiPersonaliForm{
+
+.datiPersonaliForm {
 	padding: 1%;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+	display: none !important;
+}
+
+.avatarmarginr {
+	margin-right: 12px;
+}
+
+.imagesmall {
+	max-height: 20px;
+}
+
+.logomedium {
+	max-height: 200px;
+}
+
+.nounderline:link {
+	text-decoration: none;
 }

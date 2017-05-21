@@ -1,36 +1,18 @@
-// strutture dati con semplice id
+
+// credenziali login
 
 type logininfo: void {
 	.Email: string
 	.Password: string
 }
 
+// id
 
-type adminid: void {
+type id: void {
 	.Id: int
 }
 
-type clientid: void {
-	.Id: int
-}
-
-type clientmail: void {
-	.Mail: string
-}
-
-type modentryid: void {
-	.Id: int
-}
-
-type modtypeid: void {
-	.Id: int
-}
-
-type clienttypeid: void {
-	.Id: int
-}
-
-// strutture dati con altri dati
+// rappresentazione admin
 
 type admindata: void {
 	.IdAdmin: int
@@ -40,73 +22,7 @@ type admindata: void {
 	.Password: string
 }
 
-type clientdata: void {
-	.IdClient: int
-	.Name: string
-	.Surname: string
-	.Email: string
-	.Password: string
-	.Avatar: string
-	.Credits: int
-}
-
-type clientfullnamedata: void {
-	.Name: string
-	.Surname: string
-}
-
-type typeiddata: void {
-	.ClientType: int
-}
-
-type entrydata: void {
-	.IdEntry: int
-	.IdClient: int
-	.IdAdmin: int
-	.Timestamp: string
-	.ModType: int
-	.Report: string
-}
-
-type modtypedata: void {
-	.IdModType: int
-	.Name: string
-	.Description: string
-}
-
-type clienttypedata: void {
-	.IdClientType: int
-	.Name: string
-	.Description: string
-}
-
-type basicclientdata: void {
-	.Name: string
-	.Surname: string
-	.Email: string
-	.Password: string
-	.Avatar: string
-	.AboutMe: string
-	.Citizenship: string
-	.LinkToSelf: string
-	.PayPal: string
-}
-
-type developerdata: void {
-	.IdClient: int
-	.AboutMe: string
-	.Citizenship: string
-	.LinkToSelf: string
-	.PayPal: string
-}
-
-type entrydataw: void {
-	.IdClient: int
-	.IdAdmin: int
-	.Timestamp: string
-	.ModType: int
-	.Report: string
-}
+// rappr utente completo
 
 type userdata: void {
 	.IdClient: int
@@ -124,23 +40,120 @@ type userdata: void {
 	.PayPal: string
 }
 
+// rappr email di un utente
+
+type email: void {
+	.Email: string
+}
+
+// anagrafiche ed id dell'utente
+
+type anagraphics: void {
+	.Name: string
+	.Surname: string
+	.IdUser: int
+}
+
+// rappr id di un tipo account utente
+
+type typeiddata: void {
+	.ClientType: int
+}
+
+// rappr di una entry di moderazione
+
+type entrydata: void {
+	.IdEntry: int
+	.IdClient: int
+	.IdAdmin: int
+	.Timestamp: string
+	.ModType: int
+	.Report: string
+}
+
+// rappr di un tipo di moderazione
+
+type modtypedata: void {
+	.IdModType: int
+	.Name: string
+	.Description: string
+}
+
+// rappr di un tipo di account utente
+
+type clienttypedata: void {
+	.IdClientType: int
+	.Name: string
+	.Description: string
+}
+
+// rappr di un utente basic
+
+type basicclientdata: void {
+	.Name: string
+	.Surname: string
+	.Email: string
+	.Password: string
+	.Avatar: string
+	.AboutMe: string
+	.Citizenship: string
+	.LinkToSelf: string
+	.PayPal: string
+}
+
+// rappr di un utente developer
+
+type developerdata: void {
+	.IdClient: int
+	.AboutMe: string
+	.Citizenship: string
+	.LinkToSelf: string
+	.PayPal: string
+}
+
+// rappr di una entry di moderazione (senza campo id)
+
+type smallentrydata: void {
+	.IdClient: int
+	.IdAdmin: int
+	.Timestamp: string
+	.ModType: int
+	.Report: string
+}
+
+// rappr delle info che un utente può modificare (ed id per tracciarlo)
+
+type userupdata: void {
+	.IdClient: int
+	.Name: string
+	.Surname: string
+	.Email: string
+	.Avatar: string
+	.AboutMe: string
+	.Citizenship: string
+	.LinkToSelf: string
+	.PayPal: string
+}
+
+
+// read e write
+
 interface user_dbInterface {
 	RequestResponse:
-        //GETTERS
 	    user_exists( logininfo )( bool ),
-		retrieve_admin_info( adminid )( admindata ),
-		retrieve_client_info( clientid )( userdata ),
-		retrieve_client_info_by_mail( clientmail )( userdata ),
-		retrieve_client_type( clientid )( typeiddata ),
-		retrieve_moderation_info( modentryid )( entrydata ),
-		retrieve_modtype_info( modtypeid )( modtypedata ),
-		retrieve_clienttype_info( clienttypeid )( clienttypedata ),
+		retrieve_admin_info( id )( admindata ),
+		retrieve_client_info( id )( userdata ),
+		retrieve_client_info_from_email( email )( userdata ),
+		retrieve_client_anagraphics( id )( anagraphics ),
+		retrieve_client_type( id )( typeiddata ),
+		retrieve_moderation_info( id )( entrydata ),
+		retrieve_modtype_info( id )( modtypedata ),
+		retrieve_clienttype_info( id )( clienttypedata ),
 
-		//SETTERS
 		basicclient_registration( basicclientdata )( bool ),
 		developer_upgrade( developerdata )( void ),
-		basicclient_downgrade( clientid )( void ),
-		client_moderation( entrydataw )( void ),
-		client_update( userdata )( void ),
-		client_delete( clientid )( void )
+		basicclient_downgrade( id )( void ),
+		client_moderation( smallentrydata )( void ),
+		client_update( userupdata )( void ),
+		client_delete( id )( void )
 }

@@ -1,67 +1,96 @@
 <div class="row">
-    <div class="col-xs-10 col-sm-10 col-md-3 col-xs-offset-1 col-sm-offset-1 col-md-offset-0">
 
-        <div class="well">
-          Mark Twain
-        </div>
-        <div class="panel panel-default">
-          <!-- Default panel contents -->
-          <div class="panel-heading">Gestione profilo</div>
-          <!-- List group -->
-          <ul class="list-group" >
-            <li class="list-group-item"><a href="#!/account">Dati personali</a></li>
-            <li class="list-group-item"><a href="#!/api_acquistate">API acquistate</a></li>
-            <li class="list-group-item"><a href="#!/api_registrate">API registrate</a></li>
-          </ul>
-        </div>
-        <div class="panel panel-default">
-          <!-- Default panel contents -->
-          <div class="panel-heading">Pagamenti</div>
-          <!-- List group -->
-          <ul class="list-group" >
-            <li class="list-group-item"><a href="#!/conto">Gestione conto</a></li>
-            <li class="list-group-item"><a href="#!/lista_transazioni">Transazioni</a></li>
-          </ul>
-        </div>
-    </div>
+	<div class="col-xs-10 col-sm-10 col-md-3 col-xs-offset-1 col-sm-offset-1 col-md-offset-0">
+	
+		<div class="panel panel-primary">
+			<!-- Default panel contents -->
+			<div class="panel-heading">Gestione profilo</div>
+			<!-- List group -->
+			<ul class="list-group">
+				<li class="list-group-item"><a href="#!/account">Dati personali</a></li>
+				<li class="list-group-item"><a href="#!/api_acquistate">API acquistate</a></li>
+				<li class="list-group-item" ng-if="ClientType == 'Basic'">API registrate</li>
+				<li class="list-group-item" ng-if="ClientType == 'Developer'"><a href="#!/api_registrate">API registrate</a></li>
+			</ul>
+		</div>
+		
+		<div class="panel panel-primary">
+			<!-- Default panel contents -->
+			<div class="panel-heading">Crediti</div>
+			<!-- List group -->
+			<ul class="list-group">
+				<li class="list-group-item list-group-item-info"><b>Possiedi {{Credits}} crediti.</b></li>
+				<li class="list-group-item"><a href="#!/ricarica_crediti">Ricarica crediti</a></li>
+			</ul>
+		</div>
+		
+		<div class="panel panel-primary">
+			<!-- Default panel contents -->
+			<div class="panel-heading">Transazioni</div>
+			<!-- List group -->
+			<ul class="list-group">
+				<li class="list-group-item"><a href="#!/registro_transazioni">Registro transazioni</a></li>
+			</ul>
+		</div>
+		
+		<div class="panel panel-primary" ng-if="ClientType == 'Basic'">
+			<!-- Default panel contents -->
+			<div class="panel-heading">Altro</div>
+			<!-- List group -->
+			<ul class="list-group">
+				<li class="list-group-item"><a href="#!/upgrade_sviluppatore"><b>Diventa Sviluppatore!</b></a></li>
+			</ul>
+		</div>
+		
+	</div>
+
     <div class="col-xs-10 col-sm-10 col-md-7 col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
+		<div class="row">
+			<!-- UC12.2 e UC12.2.2 -->
+			<div class="col-md-11" >
+				<div class="page-header">
+					<h1>API Registrate</h1>
+				</div>
 
-       <div class="row">
-          
-          <!-- UC12.2 e UC12.2.2 -->
-          <div class="col-md-11" >
-
-          <div class="page-header">
-            <h1>API Registrate</h1>
-          </div>
-
-            <div class="panel panel-default mainPanelAccount">
-
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Nome API</th>
-                    <th>Numero licenze attive</th>
-                    <th>Guadagno</th>
-                    <th>Avvisi</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr ng-repeat="m in ms">
-                    <th class="text-center"><a href="#!/modifica_info_api/{{m}}">{{m}}</a></th>
-                    <th class="text-center">/</th>
-                    <th class="text-center">/</th>
-                  </tr>
-                 
-                  
-                </tbody>
-              </table>
-
-            </div>
-            
-          </div>
-
+				<div class="panel panel-default mainPanelAccount">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th colspan=2>Lista API</th>
+								<th>Attiva?</th>
+								<th>Numero licenze attive</th>
+								<th>Guadagno attuale</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="service in services" ng-init>
+								
+								<td class="text-center">
+									<a href="#!/modifica_info_api/{{service.IdMS}}">
+										<img ng-src="{{service.Logo}}" alt="logo api" class="imagesmall">
+									</a>
+								</td>
+								
+								<td>
+									<a href="#!/modifica_info_api/{{service.IdMS}}">{{service.Name}}</a>
+								</td>
+								
+								<td ng-if="service.IsActive" ng-cloak>
+									<img src="http://localhost:8000/images/icons/checked.png" alt="attiva">
+								</td>
+								
+								<td ng-if="!service.IsActive" ng-cloak>
+									<img src="http://localhost:8000/images/icons/unchecked.png" alt="inattiva">
+								</td>
+								
+								<td>{{activelicenses[service.IdMS]}} licenza/e</td>
+								<td>5€ (da implementare)</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
         </div>
     </div>
-  </div>
+
+</div>

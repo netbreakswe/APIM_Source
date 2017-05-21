@@ -45,7 +45,7 @@ inputPort FileHandler {
 
 /*1. Procedura private per aggiungere metadati di un file al db. Non ha senso esporla all'esterno*/
 define __saveFileMetadata {
-  q = "Insert into files(Filename, Size) VALUES (:filename, :size)";
+  q = "INSERT INTO files(Filename, Size) VALUES (:filename, :size)";
   q.filename = _filename;
   q.size = _size;
   update@Database( q )( result )
@@ -104,8 +104,9 @@ main
 		getRandomUUID@StringUtils()( random );
 		getDateTime@Time(0)( time );
 		getSize@File( request.file )( size );
+		randomname = random+time.day+time.hour+time.year+time.month+time.second+"."+request.extension;
 		with (file) {
-			.filename = random+time.day+time.hour+time.year+time.month+time.second+"."+request.extension; //unique filename
+			.filename = "../../../Frontend/app/images/avatar utenti/"+randomname; //unique filename
 			.format = "binary";
 			.content -> request.file
 		};
@@ -114,11 +115,11 @@ main
 		println@Console("filename: "+file.filename+ " esiste gia' queste filename? "+exists)();
 		if (!exists) {
 			/*se no salvalo nel db e localmente e fornisci l'uri al chiamante*/
-			_filename = file.filename;
+			_filename = randomname;
 			_size = size/100;
 			__saveFileMetadata;
 		    writeFile@File( file )();
-			response = file.filename
+			response = randomname
 		}
 	}]
 }

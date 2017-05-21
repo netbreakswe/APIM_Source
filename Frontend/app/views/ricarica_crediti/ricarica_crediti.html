@@ -1,0 +1,118 @@
+<div class="row">
+
+	<div class="col-xs-10 col-sm-10 col-md-3 col-xs-offset-1 col-sm-offset-1 col-md-offset-0">
+	
+		<div class="panel panel-primary">
+			<!-- Default panel contents -->
+			<div class="panel-heading">Gestione profilo</div>
+			<!-- List group -->
+			<ul class="list-group">
+				<li class="list-group-item"><a href="#!/account">Dati personali</a></li>
+				<li class="list-group-item"><a href="#!/api_acquistate">API acquistate</a></li>
+				<li class="list-group-item" ng-if="ClientType == 'Basic'">API registrate</li>
+				<li class="list-group-item" ng-if="ClientType == 'Developer'"><a href="#!/api_registrate">API registrate</a></li>
+			</ul>
+		</div>
+		
+		<div class="panel panel-primary">
+			<!-- Default panel contents -->
+			<div class="panel-heading">Crediti</div>
+			<!-- List group -->
+			<ul class="list-group">
+				<li class="list-group-item list-group-item-info"><b>Possiedi {{Credits}} crediti.</b></li>
+				<li class="list-group-item"><a href="#!/ricarica_crediti">Ricarica crediti</a></li>
+			</ul>
+		</div>
+		
+		<div class="panel panel-primary">
+			<!-- Default panel contents -->
+			<div class="panel-heading">Transazioni</div>
+			<!-- List group -->
+			<ul class="list-group">
+				<li class="list-group-item"><a href="#!/registro_transazioni">Registro transazioni</a></li>
+			</ul>
+		</div>
+		
+		<div class="panel panel-primary" ng-if="ClientType == 'Basic'">
+			<!-- Default panel contents -->
+			<div class="panel-heading">Altro</div>
+			<!-- List group -->
+			<ul class="list-group">
+				<li class="list-group-item"><a href="#!/upgrade_sviluppatore"><b>Diventa Sviluppatore!</b></a></li>
+			</ul>
+		</div>
+		
+	</div>
+
+    <div class="col-xs-10 col-sm-10 col-md-7 col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
+
+        <div class="row">
+			<!-- UC12.1.1 e UC12.1.2-->
+			<div class="col-md-11">
+				<h1>Ricarica crediti</h1>
+				<p>Scegli il numero di crediti che vuoi acquistare.</p>
+				<div class="panel panel-default mainPanelAccount">
+					<div class="row">
+					
+						<div class="col-xs-10 col-sm-6 col-md-4 col-xs-offset-1 col-sm-offset-0 col-md-offset-0">
+							<div class="thumbnail">
+								<img ng-src="http://localhost:8000/images/icons/paypal.png" alt="logo paypal" class="logomedium hvr-buzz-out" href="https://www.paypal.com/us/home">
+								<div class="caption">
+									<p class="text-center">100 crediti</p>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-xs-10 col-sm-6 col-md-4 col-xs-offset-1 col-sm-offset-0 col-md-offset-0">
+							<div class="thumbnail">
+								<img ng-src="http://localhost:8000/images/icons/paypal.png" alt="logo paypal" class="logomedium hvr-buzz-out" href="https://www.paypal.com/us/home">
+								<div class="caption">
+									<p class="text-center">200 crediti</p>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-xs-10 col-sm-6 col-md-4 col-xs-offset-1 col-sm-offset-0 col-md-offset-0">
+							<div class="thumbnail">
+								<img ng-src="http://localhost:8000/images/icons/paypal.png" alt="logo paypal" class="logomedium hvr-buzz-out" href="https://www.paypal.com/us/home">
+								<div class="caption">
+									<p class="text-center">500 crediti</p>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-xs-10 col-sm-6 col-md-4 col-xs-offset-1 col-sm-offset-0 col-md-offset-0">
+							<div class="thumbnail">
+								<img ng-src="http://localhost:8000/images/icons/paypal.png" alt="logo paypal" class="logomedium hvr-buzz-out" href="https://www.paypal.com/us/home">
+								<div class="caption">
+									<p class="text-center">1000 crediti</p>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-xs-10 col-sm-6 col-md-4 col-xs-offset-1 col-sm-offset-0 col-md-offset-0">
+							<div class="thumbnail">
+								<img ng-src="http://localhost:8000/images/icons/paypal.png" alt="logo paypal" class="logomedium hvr-buzz-out" href="https://www.paypal.com/us/home">
+								<div class="caption">
+									<p class="text-center">2000 crediti</p>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-xs-10 col-sm-6 col-md-4 col-xs-offset-1 col-sm-offset-0 col-md-offset-0">
+							<div class="thumbnail">
+								<img ng-src="http://localhost:8000/images/icons/paypal.png" alt="logo paypal" class="logomedium hvr-buzz-out" href="https://www.paypal.com/us/home">
+								<div class="caption">
+									<p class="text-center">5000 crediti</p>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+        </div>
+		
+    </div>
+	
+</div>
