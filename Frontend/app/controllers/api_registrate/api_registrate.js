@@ -11,21 +11,23 @@ angular.module('APIM.api_registrate')
 	
 	// recupera i microservizi registrati dal developer
 	$http.post("http://localhost:8121/retrieve_ms_from_developerid?Id="+localStorage.getItem("IdClient")).then(function(response) {
-		for(var i=0; i<response.data.msdevdata.length; i++) {
-			
-			$scope.services.push({
-				IdMS: response.data.msdevdata[i].IdMS,
-				Name: response.data.msdevdata[i].Name,
-				Logo: response.data.msdevdata[i].Logo,
-				IsActive: response.data.msdevdata[i].IsActive
-			});
-			
+		if(response.data.msdevdata) {
+			for(var i=0; i<response.data.msdevdata.length; i++) {
+				$scope.services.push({
+					IdMS: response.data.msdevdata[i].IdMS,
+					Name: response.data.msdevdata[i].Name,
+					Logo: response.data.msdevdata[i].Logo,
+					IsActive: response.data.msdevdata[i].IsActive
+				});
+			}
 		}
 	}).then(function(response) {
 		for(var i=0; i<$scope.services.length; i++) {
 			// recupera il numero di licenze attive della API a partire dall'id
 			$http.post("http://localhost:8131/retrieve_active_apikey_number_from_msid?Id="+$scope.services[i].IdMS).then(function(response) {
-				$scope.activelicenses[response.data.IdMS] = response.data.Licenses;
+				if(response.data) {
+					$scope.activelicenses[response.data.IdMS] = response.data.Licenses;
+				}
 			});
 		}
 	});

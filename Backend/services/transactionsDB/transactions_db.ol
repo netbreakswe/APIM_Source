@@ -97,6 +97,31 @@ main
 
 
 
+  	// controlla se l'apikey sia legata ad un utente ed un microservizio esista e sia valida
+  	[check_apikey_isactive( request )( response ) {
+
+    	//query
+    	q = "SELECT Remaining FROM apikeys WHERE IdClient=:i AND IdMS=:ims AND Remaining > 0";
+    	q.i = request.IdClient;
+    	q.ims = request.IdMS;
+    	query@Database( q )( result );
+
+    	if ( #result.row == 0 ) {
+      		println@Console("Active APIKey not found")();
+      		response = false
+    	}
+    	else {
+      		for ( i=0, i<#result.row, i++ ) {
+        		println@Console( "Got active APIKey of client " + request.IdClient + " and ms " + request.IdMS )();
+        		response = true
+      		}
+    	};
+    	println@Console("Retrieved validity of and APIKey")()
+  	}]
+
+
+
+
   	// recupera le apikey attive a partire dall'id di un utente
   	[retrieve_active_apikey_from_userid( request )( response ) {
 

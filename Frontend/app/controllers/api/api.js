@@ -43,6 +43,34 @@ angular.module('APIM.api')
 			});
 		}
 	});
+	
+	// controlla se l'utente sia loggato
+	$scope.getSession = function() {
+		if(localStorage.getItem("Session") == 'true') {
+			return true;
+		}
+		else {
+			return false;
+		}
+	};
+	
+	// controlla se l'utente sia il developer dell'API
+	
+	$scope.isDeveloper = function () {
+		if(localStorage.getItem("IdClient") == $scope.IdDeveloper) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	// controlla se l'utente possieda una licenza attiva per l'API
+	$http.post("http://localhost:8131/check_apikey_isactive?" +
+		"IdClient=" + localStorage.getItem("IdClient") +
+		"&IdMS=" + $routeParams.api_id)
+	.then(function(response) {
+		$scope.hasActiveLicense = response.data.$;
+	});
 
     // scarica i dati dell'interfaccia client del servizio api_id
 	$http.post("http://localhost:8121/retrieve_client_interface_from_id?Id="+$routeParams.api_id).then(function(response) {
@@ -51,7 +79,7 @@ angular.module('APIM.api')
         $scope.client_Interface = response.data.client_Interface;
     });
 
-    // funzione che permette di scaricare l'interfaccia client in formato .iol
+    // permette di scaricare l'interfaccia client in formato .iol
     $scope.Download_Client_Interface = function () {
 		var blob = new Blob([$scope.client_Interface], {type: 'text/json'});
 		

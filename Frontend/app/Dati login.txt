@@ -1,10 +1,13 @@
 linus.tor@gmail.it
 linuxfigo
+(developer con sia api acquistate che registrate)
 
 dan.ser.1992@gmail.com
 Despar9
+(developer con sia api acquistate che registrate)
 
 marco.casagrande.5@studenti.unipd.it
 Mcasagra3
+(basic con nessuna api acquistata)
 
-O basta ne registriate uno voi e magari inseriate nuovi dati nei db per i test
+Oppure basta ne registriate uno voi e magari inseriate nuovi dati nei db per i test

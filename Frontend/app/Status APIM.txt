@@ -1,4 +1,9 @@
 
+Generale:
+
+- Impostare il rerouting nel caso uno sviluppatore entri in zone riservate a developer (es. digitando manualmente l'indirizzo)
+- Limitare l'accesso diretto a zone riservate (es. registrazione nuova api da restringere a developer su ogni pagina html)
+
 Sessioni:
 Ok.
 
@@ -41,18 +46,16 @@ Quasi.
 - Controllare la gestione errori
 
 + Manca la preview della nuova immagine
-+ Valgono altri formati oltre a png, jpeg, gif tipo btm
++ In realtà valgono altri formati oltre a png, jpeg, gif tipo btm
 
 API Registrate:
 Ok.
 
 API Acquistate:
-Da implementare.
-
-- Serve riferirsi a TransactionsDB
+Ok.
 
 Upgrade account:
-Da implementare.
+Ok.
 
 Registra API:
 Non ho effettivamente registrato nulla perchè dovrei fare un servizio e non so come funzioni il gateway e casini, ma sembrano esserci tutte le funzioni necessarie.

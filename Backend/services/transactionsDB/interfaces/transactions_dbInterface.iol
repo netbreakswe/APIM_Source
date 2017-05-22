@@ -26,6 +26,13 @@ type apikeylicense: void {
 	.License: string
 }
 
+// rappr di idclient ed idms per verificare la validità di una apikey
+
+type apikeyactivedata: void {
+	.IdClient: int
+	.IdMS: int
+}
+
 // rappr di una lista di apikey
 
 type apikeyslist: void {
@@ -91,6 +98,7 @@ interface transactions_dbInterface {
 	RequestResponse:
 		apikey_exists( apikey )( bool ),
 		retrieve_apikey_info( apikeylicense )( apikeydata ),
+		check_apikey_isactive( apikeyactivedata )( bool ),
 		retrieve_active_apikey_from_userid( id )( apikeyslist ),
 		retrieve_active_apikey_number_from_msid( id )( apikeynumber ),
 		retrieve_purchases_list_from_userid( id )( purchaseslist ),
