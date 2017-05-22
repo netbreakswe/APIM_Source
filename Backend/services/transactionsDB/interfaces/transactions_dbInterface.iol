@@ -26,6 +26,19 @@ type apikeylicense: void {
 	.License: string
 }
 
+// rappr di una lista di apikey
+
+type apikeyslist: void {
+	.apikeyslist[0,*]: apikeydata
+}
+
+// rappr del numero di licenze attive di un ms con il rispettivo id ms
+
+type apikeynumber: void {
+	.IdMS: int
+	.Licenses: int
+}
+
 // rappr di un acquisto
 
 type purchasedata: void {
@@ -43,17 +56,15 @@ type purchaseslist: void {
 	.purchaseslist[0,*]: purchasedata
 }
 
-// rappr di una lista di apikey
-
-type apikeyslist: void {
-	.apikeyslist[0,*]: apikeydata
+type msremainingdata: void {
+	.IdMS: int
+	.Remaining: int
 }
 
-// rappr del numero di licenze attive di un ms con il rispettivo id ms
+// rappr della lista di id e remaining di un microservizio
 
-type apikeynumber: void {
-	.IdMS: int
-	.Licenses: int
+type msremaininglist: void {
+	.msremaininglist[0,*]: msremainingdata
 }
 
 // rappr di un acquisto (senza id)
@@ -80,9 +91,10 @@ interface transactions_dbInterface {
 	RequestResponse:
 		apikey_exists( apikey )( bool ),
 		retrieve_apikey_info( apikeylicense )( apikeydata ),
-		retrieve_purchases_list_from_userid( id )( purchaseslist ),
 		retrieve_active_apikey_from_userid( id )( apikeyslist ),
 		retrieve_active_apikey_number_from_msid( id )( apikeynumber ),
+		retrieve_purchases_list_from_userid( id )( purchaseslist ),
+		retrieve_mslist_from_clientid( id )( msremaininglist ),
 
 		apikey_registration( apikeydata )( void ),
 		purchase_registration( smallpurchasedata )( void ),

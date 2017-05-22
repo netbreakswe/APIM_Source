@@ -96,28 +96,6 @@ main
 
 
 
-  	// recupera la lista delle transazioni di un utente
-  	[retrieve_purchases_list_from_userid( request )( response ) {
-
-    	// query
-    	q = "SELECT IdPurchase,APIKey,IdClient,Timestamp,Amount,Type FROM purchases WHERE IdClient=:i";
-    	q.i = request.Id;
-    	query@Database( q )( result );
-
-    	if ( #result.row == 0 ) {
-      		println@Console("Purchases not found")()
-    	}
-    	else {
-      		for ( i=0, i<#result.row, i++ ) {
-        		println@Console( "Got purchase number " + i )();
-        		response.purchaseslist[i] << result.row[i]
-      		}
-    	};
-    	println@Console("Retrieved purchases list of the user with id " + request.Id)()
-
-  	}]
-
-
 
   	// recupera le apikey attive a partire dall'id di un utente
   	[retrieve_active_apikey_from_userid( request )( response ) {
@@ -152,18 +130,66 @@ main
   		query@Database( q )( result );
 
     	if ( #result.row == 0 ) {
-      		println@Console("Active APIKeys not found")();
-      		response.IdMS = request.Id;
+        println@Console("Active APIKeys not found")();
+      	response.IdMS = request.Id;
     		response.Licenses = 0
     	}
     	else {
-    		println@Console( "Got APIKey number from ms " + result.row[i].IdMS )();
+        println@Console( "Got APIKey number from ms " + result.row[i].IdMS )();
     		response.IdMS = result.row[i].IdMS;
     		response.Licenses = #result.row
       	};
     	println@Console("Retrieved " + response + " of active apikeys")()
 
   	}]
+
+
+
+
+    // recupera la lista delle transazioni di un utente
+    [retrieve_purchases_list_from_userid( request )( response ) {
+
+      // query
+      q = "SELECT IdPurchase,APIKey,IdClient,Timestamp,Amount,Type FROM purchases WHERE IdClient=:i";
+      q.i = request.Id;
+      query@Database( q )( result );
+
+      if ( #result.row == 0 ) {
+          println@Console("Purchases not found")()
+      }
+      else {
+          for ( i=0, i<#result.row, i++ ) {
+            println@Console( "Got purchase number " + i )();
+            response.purchaseslist[i] << result.row[i]
+          }
+      };
+      println@Console("Retrieved purchases list of the user with id " + request.Id)()
+
+    }]
+
+
+
+
+    // recupera la lista dei microservizi con apikey attiva a partire dall'id del client
+    [retrieve_mslist_from_clientid( request )( response ) {
+
+      // query
+      q = "SELECT IdMS,Remaining FROM apikeys WHERE IdClient=:i AND Remaining > 0";
+      q.i = request.Id;
+      query@Database( q )( result );
+
+      if ( #result.row == 0 ) {
+          println@Console("IdMS not found")()
+      }
+      else {
+          for ( i=0, i<#result.row, i++ ) {
+            println@Console( "Got ms number " + i )();
+            response.msremaininglist[i] << result.row[i]
+          }
+      };
+      println@Console("Retrieved ms list of the client with id " + request.Id)()
+
+    }]
 
 
 

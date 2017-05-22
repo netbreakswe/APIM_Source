@@ -2,6 +2,7 @@
 
 // declare modules
 
+// ordine alfabetico
 angular.module('APIM.account', []);
 angular.module('APIM.acquista_api', []);
 angular.module('APIM.api', []);
@@ -10,6 +11,8 @@ angular.module('APIM.api_registrate', []);
 angular.module('APIM.categoria', []);
 angular.module('APIM.conferma_login', []);
 angular.module('APIM.conferma_registrazione', []);
+angular.module('APIM.conferma_diventa_sviluppatore', []);
+angular.module('APIM.diventa_sviluppatore', []);
 angular.module('APIM.lista_api', []);
 angular.module('APIM.login', []);
 angular.module('APIM.logout', []);
@@ -27,7 +30,7 @@ angular.module('APIM.reset_password', []);
 angular.module('APIM.ricarica_crediti', []);
 angular.module('APIM.visualizza_utente', []);
 
-
+// ordine alfabetico
 angular.module('APIM', [
     'ngRoute',
     'ngCookies',
@@ -39,6 +42,8 @@ angular.module('APIM', [
 	'APIM.categoria',
 	'APIM.conferma_login',
 	'APIM.conferma_registrazione',
+	'APIM.conferma_diventa_sviluppatore',
+	'APIM.diventa_sviluppatore',
 	'APIM.lista_api',
 	'APIM.login',
 	'APIM.logout',
@@ -118,6 +123,16 @@ angular.module('APIM', [
 		.when('/conferma_registrazione', {
             controller: 'conferma_registrazione_ctrl',
             templateUrl: 'views/conferma_registrazione/conferma_registrazione.html'
+        })
+		
+		.when('/conferma_diventa_sviluppatore', {
+            controller: 'conferma_diventa_sviluppatore_ctrl',
+            templateUrl: 'views/conferma_diventa_sviluppatore/conferma_diventa_sviluppatore.html'
+        })
+		
+		.when('/diventa_sviluppatore', {
+            controller: 'diventa_sviluppatore_ctrl',
+            templateUrl: 'views/diventa_sviluppatore/diventa_sviluppatore.html'
         })
 		
 		.when('/lista_api', {

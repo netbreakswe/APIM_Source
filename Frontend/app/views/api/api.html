@@ -21,38 +21,38 @@
 				</thead>
 				<tbody>
                 <tr>
-					<td>Versione</td>
+					<td>Versione:</td>
                     <td>{{Version}}.0</td>
                 </tr>
                 <tr>
-                    <td>Modificata</td>
+                    <td>Ultima modifica:</td>
                     <td>{{LastUpdate}}</td>
                 </tr>
                 <tr>
-                    <td>Prezzo</td>
+                    <td>Prezzo:</td>
                     <td>{{Profit}}&euro;</td>
                 </tr>
                 <tr>
-                    <td>Policy Vendita</td>
+                    <td>Policy Vendita:</td>
                     <td ng-if="Policy == 1" ng-cloak><a href="#!/policych">Per numero di chiamate</a></td>
 					<td ng-if="Policy == 2" ng-cloak><a href="#!/policytp">Per tempo di utilizzo</a></td>
 					<td ng-if="Policy == 3" ng-cloak><a href="#!/policytr">Per traffico dati</a></td>
                 </tr>
                 <tr>
-                    <td>Documentazione Pdf</td>
+                    <td>Documentazione Pdf:</td>
                     <td><a href="{{DocPDF}}">link</a></td>
                 </tr>
                 <tr>
-                    <td>Documentazione Esterna</td>
+                    <td>Documentazione Esterna:</td>
                     <td><a href="{{DocExternal}}">link</a></td>
                 </tr>
                 <tr>
-                    <td>Numero Licenze Attive</td>
-                    <td>1 (da implementare)</td>
+                    <td>Numero Licenze Attive:</td>
+                    <td>{{ActiveLicenses}} licenza/e</td>
                 </tr>
                 <tr>
-                    <td>SLA</td>
-                    <td>{{SLAGuaranteed}}</td>
+                    <td>SLA:</td>
+                    <td>Tempo di risposta massimo: {{SLAGuaranteed}} ms</td>
                 </tr>
 				</tbody>
                 </table> 

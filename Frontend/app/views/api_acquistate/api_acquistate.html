@@ -38,7 +38,7 @@
 			<div class="panel-heading">Altro</div>
 			<!-- List group -->
 			<ul class="list-group">
-				<li class="list-group-item"><a href="#!/upgrade_sviluppatore"><b>Diventa Sviluppatore!</b></a></li>
+				<li class="list-group-item"><a href="#!/diventa_sviluppatore"><b>Diventa Sviluppatore!</b></a></li>
 			</ul>
 		</div>
 		
@@ -52,7 +52,7 @@
           <div class="col-md-11" >
 
           <div class="page-header">
-            <h1>API Acquistate (da implementare)</h1>
+            <h1>API Acquistate</h1>
           </div>
 
             <div class="panel panel-default mainPanelAccount">
@@ -60,16 +60,37 @@
               <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th>Nome API</th>
-                    <th>Numero licenze attive</th>
-					<th>Data Acquisto</th>
+                    <th colspan=2>Lista API</th>
+                    <th>Attiva?</th>
+					<th>Scadenza tra</th>
+					<th>Ottieni nuova chiave API (da implementare)</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th class="text-center"><a href="#!/api/10">profileService</a></th>
-                    <th class="text-center">1</th>
-					<th lass="text-center">2017-05-01</th>
+					<tr ng-repeat="service in servicesid">
+					
+						<td class="text-center">
+							<a href="#!/api/{{service.IdMS}}">
+								<img ng-src="{{serviceslogo[service.IdMS]}}" alt="logo api" class="imagesmall">
+							</a>
+						</td>
+					
+						<td>
+							<a href="#!/api/{{service.IdMS}}">{{servicesname[service.IdMS]}}</a>
+						</td>
+						
+						<td ng-if="servicesisactive[service.IdMS]">
+							<img src="http://localhost:8000/images/icons/checked.png" alt="attiva">
+						</td>
+						
+						<td ng-if="!servicesisactive[service.IdMS]">
+							<img src="http://localhost:8000/images/icons/unchecked.png" alt="inattiva">
+						</td>
+						
+						<td>{{service.Remaining}} {{getRemainingSuffix(servicesidpolicy[service.IdMS])}}</td>
+						
+						<td><button type="button" ng-click="getNewAPIKey()" class="btn btn-warning">Nuova chiave API (implementare UUID)</button></td>
+						
                   </tr>
 
                 </tbody>

@@ -102,7 +102,7 @@ type basicclientdata: void {
 }
 
 // rappr di un utente developer
-
+/* non necessaria se utente e developer hanno le stesse informazioni
 type developerdata: void {
 	.IdClient: int
 	.AboutMe: string
@@ -110,6 +110,7 @@ type developerdata: void {
 	.LinkToSelf: string
 	.PayPal: string
 }
+*/
 
 // rappr di una entry di moderazione (senza campo id)
 
@@ -151,7 +152,7 @@ interface user_dbInterface {
 		retrieve_clienttype_info( id )( clienttypedata ),
 
 		basicclient_registration( basicclientdata )( bool ),
-		developer_upgrade( developerdata )( void ),
+		developer_upgrade( id )( void ),
 		basicclient_downgrade( id )( void ),
 		client_moderation( smallentrydata )( void ),
 		client_update( userupdata )( void ),

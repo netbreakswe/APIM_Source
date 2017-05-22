@@ -23,14 +23,18 @@ angular.module('APIM.api')
 		$http.post("http://localhost:8101/retrieve_client_anagraphics?Id="+$scope.IdDeveloper).then(function(response) {
 			$scope.Developer = response.data.Name + " " + response.data.Surname;
 		});
-    });
+    }).then(function(response) {
+		// recupera il numero di licenze attive della API a partire dall'id
+		$http.post("http://localhost:8131/retrieve_active_apikey_number_from_msid?Id="+$scope.IdMS).then(function(response) {
+			$scope.ActiveLicenses = response.data.Licenses;
+		});
+	});
 	
 	// inizializza lista categorie
 	$scope.categories = [];
 	
 	// recupera la lista di categorie della API
 	$http.post("http://localhost:8121/retrieve_categories_of_ms?Id="+$routeParams.api_id).then(function(response) {
-		$scope.categories.splice(0);
 		for(var i=0; i<response.data.categorydatalist.length; i++) {
 			$scope.categories.push({
 				IdCategory: response.data.categorydatalist[i].IdCategory,

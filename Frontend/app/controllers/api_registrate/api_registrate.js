@@ -4,7 +4,9 @@ angular.module('APIM.api_registrate')
 
 .controller('api_registrate_ctrl', function($scope, $http, $rootScope) {
 
+	// inizializza lista servizi
 	$scope.services = [];
+	// inizializza lista licenze attive
 	$scope.activelicenses = [];
 	
 	// recupera i microservizi registrati dal developer

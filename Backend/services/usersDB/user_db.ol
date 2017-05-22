@@ -318,13 +318,9 @@ main
   	[developer_upgrade( request )( response ) {
 
     	// query
-    	q = "UPDATE clients SET ClientType=2,AboutMe=:am,Citizenship=:c,LinkToSelf=:l,PayPal=:pp WHERE IdClient=:i";
+    	q = "UPDATE clients SET ClientType=2,Credits=Credits-1000 WHERE IdClient=:i";
     	with( request ) {
-      		q.i = .IdClient;
-      		q.am = .AboutMe;
-      		q.c = .Citizenship;
-      		q.l = .LinkToSelf;
-      		q.pp = .PayPal
+      		q.i = .Id
     	};
     	update@Database( q )( result );
     	println@Console("Upgrading basic client with id " + request.IdClient + " to developer status")()
@@ -366,7 +362,6 @@ main
     	println@Console("Creating new moderation entry")()
 
   	}]
-
 
 
 
