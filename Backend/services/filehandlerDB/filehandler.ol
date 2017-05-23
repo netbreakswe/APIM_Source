@@ -106,7 +106,7 @@ main
 		getSize@File( request.file )( size );
 		randomname = random+time.day+time.hour+time.year+time.month+time.second+"."+request.extension;
 		with (file) {
-			.filename = "../../../Frontend/app/images/avatar utenti/"+randomname; //unique filename
+			.filename = "../../../Frontend/app/images/uploaded_images/"+randomname; //unique filename
 			.format = "binary";
 			.content -> request.file
 		};

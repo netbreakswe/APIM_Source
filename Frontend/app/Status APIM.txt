@@ -58,11 +58,19 @@ Upgrade account:
 Ok.
 
 Registra API:
-Non ho effettivamente registrato nulla perchè dovrei fare un servizio e non so come funzioni il gateway e casini, ma sembrano esserci tutte le funzioni necessarie.
+Funziona, compresa la parte backend e l'utilizzo immediato dell'API.
 
-- Descrizione leggermente funny
-- Da correggere ed organizzare meglio testo e codice
+- Correggere testo ed abbellire tutto che è un po' confusionario
+- Nella scelta categorie, ng-repeat crea un button inutile che cliccato scompare, da sistemare
 - Controllare la gestione errori
+
+Conferma registrazione API:
+Ok.
+
++ Da personalizzare, tipo mettere un recap del servizio inserito
+
+Modifica API:
+Non lo so, non l'ho guardato. Comunque occorre mettere un link ad esso (c'è da qualche parte strana ma non ricordo), tipo nel caso tu sia il developer puoi accedere alla pagina di modifica dalla schermata di visualizzazione dell'API (c'è già la funzione per vedere se sei il developer) ed inserirlo nella lista a sinistra della tua "area personale", sotto api registrate o dentro, dove vi pare
 
 Registrazione utente:
 Quasi.

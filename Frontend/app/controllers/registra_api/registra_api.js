@@ -14,7 +14,7 @@ angular.module('APIM.registra_api')
 	}];
 
 	// prende dinamicamente la lista di categorie api
-	$http.post("http://localhost:8121/retrieve_category_info").then(function(response) {
+	$http.post("http://localhost:8121/retrieve_category_list").then(function(response) {
 		for(var i=0; i<response.data.categories.length; i++) {
 			$scope.categories.push({
 				IdCategory: response.data.categories[i].IdCategory, 
@@ -23,7 +23,7 @@ angular.module('APIM.registra_api')
                 Class: "label label-default"
             });
         }
-	)};
+	});
 
 	// inizializza lista subservizi di un api con un solo subservizio
 	$scope.subservices = [{
@@ -39,7 +39,7 @@ angular.module('APIM.registra_api')
 	// aggiunge subservizio a lista subservizi nel form. se già selezionato rimuovi             
 	$scope.addNewCategory = function(event) {
 		var ok = false;
-		// controllo se la categoria sia stata già selezionata
+		// controlla se la categoria sia stata già selezionata
 		for(var i=0; i<$scope.selected_cat.length && !ok; i++) {
 			// se selezionata, la rimuove dalle categorie selezionate
 			if($scope.selected_cat[i] == event.target.attributes.IdCategory.value) {
@@ -68,7 +68,7 @@ angular.module('APIM.registra_api')
 
 
 
-	// aggiungi subservizio alla lista subservizi nel form    
+	// aggiunge un subservizio alla lista subservizi nel form    
 	$scope.addNewSubService = function() {
 		$scope.subservices.push({
             location: "", 
@@ -107,7 +107,7 @@ angular.module('APIM.registra_api')
 			element.style.height = (element[0].scrollHeight < 30) ? 30 + "px" : element[0].scrollHeight + "px";
 		}
 		reader.readAsText(element.files[0]);
-	}
+	};
 
 	// funzione che invia pdf a filehandler Jolie subito dopo che l'immagine è stata caricata
 	$scope.uploadpdf = function(element) {
@@ -135,7 +135,7 @@ angular.module('APIM.registra_api')
 		}
 		// legge l'immagine come URL
 		reader.readAsDataURL(element.files[0]);
-	}
+	};
 
 	// funzione che invia immagini/file a filehandler Jolie subito dopo che l'immagine è stata caricata
 	$scope.uploadlogo = function(element) {
@@ -164,9 +164,9 @@ angular.module('APIM.registra_api')
 		}
 		// legge l'immagine come URL
 		reader.readAsDataURL(element.files[0]);
-	}
+	};
 
-	//submit servizio
+	// submit servizio
 	$scope.submit = function() {
 		console.log( $scope.subservices); // testing subservices -> see log
 
@@ -182,7 +182,6 @@ angular.module('APIM.registra_api')
 			Profit: $scope.guadagno,
 			Policy: $scope.policy
 		};
-
 
 		$http({
 			method  : 'POST',

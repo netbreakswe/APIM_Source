@@ -64,7 +64,7 @@ define __save_Service {
     };
     update@Database( q_AF01k )( code_status_AF01k );
     println@Console( "Registering new microservice with name " + _Name + " by developer " + _IdDeveloper )();
-    q_AF02k = "SELECT LAST_INSERT_ID() as id"; // ritorna l'id dell'interfaccia client
+    q_AF02k = "SELECT LAST_INSERT_ID() AS id"; // ritorna l'id dell'interfaccia client
     query@Database( q_AF02k )( code_status_AF02k );
     _idms = int(code_status_AF02k.row[0].id);
     println@Console( "Api id " + _idms )()

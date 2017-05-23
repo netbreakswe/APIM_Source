@@ -11,6 +11,7 @@ angular.module('APIM.api_registrate', []);
 angular.module('APIM.categoria', []);
 angular.module('APIM.conferma_login', []);
 angular.module('APIM.conferma_registrazione', []);
+angular.module('APIM.conferma_registrazione_api', []);
 angular.module('APIM.conferma_diventa_sviluppatore', []);
 angular.module('APIM.diventa_sviluppatore', []);
 angular.module('APIM.lista_api', []);
@@ -42,6 +43,7 @@ angular.module('APIM', [
 	'APIM.categoria',
 	'APIM.conferma_login',
 	'APIM.conferma_registrazione',
+	'APIM.conferma_registrazione_api',
 	'APIM.conferma_diventa_sviluppatore',
 	'APIM.diventa_sviluppatore',
 	'APIM.lista_api',
@@ -123,6 +125,11 @@ angular.module('APIM', [
 		.when('/conferma_registrazione', {
             controller: 'conferma_registrazione_ctrl',
             templateUrl: 'views/conferma_registrazione/conferma_registrazione.html'
+        })
+		
+		.when('/conferma_registrazione_api', {
+            controller: 'conferma_registrazione_api_ctrl',
+            templateUrl: 'views/conferma_registrazione_api/conferma_registrazione_api.html'
         })
 		
 		.when('/conferma_diventa_sviluppatore', {

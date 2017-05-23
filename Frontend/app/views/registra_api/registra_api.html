@@ -15,8 +15,8 @@
             </div>
             <!-- Scegli Categoria -->
             <div class="form-group">
-				<label for="category">Categoria</label>
-				<button ng-repeat="category in categories" IdCategory="{{category.IdCategory}}" type="button" class="{{category.Class}}" id="category" name="category" data-ng-click="addNewCategory($event)">{{category.Name}}</button>  
+				<label>Categoria</label>
+				<button ng-repeat="category in categories" IdCategory="{{category.IdCategory}}" type="button" class="{{category.Class}}" data-ng-click="addNewCategory($event)">{{category.Name}}</button>
             </div>
             <!-- Subservizi_i -->
             <div  ng-repeat="subservice in subservices track by $index" class="thumbnail">
@@ -98,7 +98,7 @@
                 <p class="help-block">Il logo deve essere in formato png, jpeg oppure gif</p>
             </div>
             <!-- Conferma -->
-            <button type="submit" ng-click="submit()" class="btn btn-default">Registra nuova API</button>
+            <button type="submit" ng-click="submit()" class="btn btn-default">Conferma registrazione API</button>
         </form>
     </div>
 </div>
