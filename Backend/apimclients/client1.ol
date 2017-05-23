@@ -2,12 +2,12 @@ include "interfaces/CommService_11.iol"
 include "console.iol"
 
 /*client per provare InteractionService, con id = 4, composto da:
-    -[0]subservice: faxservice.ol
+    -[0]subservice: commservice.ol
         -[0]interface: faxinterface.iol
         -[1]interface: mailinterface.iol
     -[1]helloservice.ol
         -[0]interface: hellointerface.iol
-   N.B. per provare avviare sia faxservice.ol che helloservice.ol in terminali separati
+   N.B. per provare avviare sia commservice.ol che helloservice.ol in terminali separati
 */
 
 main {
@@ -32,7 +32,7 @@ main {
     println@Console(rsl)();
     println@Console("Print 2")();
     println@Console(rs)();
-    /*req1 = "dan";
+    req1 = "dan";
     with( req1 ) {
         .key = "1111"
     };
@@ -42,7 +42,7 @@ main {
     };
     /*end dati prova per richiesta*/
 
-    /*begin richieste*//*
+    /*begin richieste*/
     sayhello@CommService_11( req1 )(rs1);
     saysuperhello@CommService_11( req1 )(rs2);
     sayagreeting@CommService_11( req2 )(rs3);

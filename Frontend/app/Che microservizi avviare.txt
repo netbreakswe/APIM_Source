@@ -1,3 +1,5 @@
+Per frontend e backend:
+
 npm start sempre
 
 microservices_db.ol ed users_db.ol sempre
@@ -12,3 +14,14 @@ Andare al localhost che ti dice npm, controllare che i servizi jolie siano conne
 Per aggiungere immagini, nel percorso /images.
 Le immagini uploadate sono in /avatar utenti.
 Le altre immagini vengono utilizzate nel sito.
+
+Per testare il gateway:
+
+Avviare prima microservices_db.ol ed serviceinteractionhandler.ol (sono nella stessa cartella)
+
+Poi avviare gateway.ol che stamperà varie cose nella console all'avvio
+
+Avviare i servizi che si useranno nel client, quindi in apimservices (es. commservice ed helloservice per client1)
+
+Avviare client1 e funziona tutto
+
