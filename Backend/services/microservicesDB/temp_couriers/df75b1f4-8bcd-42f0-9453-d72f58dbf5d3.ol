@@ -21,12 +21,6 @@ interface AggregatorInterface {
     mock(string)(string)
 }
 
-outputPort transactions_dbOutput {
- Location: "socket://localhost:8131"
- Protocol: http
- Interfaces: transactions_dbInterface
-}
-
 outputPort SubService0 {
  Interfaces: TwiceInterface
  Location: "socket://localhost:9000"
@@ -41,11 +35,7 @@ inputPort Client {
 
  courier Client {
   [ interface TwiceInterface( request )( response ) ] {
-    check.APIKey = request.key;
-    check.IdClient = request.user;
-    check_apikey_exists@transactions_dbOutput( check )( validity );    if( validity ) {
       forward ( request )( response )
-    }
   }
   [ interface TwiceInterface( request ) ] {
     forward ( request )

@@ -1,3 +1,5 @@
+include "transactions_dbInterface.iol"
+
 type Request:void {
 	.destination:string
 	.content:string
@@ -47,6 +49,12 @@ interface AggregatorInterface {
     mock(string)(string)
 }
 
+outputPort transactions_dbOutput {
+ Location: "socket://localhost:8131"
+ Protocol: http
+ Interfaces: transactions_dbInterface
+}
+
 outputPort SubService0 {
  Interfaces: FaxInterface, MailInterface
  Location: "socket://localhost:9202"
@@ -67,13 +75,25 @@ inputPort Client {
 
  courier Client {
   [ interface FaxInterface( request )( response ) ] {
+    check.APIKey = request.key;
+    check.IdClient = request.user;
+    check_apikey_exists@transactions_dbOutput( check )( validity );    if( validity ) {
       forward ( request )( response )
+    }
   }
   [ interface MailInterface( request )( response ) ] {
+    check.APIKey = request.key;
+    check.IdClient = request.user;
+    check_apikey_exists@transactions_dbOutput( check )( validity );    if( validity ) {
       forward ( request )( response )
+    }
   }
   [ interface HelloInterface( request )( response ) ] {
+    check.APIKey = request.key;
+    check.IdClient = request.user;
+    check_apikey_exists@transactions_dbOutput( check )( validity );    if( validity ) {
       forward ( request )( response )
+    }
   }
   [ interface FaxInterface( request ) ] {
     forward ( request )

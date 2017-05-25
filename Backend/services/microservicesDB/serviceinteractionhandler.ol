@@ -170,14 +170,8 @@ main
 
   		response = "";
 
-
-
-
   		// include transactionsdb per la validazione delle chiamate
-  		//response += "include \"transactions_dbInterface.iol\"\n\n";
-
-
-
+  		response += "include \"transactions_dbInterface.iol\"\n\n";
 
 		// begin service interfaces include:
 
@@ -215,14 +209,11 @@ main
 
       	// transactionsdb outputport (per la validazione user+key)
       	
-      	/*
       	response += "outputPort transactions_dbOutput {\n";
   		response += " Location: \"socket://localhost:8131\"\n";
   		response += " Protocol: http\n";
   		response += " Interfaces: transactions_dbInterface\n";
 		response += "}\n\n";
-		*/
-
 
 		
       	// begin outputports generator
@@ -264,14 +255,12 @@ main
       	for( i=0, i<#request.subservices, i++ ) {
         	for( j=0, j<#request.subservices[i].interfaces, j++ ) {
             	response += "  [ interface "+request.subservices[i].interfaces[j].name+"( request )( response ) ] {\n";
-            	// check_apikey_exists prende request.IdClient e request.APIKey
-            	// fa la select per vedere se esista una licenza valida con quei parametri e ritorna true/false
-            	// http://localhost:8131/check_apikey_exists?APIKey=aaa&IdClient=26
-            	//response += "    check_apikey_exists@transactions_dbOutput( request )( response );";
-            	//response += "    if( response ) {\n";
-            	// response += "";
+            	response += "    check.APIKey = request.key;\n";
+            	response += "    check.IdClient = request.user;\n";
+            	response += "    check_apikey_exists@transactions_dbOutput( check )( validity );";
+            	response += "    if( validity ) {\n";
             	response += "      forward ( request )( response )\n";
-            	// response += "    }\n";
+            	response += "    }\n";
             	response += "  }\n"
          	}
       	};

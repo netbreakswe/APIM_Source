@@ -1,3 +1,5 @@
+include "transactions_dbInterface.iol"
+
 interface JavaInterface {
 	RequestResponse: 
 		getA(void)( string ),	
@@ -22,6 +24,12 @@ interface AggregatorInterface {
     mock(string)(string)
 }
 
+outputPort transactions_dbOutput {
+ Location: "socket://localhost:8131"
+ Protocol: http
+ Interfaces: transactions_dbInterface
+}
+
 outputPort SubService0 {
  Interfaces: JavaInterface
  Location: "socket://localhost:8310"
@@ -36,7 +44,11 @@ inputPort Client {
 
  courier Client {
   [ interface JavaInterface( request )( response ) ] {
+    check.APIKey = request.key;
+    check.IdClient = request.user;
+    check_apikey_exists@transactions_dbOutput( check )( validity );    if( validity ) {
       forward ( request )( response )
+    }
   }
   [ interface JavaInterface( request ) ] {
     forward ( request )

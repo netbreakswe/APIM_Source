@@ -41,9 +41,7 @@ inputPort Client {
 
  courier Client {
   [ interface TwiceInterface( request )( response ) ] {
-    check.APIKey = request.key;
-    check.IdClient = request.user;
-    check_apikey_exists@transactions_dbOutput( check )( validity );    if( validity ) {
+    check_apikey_exists@transactions_dbOutput( request )( validity );    if( validity ) {
       forward ( request )( response )
     }
   }

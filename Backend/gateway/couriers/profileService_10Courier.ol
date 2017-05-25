@@ -1,3 +1,5 @@
+include "transactions_dbInterface.iol"
+
 type persone: void {
 	.persona[0, *]: void {
 		.nome:string
@@ -35,6 +37,12 @@ interface AggregatorInterface {
     mock(string)(string)
 }
 
+outputPort transactions_dbOutput {
+ Location: "socket://localhost:8131"
+ Protocol: http
+ Interfaces: transactions_dbInterface
+}
+
 outputPort SubService0 {
  Interfaces: ProfileInterface
  Location: "socket://localhost:8030"
@@ -49,7 +57,11 @@ inputPort Client {
 
  courier Client {
   [ interface ProfileInterface( request )( response ) ] {
+    check.APIKey = request.key;
+    check.IdClient = request.user;
+    check_apikey_exists@transactions_dbOutput( check )( validity );    if( validity ) {
       forward ( request )( response )
+    }
   }
   [ interface ProfileInterface( request ) ] {
     forward ( request )
