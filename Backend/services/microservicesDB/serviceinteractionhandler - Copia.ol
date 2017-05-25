@@ -87,7 +87,7 @@ main
 	                   pos = #response.types;
 	                   response.types[pos] << _T; 
 	                   response.types[pos].name << "t" + primitiveextention; /*nome esteso*/
-	                   response.types[pos].definition << "type t"+primitiveextention+": "+response.types[pos]+"{\n .key:string \n .user:string \n}";
+	                   response.types[pos].definition << "type t"+primitiveextention+": "+response.types[pos]+"{\n .key:string \n}";
 	                   response.operations[ops].request << response.types[pos].name;
 	                   primitiveextention++
 
@@ -183,9 +183,9 @@ main
       	// end service interfaces include:
 
        	// -------begin static content-------
+      	response += "\n\nexecution { concurrent }\n\n";
       	response += "type AuthenticationData: any {\n";
-      	response += " .key: string\n";
-      	response += " .user: string\n";
+      	response += " .key:string\n";
       	response += "}\n\n";
       	response += "interface extender AuthInterfaceExtender {\n";
       	response += " RequestResponse:\n";
@@ -254,9 +254,9 @@ main
       	// begin static content
       	response += " }\n\n";
       	response += "main {\n";
-      	response += "  mock( r )( rs ) {\n";
+      	response += " mock( r )( rs ) {\n";
       	response += "    rs = void\n";
-      	response += "  }\n";
+      	response += " }\n";
       	response += "}\n";
       	println@Console("Generated courier: \n\n" + response)()
       	// end static content
