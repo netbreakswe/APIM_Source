@@ -41,8 +41,8 @@ main
 {
 
 
-	// 1. (da gestire)controllo correttezza interfacce, 
-    // 2. se ci sono tipi con nomi uguale ma implem. diversa  
+	// 1. da gestire il controllo correttezza interfacce
+    // 2. se ci sono tipi con nomi uguale ma implementazione diversa  
     // 3. se ci sono operation con nome uguale ma tipi diversi 
 
 	[getServiceMetaFromCourier( request )( response ) {
@@ -125,7 +125,7 @@ main
        	};
        	// distingue tra operazioni OneWay e RequestResponse e salva in 2 array separati    
        	for( i=0, i<#request.operations, i++ ) {
-       		if (request.operations[i].response == void) {
+       		if(request.operations[i].response == void) {
             	onewayOps[#onewayOps] << request.operations[i]
           	} 
           	else {
@@ -138,7 +138,7 @@ main
        	for( i=0, i<(#onewayOps-1), i++ ) {
        		response += "   "+onewayOps[i].name+"("+onewayOps[i].request+ "),\n"
        	};
-       	if(#onewayOps>0) {
+       	if( #onewayOps>0 ) {
        		response += "   "+onewayOps[i].name+"("+onewayOps[i].request+ ")\n"
        	};
        	// costruisce lista di operation RequestResponse
@@ -146,7 +146,7 @@ main
        	for( i=0, i<(#requestresponseOps - 1), i++ ) {
             response += "   "+requestresponseOps[i].name+"("+requestresponseOps[i].request+ ")("+requestresponseOps[i].response+ "),\n"
        	};
-       	if(#requestresponseOps > 0) {
+       	if (#requestresponseOps>0 ) {
          	response += "   "+requestresponseOps[i].name+"("+requestresponseOps[i].request+ ")("+requestresponseOps[i].response+ ")\n"
        	};
        	response += "}\n\n";
@@ -156,6 +156,7 @@ main
        	response += "  Protocol:sodep\n";
        	response += "  Interfaces: " + request.ms_name + "Interface\n";
        	response += "}";
+
        	println@Console("Generated Client Interface: \n\n" + response)()
        	// end generazione interfaccia client del Servizio
 
@@ -167,8 +168,19 @@ main
   	// genera rappresentazione in stringa del courier
   	[generateCourier( request )( response ) {
 
+  		response = "";
+
+
+
+
+  		// include transactionsdb per la validazione delle chiamate
+  		//response += "include \"transactions_dbInterface.iol\"\n\n";
+
+
+
+
 		// begin service interfaces include:
-      	response = "";
+
       	for( i=0, i<#request.subservices, i++ ) {
       		for( j=0, j<#request.subservices[i].interfaces, j++ ) {
             	// begin find interface name with regex
@@ -199,15 +211,20 @@ main
       	response += "}\n\n";
       	// -------end static content-------
 
+
+
       	// transactionsdb outputport (per la validazione user+key)
+      	
       	/*
-      	response += "outputPort transactions_dbInput {\n";
+      	response += "outputPort transactions_dbOutput {\n";
   		response += " Location: \"socket://localhost:8131\"\n";
   		response += " Protocol: http\n";
   		response += " Interfaces: transactions_dbInterface\n";
 		response += "}\n\n";
 		*/
 
+
+		
       	// begin outputports generator
 
       	for( i=0, i<#request.subservices, i++ ) {
@@ -232,7 +249,7 @@ main
       	// -------end static content-------
 
       	for( i=0, i<#request.subservices - 1, i++ ) {
-      		if (#request.subservices) {
+      		if(#request.subservices) {
             	response += "SubService"+i+" with AuthInterfaceExtender, "
       		}
       	};
@@ -244,14 +261,17 @@ main
       	// -------end static content-------
 
       	// begin courier generator RequestResponse
-      	for( i = 0, i<#request.subservices, i++ ) {
+      	for( i=0, i<#request.subservices, i++ ) {
         	for( j=0, j<#request.subservices[i].interfaces, j++ ) {
             	response += "  [ interface "+request.subservices[i].interfaces[j].name+"( request )( response ) ] {\n";
-            	response += "    if( request.key == \"aaa\" && request.user == \"26\" ) {\n";
-            	// response += "    ";
+            	// check_apikey_exists prende request.IdClient e request.APIKey
+            	// fa la select per vedere se esista una licenza valida con quei parametri e ritorna true/false
+            	// http://localhost:8131/check_apikey_exists?APIKey=aaa&IdClient=26
+            	//response += "    check_apikey_exists@transactions_dbOutput( request )( response );";
+            	//response += "    if( response ) {\n";
             	// response += "";
             	response += "      forward ( request )( response )\n";
-            	response += "    }\n";
+            	// response += "    }\n";
             	response += "  }\n"
          	}
       	};
