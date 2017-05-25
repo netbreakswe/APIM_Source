@@ -60,6 +60,7 @@
 								<th>Attiva?</th>
 								<th>Numero licenze attive</th>
 								<th>Guadagno attuale</th>
+								<th>Modifica API</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -84,7 +85,15 @@
 								</td>
 								
 								<td>{{activelicenses[service.IdMS]}} licenza/e</td>
+								
 								<td>5€ (da implementare)</td>
+								
+								<td class="text-center">
+									<a href="#!/modifica_info_api/{{service.IdMS}}">
+										<img ng-src="http://localhost:8000/images/icons/modifica_api.png" alt="immagine modifica" class="imagesmall">
+									</a>
+								</td>
+								
 							</tr>
 						</tbody>
 					</table>

@@ -2,7 +2,7 @@
 
 angular.module('APIM.registra_api')
 
-.controller('registra_api_ctrl', function($scope, $http) {
+.controller('registra_api_ctrl', function($scope, $http, $location) {
 	
 
 	// inizializza lista categorie apim
@@ -105,6 +105,7 @@ angular.module('APIM.registra_api')
 			$scope.subservices[ss_pos].interfaces[ssi_pos] = event.target.result;
 			$scope.$apply();
 			element.style.height = (element[0].scrollHeight < 30) ? 30 + "px" : element[0].scrollHeight + "px";
+			// scrollHeight causa errore su console browser
 		}
 		reader.readAsText(element.files[0]);
 	};
@@ -130,7 +131,7 @@ angular.module('APIM.registra_api')
 				headers: { 'Content-Type': undefined }
 			}).then(function(response){
 				// ritorna l'uri del file ottenuto dalla response di Jolie
-				$scope.pdf_uri = 'http://localhost:8004/'+response.data.$;
+				$scope.pdf_uri = 'http://localhost:8000/images/uploaded_images/'+response.data.$;
 			});
 		}
 		// legge l'immagine come URL
@@ -159,7 +160,7 @@ angular.module('APIM.registra_api')
 				headers: { 'Content-Type': undefined }
 			}).then(function(response){
 				// ritorna l'uri del file ottenuto dalla response di Jolie
-				$scope.logo_uri = 'http://localhost:8004/'+response.data.$;
+				$scope.logo_uri = 'http://localhost:8000/images/uploaded_images/'+response.data.$;
 			});
 		}
 		// legge l'immagine come URL
@@ -168,7 +169,6 @@ angular.module('APIM.registra_api')
 
 	// submit servizio
 	$scope.submit = function() {
-		console.log( $scope.subservices); // testing subservices -> see log
 
 		var data = {
 			subservices : $scope.subservices,
@@ -194,7 +194,7 @@ angular.module('APIM.registra_api')
             // per i file inviati tramite form il Content-Type va messo undefined
             headers: { 'Content-Type': undefined }
         }).then(function(response){
-            // ritorna l'uri del file ottenuto dalla response di Jolie
+			//$location.path("/conferma_registrazione_api");
         });
     };
 	

@@ -27,7 +27,7 @@ outputPort Gateway {
 }
 
 // basta questa port per comunicare con tutti i servizi
-inputPort microservices_db_readerJSONInput {
+inputPort microservices_dbJSONInput {
   Location: "socket://localhost:8121"
   Protocol: http { 
     // Access-Control-Allow-Origin response header to tell the browser that the content of this page is accessible to certain origins
@@ -46,28 +46,28 @@ inputPort microservices_db_readerJSONInput {
 // 1. Procedura che registra info base di un nuovo servizio nel db
 define __save_Service {
 
-	q_AF01k = "INSERT INTO microservices (Name,Description,Version,LastUpdate,IdDeveloper,Logo,DocPDF,DocExternal,
-			  Profit,IsActive,SLAGuaranteed,Policy) VALUES (:n,:d,:v,:lu,:idv,:lg,:dp,:de,:pf,:isa,:sg,:py)";
-	with( q_AF01k ) {
-		.n = _Name;
-        .d = _Description;
-        .v = _Version;
-        .lu = _LastUpdate;
-        .idv = _IdDeveloper;
-        .lg = _Logo;
-        .dp = _DocPDF;
-        .de = _DocExternal;
-        .pf = _Profit;
-        .isa = _IsActive;
-        .sg = _SLAGuaranteed;
-        .py = _Policy
-    };
-    update@Database( q_AF01k )( code_status_AF01k );
-    println@Console( "Registering new microservice with name " + _Name + " by developer " + _IdDeveloper )();
-    q_AF02k = "SELECT LAST_INSERT_ID() AS id"; // ritorna l'id dell'interfaccia client
-    query@Database( q_AF02k )( code_status_AF02k );
-    _idms = int(code_status_AF02k.row[0].id);
-    println@Console( "Api id " + _idms )()
+  q_AF01k = "INSERT INTO microservices (Name,Description,Version,LastUpdate,IdDeveloper,Logo,DocPDF,DocExternal,
+        Profit,IsActive,SLAGuaranteed,Policy) VALUES (:n,:d,:v,:lu,:idv,:lg,:dp,:de,:pf,:isa,:sg,:py)";
+  with( q_AF01k ) {
+    .n = _Name;
+    .d = _Description;
+    .v = _Version;
+    .lu = _LastUpdate;
+    .idv = _IdDeveloper;
+    .lg = _Logo;
+    .dp = _DocPDF;
+    .de = _DocExternal;
+    .pf = _Profit;
+    .isa = _IsActive;
+    .sg = _SLAGuaranteed;
+    .py = _Policy
+  };
+  update@Database( q_AF01k )( code_status_AF01k );
+  println@Console( "Registering new microservice with name " + _Name + " by developer " + _IdDeveloper )();
+  q_AF02k = "SELECT LAST_INSERT_ID() AS id"; // ritorna l'id dell'interfaccia client
+  query@Database( q_AF02k )( code_status_AF02k );
+  _idms = int(code_status_AF02k.row[0].id);
+  println@Console( "Api id " + _idms )()
 
 }
 
@@ -91,9 +91,9 @@ define __save_Client_Interface {
 define __interface_registration {
 
 	// query per salvare un interfaccia
-    _q = "INSERT INTO interfaces (IdMS,Interf,Loc,Protoc) VALUES (:IdMS,:Interf,:Loc,:Protoc)";
-    update@Database( _q )( resultq_SLOP1I );
-    println@Console( "Registering new interface of microservice " + _idms )()
+  _q = "INSERT INTO interfaces (IdMS,Interf,Loc,Protoc) VALUES (:IdMS,:Interf,:Loc,:Protoc)";
+  update@Database( _q )( resultq_SLOP1I );
+  println@Console( "Registering new interface of microservice " + _idms )()
 
 }
 
@@ -129,7 +129,7 @@ main
   		// query
     	q = "SELECT microservices.idMS,microservices.Name,interfaces.Interf,interfaces.Loc,interfaces.Protoc 
     		FROM interfaces,microservices WHERE interfaces.idMS=microservices.idMS ORDER BY microservices.idMS ASC";
-    	query@Database(q)(result);
+    	query@Database( q )( result );
 
     	service_index = -1; currId = "";
     	for( i=0, i<#result.row, i++ ) {
@@ -428,7 +428,7 @@ main
     	// scorre righe del risultato
     	for( i=0, i<#result.row, i++ ) {
        	// salva le info del servizio se ho un nuovo servizio
-       	if(result.row[i].IdMS != idms) {
+       	if( result.row[i].IdMS != idms ) {
           idms = result.row[i].IdMS; // salva l'id del microservizio corrente
           s_i = #response.services; // ricava l'indice dove inserire il nuovo servizio
           response.services[s_i].Name = result.row[i].Name;
@@ -452,87 +452,97 @@ main
 
 
 
-  	// metodo per aggiungere API (manca la gestione errori)
-  	[microservice_registration( request )( response ) {
+    // metodo per aggiungere API (manca la gestione errori)
+    [microservice_registration( request )( response ) {
 
-	    // 1. converte il data raw in arrivo in un json string:
-	    rawToString@Converter( request.data )( json );
-	    // 2. ottiene dati della API aggiunta(anche molto complessi) dal json ricevuto dalla web app:
-	    getJsonValue@JsonUtils(json)(api);
-	    // 3. salva i dati nella richiesta da fare al generatore di courier
-	    for( i=0, i<#api.subservices, i++ ) {
-	    	courier_data.subservices[i].location = api.subservices[i].location;
-	      courier_data.subservices[i].protocol = api.subservices[i].protocol;
-	      for( j=0, j<#api.subservices.interfaces, j++ ) {
-	      	if( api.subservices[i].interfaces[j] != null ) {
-	      		courier_data.subservices[i].interfaces[j] = api.subservices[i].interfaces[j]
-	         }
-	      }      
-	    };
-	    courier_data = "mockid"; 
-	    getDateTime@Time( 0 )( date ); // data corrente
-	    // 4. salva gli altri dati relativi alla API dal json in arrivo
-	    _Name = api.Name; _Description = api.Description; _Version = 1;
-	    _LastUpdate = date.year + "-" + date.month + "-" + date.day;
-	    _IdDeveloper = api.IdDeveloper; _Logo = api.Logo; _DocPdf = api.DocPdf;
-	    _DocExternal = api.DocExternal; _Profit = api.Profit; _IsActive = true;
-	    _SLAGuaranteed = 1; _Policy = api.Policy;
-	    // 5. genera temp Courier
-	    generateCourier@ServiceInteractionHandler(courier_data)(courier_string);
-	    println@Console("Generated courier")();
-	    // 6. scrive courier su file temporaneo
-	    getRandomUUID@StringUtils()( random );
-	    with( file_request ) {
+      // 1. converte il data raw in arrivo in un json string:
+      rawToString@Converter( request.data )( json );
+      // 2. ottiene dati della API aggiunta(anche molto complessi) dal json ricevuto dalla web app:
+      getJsonValue@JsonUtils( json )( api );
+      // 3. salva i dati nella richiesta da fare al generatore di courier
+      for( i=0, i<#api.subservices, i++ ) {
+        courier_data.subservices[i].location = api.subservices[i].location;
+        courier_data.subservices[i].protocol = api.subservices[i].protocol;
+        for( j=0, j<#api.subservices.interfaces, j++ ) {
+          if( api.subservices[i].interfaces[j] != null ) {
+            courier_data.subservices[i].interfaces[j] = api.subservices[i].interfaces[j]
+          }
+        }      
+      };
+      courier_data = "mockid"; 
+      getDateTime@Time( 0 )( date ); // data corrente
+      // 4. salva gli altri dati relativi alla API dal json in arrivo
+      _Name = api.Name;
+      _Description = api.Description;
+      _Version = 1;
+      _LastUpdate = date.year + "-" + date.month + "-" + date.day;
+      _IdDeveloper = api.IdDeveloper;
+      _Logo = api.Logo;
+      _DocPdf = api.DocPdf;
+      _DocExternal = api.DocExternal;
+      _Profit = api.Profit;
+      _IsActive = true;
+      _SLAGuaranteed = 1;
+      _Policy = api.Policy;
+      // 5. genera temp Courier
+      generateCourier@ServiceInteractionHandler( courier_data )( courier_string );
+      println@Console("Generated courier")();
+      // 6. scrive courier su file temporaneo
+      getRandomUUID@StringUtils()( random );
+      with( file_request ) {
         .content = courier_string;
         .filename = "temp_couriers/" + random + ".ol" // la cartella 'temp_couriers' deve esistere in questa directory
-	    };
-	    writeFile@File(file_request)();
-	    // 7. ricava meta-dati da courier
-	    getServiceMetaFromCourier@ServiceInteractionHandler( file_request.filename )( meta_info_service );
-	    // 8. sicuramente non presenti errori di sintassi (error checking non implementato) 
-	    // 9. cancella Courier temporaneo
-	    deleteDir@File(file_request.filename)(deleted);
-	    // 10. salva info servizio nel db
-	    __save_Service;
-	    // 11. genera l'interfaccia Client
-	    meta_info_service.ms_id = _idms; // id servizio
-	    meta_info_service.ms_name = _Name; // nome servizio
-	    generateClientInterface@ServiceInteractionHandler( meta_info_service )( client_i_string );
-	    println@Console("Generated Client Interface")();
-	    // 12. salva interfaccia client nel db
-	    _interf -> client_i_string; //
-	    getJsonString@JsonUtils( meta_info_service )( json_info_service ); // converte meta info in json_string
-	    _interf_meta = json_info_service; // json_string che contiene meta-info estratte precedentemente relative all'interfaccia
-	     __save_Client_Interface;
-	    // 13. salva le interfacce originali con info di binding (lato server affinchè il gateway redirecti al servizio corretto)
-	    for( i=0, i<#courier_data.subservices, i++ ) {
-	    	for( j=0, j<#courier_data.subservices[i].interfaces, j++ ) {
-	    		with( _q ) {
-	    			.IdMS = _idms;
+      };
+      writeFile@File( file_request )();
+      // 7. ricava meta-dati da courier
+      println@Console("pre service meta")();
+      getServiceMetaFromCourier@ServiceInteractionHandler( file_request.filename )( meta_info_service );
+      println@Console("post service meta")();
+      // 8. sicuramente non presenti errori di sintassi (error checking non implementato) 
+      // 9. cancella Courier temporaneo
+      deleteDir@File( file_request.filename )( deleted );
+      // 10. salva info servizio nel db
+      __save_Service;
+      // 11. genera l'interfaccia Client
+      meta_info_service.ms_id = _idms; // id servizio
+      meta_info_service.ms_name = _Name; // nome servizio
+      generateClientInterface@ServiceInteractionHandler( meta_info_service )( client_i_string );
+      println@Console("Generated Client Interface")();
+      // 12. salva interfaccia client nel db
+      _interf -> client_i_string; //
+      getJsonString@JsonUtils( meta_info_service )( json_info_service ); // converte meta info in json_string
+      _interf_meta = json_info_service; // json_string che contiene meta-info estratte precedentemente relative all'interfaccia
+       __save_Client_Interface;
+      // 13. salva le interfacce originali con info di binding (lato server affinchè il gateway redirecti al servizio corretto)
+      for( i=0, i<#courier_data.subservices, i++ ) {
+        for( j=0, j<#courier_data.subservices[i].interfaces, j++ ) {
+          with( _q ) {
+            .IdMS = _idms;
             .Interf = courier_data.subservices[i].interfaces[j];
             .Loc = courier_data.subservices[i].location;
             .Protoc = courier_data.subservices[i].protocol
           };
           __interface_registration
-	      }
-	    };
-	    // 14. aggiunge al db la lista delle categorie dell'API
-	    for( i=0, i<#api.categories, i++ ) {
-	    	q = "INSERT INTO jnmscat (IdMS,IdCategory) VALUES (:ims,:c)";
+        }
+      };
+      // 14. aggiunge al db la lista delle categorie dell'API
+      println@Console(api.categories)();
+      for( i=0, i<#api.categories, i++ ) {
+        q = "INSERT INTO jnmscat (IdMS,IdCategory) VALUES (:ims,:c)";
         with( q ) {
           .ims = _idms;
           .c = api.categories[i]
         };
         update@Database( q )( status )
-	    };
-	    // 15. imposta nuova redirezione sul gateway per il servizio
-	    gateway_req = meta_info_service.ms_name + "_" + meta_info_service.ms_id;
-	    gateway_req.subservices << courier_data.subservices;
-	    setnewredirection@Gateway( gateway_req )();
-	    // 16. ritorna l'id del nuovo servizio
-	    response = _idms
+      };
+      // 15. imposta nuova redirezione sul gateway per il servizio
+      gateway_req = meta_info_service.ms_name + "_" + meta_info_service.ms_id;
+      gateway_req.subservices << courier_data.subservices;
+      setnewredirection@Gateway( gateway_req )();
+      // 16. ritorna l'id del nuovo servizio
+      response = _idms
 
-  	}]
+    }]
 
 
 

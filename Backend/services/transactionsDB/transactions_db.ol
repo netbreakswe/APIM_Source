@@ -21,18 +21,11 @@ inputPort transactions_dbJSONInput {
   Interfaces: transactions_dbInterface
 }
 
-// 1. procedura che verifica se l'api key generata sia univoca 
-define __checkIfAPIKeyUnique {
-	// query
-	q_45_Y = "SELECT * FROM apikeys WHERE APIKey=:api";
-  	q_45_Y.api = _API_45_Y;
-  	query@Database( q_45_Y )( result_45_Y );
-  	if (#result_45_Y.row == 0) {
-  		_unique_45_Y = true
-  	} 
-  	else {
-  		_unique_45_Y = false
-  	}
+// basta questa port per comunicare con tutti i servizi
+inputPort transactions_dbInput {
+  Location: "socket://localhost:8132"
+  Protocol: sodep
+  Interfaces: transactions_dbInterface
 }
 
 
@@ -57,19 +50,26 @@ init
 main
 {
 
+    // controlla esistenza apikey
+  	[check_apikey_exists( request )( response ) {
 
-	// controlla esistenza apikey
-  	[apikey_exists( request )( response ) {
-    	_API_45_Y = random;
-    	__checkIfAPIKeyUnique;
-     	if (_unique_45_Y) {
-      		response = true;
-      		println@Console( "Exists" )()
+      //query
+      q = "SELECT APIKey FROM apikeys WHERE APIKey=:ak AND IdClient=:ic AND Remaining > 0";
+      with( request ) {
+        q.ak = .APIKey;
+        q.ic = .IdClient
+      };
+      query@Database( q )( result );
+
+     	if( #result.row == 0 ) {
+      	response = false;
+      	println@Console( "Corresponding APIKey not found" )()
     	} 
     	else {
-      		response = false;
-      		println@Console( "Not Exists")()
+      	response = true;
+      	println@Console( "APIKey " + request.APIKey + " was found" )()
     	}
+
   	}]
 
 
@@ -77,19 +77,19 @@ main
   	// recupera gli attributi di una apikey a partire dalla sua stringa univoca
   	[retrieve_apikey_info( request )( response ) {
 
-    	//query
+    	// query
     	q = "SELECT APIKey,IdMS,IdClient,Remaining FROM apikeys WHERE APIKey=:ak";
     	q.ak = request.License;
     	query@Database( q )( result );
 
-    	if ( #result.row == 0 ) {
-      		println@Console("APIKey not found")()
+    	if( #result.row == 0 ) {
+      	println@Console("APIKey not found")()
     	}
     	else {
-      		for ( i=0, i<#result.row, i++ ) {
-        		println@Console( "Got APIKey "+ request.License )();
-        		response << result.row[i]
-      		}
+      	for( i=0, i<#result.row, i++ ) {
+        	println@Console( "Got APIKey "+ request.License )();
+        	response << result.row[i]
+      	}
     	};
     	println@Console("Retrieved all info about the specific APIKey")()
   	}]
@@ -100,21 +100,23 @@ main
   	// controlla se l'apikey sia legata ad un utente ed un microservizio esista e sia valida
   	[check_apikey_isactive( request )( response ) {
 
-    	//query
+    	// query
     	q = "SELECT Remaining FROM apikeys WHERE IdClient=:i AND IdMS=:ims AND Remaining > 0";
-    	q.i = request.IdClient;
-    	q.ims = request.IdMS;
+      with( request ) {
+    	 q.i = .IdClient;
+    	 q.ims = .IdMS
+      };
     	query@Database( q )( result );
 
-    	if ( #result.row == 0 ) {
-      		println@Console("Active APIKey not found")();
-      		response = false
+    	if( #result.row == 0 ) {
+      	println@Console("Active APIKey not found")();
+      	response = false
     	}
     	else {
-      		for ( i=0, i<#result.row, i++ ) {
-        		println@Console( "Got active APIKey of client " + request.IdClient + " and ms " + request.IdMS )();
-        		response = true
-      		}
+      	for( i=0, i<#result.row, i++ ) {
+        	println@Console( "Got active APIKey of client " + request.IdClient + " and ms " + request.IdMS )();
+        	response = true
+      	}
     	};
     	println@Console("Retrieved validity of and APIKey")()
   	}]
@@ -130,14 +132,14 @@ main
   		q.i = request.Id;
   		query@Database( q )( result );
 
-    	if ( #result.row == 0 ) {
-      		println@Console("Active APIKeys not found")()
+    	if( #result.row == 0 ) {
+      	println@Console("Active APIKeys not found")()
     	}
     	else {
-      		for ( i=0, i<#result.row, i++ ) {
-        		println@Console( "Got APIKey number " + i )();
-        		response.apikeyslist[i] << result.row[i]
-      		}
+      	for( i=0, i<#result.row, i++ ) {
+        	println@Console( "Got APIKey number " + i )();
+        	response.apikeyslist[i] << result.row[i]
+      	}
     	};
     	println@Console("Retrieved purchases list of the user with id " + request.Id)()
 
@@ -154,7 +156,7 @@ main
   		q.i = request.Id;
   		query@Database( q )( result );
 
-    	if ( #result.row == 0 ) {
+    	if( #result.row == 0 ) {
         println@Console("Active APIKeys not found")();
       	response.IdMS = request.Id;
     		response.Licenses = 0
@@ -163,7 +165,7 @@ main
         println@Console( "Got APIKey number from ms " + result.row[i].IdMS )();
     		response.IdMS = result.row[i].IdMS;
     		response.Licenses = #result.row
-      	};
+      };
     	println@Console("Retrieved " + response + " of active apikeys")()
 
   	}]
@@ -179,14 +181,14 @@ main
       q.i = request.Id;
       query@Database( q )( result );
 
-      if ( #result.row == 0 ) {
-          println@Console("Purchases not found")()
+      if( #result.row == 0 ) {
+        println@Console("Purchases not found")()
       }
       else {
-          for ( i=0, i<#result.row, i++ ) {
-            println@Console( "Got purchase number " + i )();
-            response.purchaseslist[i] << result.row[i]
-          }
+        for( i=0, i<#result.row, i++ ) {
+          println@Console( "Got purchase number " + i )();
+          response.purchaseslist[i] << result.row[i]
+        }
       };
       println@Console("Retrieved purchases list of the user with id " + request.Id)()
 
@@ -203,14 +205,14 @@ main
       q.i = request.Id;
       query@Database( q )( result );
 
-      if ( #result.row == 0 ) {
-          println@Console("IdMS not found")()
+      if( #result.row == 0 ) {
+        println@Console("IdMS not found")()
       }
       else {
-          for ( i=0, i<#result.row, i++ ) {
-            println@Console( "Got ms number " + i )();
-            response.msremaininglist[i] << result.row[i]
-          }
+        for( i=0, i<#result.row, i++ ) {
+          println@Console( "Got ms number " + i )();
+          response.msremaininglist[i] << result.row[i]
+        }
       };
       println@Console("Retrieved ms list of the client with id " + request.Id)()
 
@@ -222,27 +224,16 @@ main
   	// registra una nuova apikey
   	[apikey_registration( request )( response ) {
 
-    	//genera api key
-    	getRandomUUID@StringUtils()( random );
-    	_API_45_Y = random;
-    	__checkIfAPIKeyUnique;
-
-    	if (_unique_45_Y) {
-     		//query
-      		q = "INSERT INTO apikeys (IdMS, APIKeym IdClient,Remaining) VALUES (:ims,:apik, :ic,:r)";
-      		with( request ) {
-        		q.ims = .IdMS;
-        		q.apik = random;
-        		q.ic = .IdClient;
-        		q.r = 50 // hard-coded: da sistemare per implementazione acquisto
-      		};
-      		update@Database( q )( result );
-      		response = true;
-      		println@Console( "Registering new apikey for microservice " + request.IdMS + " by client " + request.IdClient )()
-    	} 
-    	else {
-      		response = false
-    	}
+      // query
+      q = "INSERT INTO apikeys (APIKey,IdMS,IdClient,Remaining) VALUES (:ak,:ims,:ic,:r)";
+      with( request ) {
+        q.ak = .APIKey;
+        q.ims = .IdMS;
+        q.ic = .IdClient;
+        q.r = .Remaining
+      };
+      update@Database( q )( result );
+      println@Console( "Registering new apikey " + request.APIKey + " for microservice " + request.IdMS + " by client " + request.IdClient )()
     
   	}]
 
@@ -252,14 +243,14 @@ main
   	// registra un nuovo acquisto di una apikey
   	[purchase_registration( request )( response ) {
 
-    	//query
+    	// query
     	q = "INSERT INTO purchases (APIKey,IdClient,Timestamp,Amount,Type) VALUES (:ak,:ic,:t,:a,:ty)";
     	with( request ) {
-      		q.ak = .APIKey;
-      		q.ic = .IdClient;
-      		q.t = .Timestamp;
-      		q.a = .Amount;
-      		q.ty = .Type
+      	q.ak = .APIKey;
+      	q.ic = .IdClient;
+      	q.t = .Timestamp;
+      	q.a = .Amount;
+      	q.ty = .Type
     	};
     	update@Database( q )( result );
     	println@Console( "Registering new purchase with apikey " + request.APIKey + " by client " + request.IdClient )()
@@ -272,11 +263,11 @@ main
   	// aggiorna il campo remaining di una apikey (aggiunge o sottrae in base a number)
   	[apikey_remaining_update( request )( response ) {
 
-    	//query
+    	// query
     	q = "UPDATE apikeys SET Remaining=Remaining+:n WHERE APIKey=:i";
     	with( request ) {
-      		q.i = .APIKey;
-      		q.n = .Number
+      	q.i = .APIKey;
+      	q.n = .Number
     	};
     	update@Database( q )( result );
     	println@Console( "Updating remaining of APIKey " + request.APIKey )()

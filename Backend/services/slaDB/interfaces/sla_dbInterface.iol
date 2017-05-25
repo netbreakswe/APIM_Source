@@ -1,14 +1,5 @@
-// strutture dati con solo id
 
-type apikeyid: void {
-	.Id: int
-}
-
-type msid: void {
-	.Id: int
-}
-
-type slasurveyid: void {
+type id: void {
 	.Id: int
 }
 
@@ -54,21 +45,22 @@ type slasurvey: void {
 // insert new sla survey 
 
 type slasurveydataw: void {
-	.IdAPIKey: int
+	.APIKey: string
 	.IdMS: int
 	.Timestamp: string
 	.ResponseTime: string
 	.IsCompliant: bool
 }
 
+
+// read e write
+
 interface sla_dbInterface {
 	RequestResponse:
-	    //GETTERS
-		retrieve_apikey_slasurvey_list( apikeyid )( slasurveylist ),
-		retrieve_ms_slasurvey_list( msid )( slasurveylistms ),
-		retrieve_slasurvey_info( slasurveyid )( slasurvey ),
-		retrieve_slasurvey_iscompliant( slasurveyid )( bool ),
+		retrieve_apikey_slasurvey_list( id )( slasurveylist ),
+		retrieve_ms_slasurvey_list( id )( slasurveylistms ),
+		retrieve_slasurvey_info( id )( slasurvey ),
+		retrieve_slasurvey_iscompliant( id )( bool ),
 
-		//SETTERS
 		slasurvey_insert( slasurveydataw )( void )
 }

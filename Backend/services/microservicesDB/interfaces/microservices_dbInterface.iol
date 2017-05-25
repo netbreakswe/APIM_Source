@@ -5,6 +5,12 @@ type id: void {
 	.Id: int
 }
 
+// string id
+
+type stringid: void {
+	.Id: string
+}
+
 // lista di servizi con info per inizializzare outputportgateway
 
 type listservices: void {
@@ -35,7 +41,7 @@ type msdata: void {
 	.Description: string
 	.Version: int
 	.LastUpdate: string
-	.IdDeveloper: int
+	.IdDeveloper: string
 	.Logo: string
 	.DocPDF: string
 	.DocExternal: string
@@ -148,7 +154,7 @@ type home_ms_list: void {
 		.Name: string
 		.Logo: string
 		.IdMS: int
-		.IdDeveloper: int
+		.IdDeveloper: string
 		.categories[0, *]: void {
 			.IdCategory: int
 			.CatName: string
@@ -184,7 +190,7 @@ interface microservices_dbInterface {
 		homepage_ms_list( void) ( home_ms_list ),
 		retrieve_ms_info( id )( msdata ),
 		retrieve_intf_info( id )( intfdata ),
-		retrieve_ms_from_developerid( id )( msdevlist ),
+		retrieve_ms_from_developerid( stringid )( msdevlist ),
 		retrieve_interfaces_of_ms( id )( listinterfaces ),
 		retrieve_ms_from_interface( id )( msiddata ),
 		retrieve_category_info( id )( categorydata ),

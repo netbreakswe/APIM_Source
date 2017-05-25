@@ -12,10 +12,16 @@ type id: void {
 	.Id: int
 }
 
+// string id
+
+type stringid: void {
+	.Id: string
+}
+
 // rappresentazione admin
 
 type admindata: void {
-	.IdAdmin: int
+	.IdAdmin: string
 	.Name: string
 	.Surname: string
 	.Email: string
@@ -25,7 +31,7 @@ type admindata: void {
 // rappr utente completo
 
 type userdata: void {
-	.IdClient: int
+	.IdClient: string
 	.Name: string
 	.Surname: string
 	.Email: string
@@ -51,7 +57,7 @@ type email: void {
 type anagraphics: void {
 	.Name: string
 	.Surname: string
-	.IdUser: int
+	.IdUser: string
 }
 
 // rappr id di un tipo account utente
@@ -64,8 +70,8 @@ type typeiddata: void {
 
 type entrydata: void {
 	.IdEntry: int
-	.IdClient: int
-	.IdAdmin: int
+	.IdClient: string
+	.IdAdmin: string
 	.Timestamp: string
 	.ModType: int
 	.Report: string
@@ -115,8 +121,8 @@ type developerdata: void {
 // rappr di una entry di moderazione (senza campo id)
 
 type smallentrydata: void {
-	.IdClient: int
-	.IdAdmin: int
+	.IdClient: string
+	.IdAdmin: string
 	.Timestamp: string
 	.ModType: int
 	.Report: string
@@ -125,7 +131,7 @@ type smallentrydata: void {
 // rappr delle info che un utente può modificare (ed id per tracciarlo)
 
 type userupdata: void {
-	.IdClient: int
+	.IdClient: string
 	.Name: string
 	.Surname: string
 	.Email: string
@@ -142,19 +148,19 @@ type userupdata: void {
 interface user_dbInterface {
 	RequestResponse:
 	    user_exists( logininfo )( bool ),
-		retrieve_admin_info( id )( admindata ),
-		retrieve_client_info( id )( userdata ),
+		retrieve_admin_info( stringid )( admindata ),
+		retrieve_client_info( stringid )( userdata ),
 		retrieve_client_info_from_email( email )( userdata ),
-		retrieve_client_anagraphics( id )( anagraphics ),
+		retrieve_client_anagraphics( stringid )( anagraphics ),
 		retrieve_client_type( id )( typeiddata ),
 		retrieve_moderation_info( id )( entrydata ),
 		retrieve_modtype_info( id )( modtypedata ),
 		retrieve_clienttype_info( id )( clienttypedata ),
 
 		basicclient_registration( basicclientdata )( bool ),
-		developer_upgrade( id )( void ),
-		basicclient_downgrade( id )( void ),
+		developer_upgrade( stringid )( void ),
+		basicclient_downgrade( stringid )( void ),
 		client_moderation( smallentrydata )( void ),
 		client_update( userupdata )( void ),
-		client_delete( id )( void )
+		client_delete( stringid )( void )
 }
