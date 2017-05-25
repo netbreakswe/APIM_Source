@@ -188,18 +188,28 @@ main
       	response += " .user: string\n";
       	response += "}\n\n";
       	response += "interface extender AuthInterfaceExtender {\n";
-      	response += " RequestResponse:\n";
+      	response += "  RequestResponse:\n";
       	response += "    *( AuthenticationData )( void )\n";
-      	response += " OneWay:\n";
+      	response += "  OneWay:\n";
       	response += "    *( AuthenticationData )\n";
       	response += "}\n\n";
       	response += "interface AggregatorInterface {\n";
-      	response += " RequestResponse:\n";
+      	response += "  RequestResponse:\n";
       	response += "    mock(string)(string)\n";
-      	response += "}\n";
+      	response += "}\n\n";
       	// -------end static content-------
 
+      	// transactionsdb outputport (per la validazione user+key)
+      	/*
+      	response += "outputPort transactions_dbInput {\n";
+  		response += " Location: \"socket://localhost:8131\"\n";
+  		response += " Protocol: http\n";
+  		response += " Interfaces: transactions_dbInterface\n";
+		response += "}\n\n";
+		*/
+
       	// begin outputports generator
+
       	for( i=0, i<#request.subservices, i++ ) {
       		response += "outputPort SubService"+i+" {\n";
             response += " Interfaces: ";
@@ -211,7 +221,8 @@ main
             response += " Protocol: "+request.subservices[i].protocol+"\n";
             response += "}\n\n"
       	};
-      	//end outputports generator
+
+      	// end outputports generator
 
       	// -------begin static content-------
       	response += "inputPort Client {\n";
@@ -235,21 +246,26 @@ main
       	// begin courier generator RequestResponse
       	for( i = 0, i<#request.subservices, i++ ) {
         	for( j=0, j<#request.subservices[i].interfaces, j++ ) {
-            	response += "    [ interface "+request.subservices[i].interfaces[j].name+"( request )( response ) ] {\n";
-            	response += "       forward ( request )( response )\n";
-            	response += "    }\n"
+            	response += "  [ interface "+request.subservices[i].interfaces[j].name+"( request )( response ) ] {\n";
+            	response += "    if( request.key == \"aaa\" && request.user == \"26\" ) {\n";
+            	// response += "    ";
+            	// response += "";
+            	response += "      forward ( request )( response )\n";
+            	response += "    }\n";
+            	response += "  }\n"
          	}
       	};
       	// end courier generator RequestResponse
-      	// begin courier generator RequestResponse
+
+      	// begin courier generator Request
       	for( i=0, i<#request.subservices, i++ ) {
         	for( j=0, j<#request.subservices[i].interfaces, j++ ) {
-            	response += "    [ interface "+request.subservices[i].interfaces[j].name+"( request ) ] {\n";
-            	response += "       forward ( request )\n";
-            	response += "    }\n"
+            	response += "  [ interface "+request.subservices[i].interfaces[j].name+"( request ) ] {\n";
+            	response += "    forward ( request )\n";
+            	response += "  }\n"
          	}
       	};
-      	// end courier generator RequestResponse
+      	// end courier generator Request
 
       	// begin static content
       	response += " }\n\n";
