@@ -2,7 +2,9 @@ Per frontend e backend:
 
 npm start sempre
 
-microservices_db.ol ed users_db.ol sempre
+microservices_db.ol sempre
+
+users_db.ol sempre
 
 filehandler.ol nel caso si vogliano upploadare immagini (registrazione/modifica profilo)
 
@@ -15,9 +17,10 @@ Per aggiungere immagini, nel percorso /images.
 Le immagini uploadate sono in /avatar utenti.
 Le altre immagini vengono utilizzate nel sito.
 
+
 Per testare il gateway:
 
-Avviare prima microservices_db.ol ed serviceinteractionhandler.ol (sono nella stessa cartella)
+Avviare prima microservices_db.ol e serviceinteractionhandler.ol (sono nella stessa cartella)
 
 Poi avviare gateway.ol che stamperà varie cose nella console all'avvio
 
@@ -25,3 +28,38 @@ Avviare i servizi che si useranno nel client, quindi in apimservices (es. commse
 
 Avviare client1 e funziona tutto
 
+
+Per registrare e testare un servizio vostro nel gateway:
+
+Avviare microservice_db e serviceinteractionhandler.ol. Avviare gateway.ol.
+
+Andare su registrazione API, compilare i campi, fare aggiungi interfaccia e mettere quella propria.
+I servizi semplici hanno solo 1 interfaccia e nessun subservizio (non ho testato servizi più complessi per ora).
+
+A registrazione effettuata, dovrebbe essersi creato il servizio, l'interfaccia e l'interfaccia client nel db (ed anche il collegamento in jnmscat). Inoltre si dovrebbe vede in homepage ed ovunque altro (tipo su api registrate).
+
+Scaricare l'interfaccia dal sito.
+Avviare il servizio (che può essere anche non in locale ovviamente).
+Creare un client.ol che faccia una richiesta.
+
+(schema base)
+
+
+include "interfaces/twice_44.iol" <-- nome dell'interfaccia scaricata, ovviamente adeguate il vostro path
+
+include "console.iol" <-- l'include per la print
+
+main 
+{
+	req1 = 5; <-- il parametro che serve al servizio (twice vuole un intero per poi raddoppiarlo)
+	
+	with( req1 ) {
+        .key = "aaa"; <-- apikey
+        .user = "26"  <-- chiave utente visualizzabile nel proprio profilo
+    };
+	
+    twice@twice_44( req1 )( response ); <-- chiamata al servizio, la porta ha lo stesso nome dlel'interfaccia e comunque la vedete nel file .iol
+	
+    println@Console( response )() <-- la print
+
+}

@@ -79,13 +79,29 @@ angular.module('APIM.registra_utente')
 		$scope.ok = true;
         // se non ci sono errori
         if ($scope.ok) {
-          // applica hash con formato md5
-          var passmd5 = (MD5($scope.password));
+			// applica hash con formato md5
+			var passmd5 = (MD5($scope.password));
+		  
+			function generateUUID() {
+				var d = new Date().getTime();
+				if(typeof performance !== 'undefined' && typeof performance.now === 'function') {
+					d += performance.now(); // use high-precision timer if available
+				}
+				
+				var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+				var r = (d + Math.random()*16)%16 | 0;
+				d = Math.floor(d/16);
+				return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+				});
+
+				return uuid;
+			}
 
           // è stato scelto questo metodo di inviare i dati, alla fine, a causa di problemi molto gravi di interfacciamento con Jolie, causati da HTTP access control (CORS) che, nonostante gestito lato server, non permetteva comunque lo scambio di dati, poichè vi era un inconsistenza nell'handshake iniziale client/server
 
           $http.post("http://localhost:8101/basicclient_registration?"
-            +"Name="+$scope.nome
+		    +"IdClient="+generateUUID()
+            +"&Name="+$scope.nome
             +"&Surname="+$scope.cognome
             +"&Email="+$scope.email
             +"&Password="+passmd5
@@ -132,7 +148,7 @@ angular.module('APIM.registra_utente')
 				headers: { 'Content-Type': undefined }
 			}).then(function(response){
 				// ritorna l'uri del file ottenuto dalla response di Jolie
-				$scope.avataruri = 'http://localhost:8000/images/avatar utenti/'+response.data.$;
+				$scope.avataruri = 'http://localhost:8000/images/uploaded_images/'+response.data.$;
            });
        }
        // legge l'immagine come URL

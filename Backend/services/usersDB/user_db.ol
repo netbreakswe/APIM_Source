@@ -288,9 +288,10 @@ main
       		getDateTime@Time( 0 )( date ); //data corrente
 
       		// query
-      		q = "INSERT INTO clients (Name,Surname,Email,Password,Avatar,Registration, Credits,ClientType,AboutMe,Citizenship,LinkToSelf,PayPal) 
-           		VALUES (:nome,:cognome,:email,:password,:avataruri,:regdate,100,1,:aboutme,:cittadinanza,:linkweb,:paypal)";
+      		q = "INSERT INTO clients (IdClient,Name,Surname,Email,Password,Avatar,Registration,Credits,ClientType,AboutMe,Citizenship,LinkToSelf,PayPal) 
+           		VALUES (:idclient,:nome,:cognome,:email,:password,:avataruri,:regdate,100,1,:aboutme,:cittadinanza,:linkweb,:paypal)";
         	with( q ) {
+        		.idclient = request.IdClient;
 	            .nome = request.Name;
 	            .cognome = request.Surname;
 	            .email = request.Email;

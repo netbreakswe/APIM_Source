@@ -96,6 +96,7 @@ type clienttypedata: void {
 // rappr di un utente basic
 
 type basicclientdata: void {
+	.IdClient: string
 	.Name: string
 	.Surname: string
 	.Email: string

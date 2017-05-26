@@ -1,0 +1,8 @@
+L'acquisto consiste nel modificare i crediti dell'utente (update_credits), .then generando una apikey (apikey_registration) .then creando una transazione (purchase_registration) nel db.
+
+Potete riferirvi a diventa_utente.js visto che anch'essa è una transazione che diminuisce i crediti.
+
+Poi la schermata mostrerà l'apikey generata dall'algoritmo UUID (per l'implementazione riferitevi a registra_utente.js dove viene usata allo stesso identico modo).
+
+
+Il vero acquisto paypal si verifica nella parte di acquista_crediti.
