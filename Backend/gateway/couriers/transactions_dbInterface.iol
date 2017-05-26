@@ -25,6 +25,7 @@ type apikeydata: void {
 type apikey: void {
 	.APIKey: string
 	.IdClient: string
+	.IdMS: int
 }
 
 // rappr di una stringa univoca della licenza di una apikey
@@ -81,16 +82,6 @@ type msremaininglist: void {
 	.msremaininglist[0,*]: msremainingdata
 }
 
-// rappr di un acquisto (senza id)
-
-type smallpurchasedata: void {
-	.APIKey: string
-	.IdClient: string
-	.Timestamp: string
-	.Amount: int
-	.Type: string
-} 
-
 // apikey remaining update
 
 type apikeyremainingdata: void {
@@ -112,6 +103,6 @@ interface transactions_dbInterface {
 		retrieve_mslist_from_clientid( stringid )( msremaininglist ),
 
 		apikey_registration( apikeydata )( void ),
-		purchase_registration( smallpurchasedata )( void ),
+		purchase_registration( purchasedata )( void ),
 		apikey_remaining_update( apikeyremainingdata )( void )
 }

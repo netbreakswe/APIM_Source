@@ -1,8 +1,8 @@
 include "runtime.iol"
 include "console.iol"
-include "interfaces/redirectorinterface.iol"
-include "interfaces/microservices_dbInterface.iol"
-include "interfaces/serviceinteractionhandlerinterface.iol"
+include "../services/microservicesDB/interfaces/redirectorinterface.iol"
+include "../services/microservicesDB/interfaces/microservices_dbInterface.iol"
+include "../services/microservicesDB/interfaces/serviceinteractionhandlerinterface.iol"
 
 
 execution { concurrent }

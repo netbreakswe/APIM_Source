@@ -79,19 +79,20 @@ main
              	__isInArrayAndPos;
              	// se primitivo
              	if(_trovato) {
-                	// controlla se il tipo primitivo sia stato già incontrato
+             		// controlla se il tipo primitivo sia stato già incontrato
                 	_arr -> response.types;
                 	__isInArrayAndPos;
                 	// se tipo non incontrato lo salva in array response.types
                 	if(!_trovato) {
-	                   pos = #response.types;
-	                   response.types[pos] << _T; 
-	                   response.types[pos].name << "t" + primitiveextention; /*nome esteso*/
-	                   response.types[pos].definition << "type t"+primitiveextention+": "+response.types[pos]+"{\n .key:string \n .user:string \n}";
-	                   response.operations[ops].request << response.types[pos].name;
-	                   primitiveextention++
+                		pos = #response.types;
+	                   	response.types[pos] << _T; 
+	                   	response.types[pos].name << "t" + primitiveextention; /*nome esteso*/
+	                   	response.types[pos].definition << "type t" + primitiveextention + ": " + response.types[pos] + 
+	                   		"{\n .key: string \n .user: string \n .api: int\n}";
+	                   	response.operations[ops].request << response.types[pos].name;
+	                   	primitiveextention++
 
-                	// se il tipo è già stato incontrato
+                		// se il tipo è già stato incontrato
                 	} 
                 	else {
                   		response.operations[ops].request << response.types[_pos].name
@@ -168,12 +169,12 @@ main
   	// genera rappresentazione in stringa del courier
   	[generateCourier( request )( response ) {
 
-  		response = "";
+  		  response = "";
 
-  		// include transactionsdb per la validazione delle chiamate
-  		response += "include \"transactions_dbInterface.iol\"\n\n";
+  		  // include transactionsdb per la validazione delle chiamate
+  		  response += "include \"transactions_dbInterface.iol\"\n\n";
 
-		// begin service interfaces include:
+		    // begin service interfaces include:
 
       	for( i=0, i<#request.subservices, i++ ) {
       		for( j=0, j<#request.subservices[i].interfaces, j++ ) {
@@ -192,6 +193,7 @@ main
       	response += "type AuthenticationData: any {\n";
       	response += " .key: string\n";
       	response += " .user: string\n";
+      	response += " .api: int\n";
       	response += "}\n\n";
       	response += "interface extender AuthInterfaceExtender {\n";
       	response += "  RequestResponse:\n";
@@ -210,11 +212,10 @@ main
       	// transactionsdb outputport (per la validazione user+key)
       	
       	response += "outputPort transactions_dbOutput {\n";
-  		response += " Location: \"socket://localhost:8131\"\n";
-  		response += " Protocol: http\n";
-  		response += " Interfaces: transactions_dbInterface\n";
-		response += "}\n\n";
-
+  		  response += " Location: \"socket://localhost:8131\"\n";
+  		  response += " Protocol: http\n";
+  		  response += " Interfaces: transactions_dbInterface\n";
+		    response += "}\n\n";
 		
       	// begin outputports generator
 
@@ -257,7 +258,8 @@ main
             	response += "  [ interface "+request.subservices[i].interfaces[j].name+"( request )( response ) ] {\n";
             	response += "    check.APIKey = request.key;\n";
             	response += "    check.IdClient = request.user;\n";
-            	response += "    check_apikey_exists@transactions_dbOutput( check )( validity );";
+            	response += "    check.IdMS = request.api;\n";
+            	response += "    check_apikey_exists@transactions_dbOutput( check )( validity );\n";
             	response += "    if( validity ) {\n";
             	response += "      forward ( request )( response )\n";
             	response += "    }\n";

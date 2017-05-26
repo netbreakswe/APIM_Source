@@ -31,7 +31,9 @@ Avviare client1 e funziona tutto
 
 Per registrare e testare un servizio vostro nel gateway:
 
-Avviare microservice_db e serviceinteractionhandler.ol. Avviare gateway.ol.
+Avviare microservice_dbol e serviceinteractionhandler.ol. 
+Avviare gateway.ol.
+Avviare transactions_db.ol (per la validazione delle chiamate).
 
 Andare su registrazione API, compilare i campi, fare aggiungi interfaccia e mettere quella propria.
 I servizi semplici hanno solo 1 interfaccia e nessun subservizio (non ho testato servizi più complessi per ora).
@@ -54,8 +56,9 @@ main
 	req1 = 5; <-- il parametro che serve al servizio (twice vuole un intero per poi raddoppiarlo)
 	
 	with( req1 ) {
-        .key = "aaa"; <-- apikey
-        .user = "26"  <-- chiave utente visualizzabile nel proprio profilo
+        .key = "aaa-bbbb-ccc"; <-- apikey
+        .user = "1646bb20-1f89-4320-a0ca-b4fcc982d548" <-- chiave utente visualizzabile nel proprio profilo
+		.api = 12 <-- id api chiamata
     };
 	
     twice@twice_44( req1 )( response ); <-- chiamata al servizio, la porta ha lo stesso nome dlel'interfaccia e comunque la vedete nel file .iol

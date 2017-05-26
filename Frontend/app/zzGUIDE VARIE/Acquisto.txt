@@ -1,6 +1,8 @@
 L'acquisto consiste nel modificare i crediti dell'utente (update_credits), .then generando una apikey (apikey_registration) .then creando una transazione (purchase_registration) nel db.
+E' importante l'ordine perchè senza uuna apikey non si può generare una transazione (almeno non del tipo acquisto API).
 
-Potete riferirvi a diventa_utente.js visto che anch'essa è una transazione che diminuisce i crediti.
+
+Riguardo all'upgrade a developer, questo non registra alcuna transazione, perchè non ha un apikey associato. Quindi o facciamo 3 tipi di transazione "acquisto (API)","upgrade" e "pagamento mensile (API registrate)", oppure un tipo unico di transazione (però sarebbe da modificare un po' di servizi e casini). Quindi consiglierei caldamente il primo approccio, poi quando lo implementerete vi faccio io i servizi, ed anche le tables nuove nel db se volete.
 
 Poi la schermata mostrerà l'apikey generata dall'algoritmo UUID (per l'implementazione riferitevi a registra_utente.js dove viene usata allo stesso identico modo).
 

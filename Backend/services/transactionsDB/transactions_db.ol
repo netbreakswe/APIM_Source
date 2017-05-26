@@ -21,13 +21,6 @@ inputPort transactions_dbJSONInput {
   Interfaces: transactions_dbInterface
 }
 
-// basta questa port per comunicare con tutti i servizi
-inputPort transactions_dbInput {
-  Location: "socket://localhost:8132"
-  Protocol: sodep
-  Interfaces: transactions_dbInterface
-}
-
 
 init
 {
@@ -54,10 +47,11 @@ main
   	[check_apikey_exists( request )( response ) {
 
       //query
-      q = "SELECT APIKey FROM apikeys WHERE APIKey=:ak AND IdClient=:ic AND Remaining > 0";
+      q = "SELECT APIKey FROM apikeys WHERE APIKey=:ak AND IdClient=:ic AND IdMS=:ims AND Remaining > 0";
       with( request ) {
         q.ak = .APIKey;
-        q.ic = .IdClient
+        q.ic = .IdClient;
+        q.ims = .IdMS
       };
       query@Database( q )( result );
 
@@ -244,8 +238,9 @@ main
   	[purchase_registration( request )( response ) {
 
     	// query
-    	q = "INSERT INTO purchases (APIKey,IdClient,Timestamp,Amount,Type) VALUES (:ak,:ic,:t,:a,:ty)";
+    	q = "INSERT INTO purchases (IdPurchase,APIKey,IdClient,Timestamp,Amount,Type) VALUES (:ip,:ak,:ic,:t,:a,:ty)";
     	with( request ) {
+        q.ip = .IdPurchase;
       	q.ak = .APIKey;
       	q.ic = .IdClient;
       	q.t = .Timestamp;
