@@ -169,13 +169,15 @@ main
   	// genera rappresentazione in stringa del courier
   	[generateCourier( request )( response ) {
 
-  		  response = "";
+  		response = "";
 
-  		  // include transactionsdb per la validazione delle chiamate
-  		  response += "include \"transactions_dbInterface.iol\"\n\n";
+  		// include transactionsdb per la validazione delle chiamate
+  		response += "include \"transactions_dbInterface.iol\"\n";
 
-		    // begin service interfaces include:
+  		// include sladb per la gestione della sla nelle chiamate
+  		response += "include \"sla_dbInterface.iol\"\n\n";
 
+		// begin service interfaces include:
       	for( i=0, i<#request.subservices, i++ ) {
       		for( j=0, j<#request.subservices[i].interfaces, j++ ) {
             	// begin find interface name with regex
@@ -212,10 +214,18 @@ main
       	// transactionsdb outputport (per la validazione user+key)
       	
       	response += "outputPort transactions_dbOutput {\n";
-  		  response += " Location: \"socket://localhost:8131\"\n";
-  		  response += " Protocol: http\n";
-  		  response += " Interfaces: transactions_dbInterface\n";
-		    response += "}\n\n";
+  		response += " Location: \"socket://localhost:8131\"\n";
+  		response += " Protocol: http\n";
+  		response += " Interfaces: transactions_dbInterface\n";
+		response += "}\n\n";
+
+		// transactionsdb outputport (per la validazione user+key)
+      	
+      	response += "outputPort sla_dbOutput {\n";
+  		response += " Location: \"socket://localhost:8141\"\n";
+  		response += " Protocol: http\n";
+  		response += " Interfaces: sla_dbInterface\n";
+		response += "}\n\n";
 		
       	// begin outputports generator
 
@@ -256,12 +266,27 @@ main
       	for( i=0, i<#request.subservices, i++ ) {
         	for( j=0, j<#request.subservices[i].interfaces, j++ ) {
             	response += "  [ interface "+request.subservices[i].interfaces[j].name+"( request )( response ) ] {\n";
-            	response += "    check.APIKey = request.key;\n";
-            	response += "    check.IdClient = request.user;\n";
-            	response += "    check.IdMS = request.api;\n";
+
+            	response += "    requestinfo.APIKey = request.key;\n";
+            	response += "    requestinfo.IdClient = request.user;\n";
+            	response += "    requestinfo.IdMS = request.api;\n";
+
+            	response += "    check.APIKey = requestinfo.APIKey;\n";
+            	response += "    check.IdClient = requestinfo.IdClient;\n";
+            	response += "    check.IdMS = requestinfo.IdMS;\n";
             	response += "    check_apikey_exists@transactions_dbOutput( check )( validity );\n";
             	response += "    if( validity ) {\n";
-            	response += "      forward ( request )( response )\n";
+
+            	response += "      forward ( request )( response );\n";
+
+            	// remaining update response += "	   ;\n";
+
+            	response += "      slasurvey.APIKey = requestinfo.APIKey;\n";
+            	response += "      slasurvey.IdMS = requestinfo.IdMS;\n";
+            	response += "      slasurvey.Timestamp = \"2017-06-05 12:11:10\";\n";
+            	response += "      slasurvey.ResponseTime = 10;\n"; // da implementare
+            	response += "      slasurvey.IsCompliant = true;\n"; // da implementare
+            	response += "	   slasurvey_insert@sla_dbOutput( slasurvey )( void )\n";
             	response += "    }\n";
             	response += "  }\n"
          	}
