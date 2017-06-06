@@ -51,6 +51,14 @@ type msdata: void {
 	.Policy: int
 }
 
+// rappr id ms e numero da paragonare
+
+type compliantdata: void {
+	.IdMS: int
+	.Number: long
+}
+
+
 // rappr interfaccia di un microservizio
 
 type intfdata: void {
@@ -189,6 +197,8 @@ interface microservices_dbInterface {
 		retrieve_client_interface_from_id( id )( Info_Interf ),
 		homepage_ms_list( void) ( home_ms_list ),
 		retrieve_ms_info( id )( msdata ),
+		check_ms_iscompliant( compliantdata )( bool ),
+		retrieve_ms_policy( id )( int ),
 		retrieve_intf_info( id )( intfdata ),
 		retrieve_ms_from_developerid( stringid )( msdevlist ),
 		retrieve_interfaces_of_ms( id )( listinterfaces ),

@@ -1,4 +1,5 @@
 include "console.iol"
+
 include "interfaces/serviceinteractionhandlerinterface.iol"
 
 
@@ -172,17 +173,27 @@ main
   		response = "";
 
   		// include transactionsdb per la validazione delle chiamate
-  		response += "include \"transactions_dbInterface.iol\"\n";
+  		response += "include \"transactions_path.ol\"\n";
 
   		// include sladb per la gestione della sla nelle chiamate
-  		response += "include \"sla_dbInterface.iol\"\n\n";
+  		response += "include \"sla_path.ol\"\n";
+
+  		// include microservicesdb per iscompliant e policies
+  		response += "include \"microservices_path.ol\"\n\n";
+
+  		// include time per i timestamp
+  		response += "include \"time.iol\"\n";
+
+  		// include console per print varie
+  		response += "include \"console.iol\"\n\n";
+
 
 		// begin service interfaces include:
       	for( i=0, i<#request.subservices, i++ ) {
       		for( j=0, j<#request.subservices[i].interfaces, j++ ) {
             	// begin find interface name with regex
             	findinterfname = request.subservices[i].interfaces[j];
-	            findinterfname.regex = "(?:interface |vs\\. )(\\w+)"; //parola dopo 'interface'
+	            findinterfname.regex = "(?:interface |vs\\. )(\\w+)"; // parola dopo interface
 	            find@StringUtils(findinterfname)(interfname);
 	            request.subservices[i].interfaces[j].name = interfname.group[1];
 	            // end find interface name with regex
@@ -210,7 +221,6 @@ main
       	// -------end static content-------
 
 
-
       	// transactionsdb outputport (per la validazione user+key)
       	
       	response += "outputPort transactions_dbOutput {\n";
@@ -219,12 +229,20 @@ main
   		response += " Interfaces: transactions_dbInterface\n";
 		response += "}\n\n";
 
-		// transactionsdb outputport (per la validazione user+key)
+		// sladb outputport (per la gestione SLA)
       	
       	response += "outputPort sla_dbOutput {\n";
   		response += " Location: \"socket://localhost:8141\"\n";
   		response += " Protocol: http\n";
   		response += " Interfaces: sla_dbInterface\n";
+		response += "}\n\n";
+
+		// microservicesdb outputport (per iscompliant e policies)
+      	
+      	response += "outputPort microservices_dbOutput {\n";
+  		response += " Location: \"socket://localhost:8121\"\n";
+  		response += " Protocol: http\n";
+  		response += " Interfaces: microservices_dbInterface\n";
 		response += "}\n\n";
 		
       	// begin outputports generator
@@ -267,27 +285,83 @@ main
         	for( j=0, j<#request.subservices[i].interfaces, j++ ) {
             	response += "  [ interface "+request.subservices[i].interfaces[j].name+"( request )( response ) ] {\n";
 
+            	// memorizza info della request
             	response += "    requestinfo.APIKey = request.key;\n";
             	response += "    requestinfo.IdClient = request.user;\n";
             	response += "    requestinfo.IdMS = request.api;\n";
 
+            	// organizza dati per il check apukey
             	response += "    check.APIKey = requestinfo.APIKey;\n";
             	response += "    check.IdClient = requestinfo.IdClient;\n";
             	response += "    check.IdMS = requestinfo.IdMS;\n";
+
+				// check apikey
             	response += "    check_apikey_exists@transactions_dbOutput( check )( validity );\n";
+
+            	// controllo validità
             	response += "    if( validity ) {\n";
 
-            	response += "      forward ( request )( response );\n";
+            	// chiamata valida
 
-            	// remaining update response += "	   ;\n";
-
+            	// assegnazioni generiche allo sla survey
             	response += "      slasurvey.APIKey = requestinfo.APIKey;\n";
             	response += "      slasurvey.IdMS = requestinfo.IdMS;\n";
-            	response += "      slasurvey.Timestamp = \"2017-06-05 12:11:10\";\n";
-            	response += "      slasurvey.ResponseTime = 10;\n"; // da implementare
-            	response += "      slasurvey.IsCompliant = true;\n"; // da implementare
+
+            	// calcola timestamp pre-forward
+            	response += "      getCurrentTimeMillis@Time( void )( currmillis );\n";
+            	response += "      slasurvey.Timestamp = currmillis;\n";
+
+            	// forward
+            	response += "      forward( request )( response );\n";
+
+            	// calcola response time post-forward
+            	response += "      getCurrentTimeMillis@Time( void )( responsemillis );\n";
+            	response += "      responsetime = responsemillis - currmillis;\n";
+            	response += "      println@Console( responsetime )();\n";
+            	response += "      slasurvey.ResponseTime = responsetime;\n";
+
+            	// calcola se la sla garantita sia rispettata
+            	response += "      callcompliance.IdMS = requestinfo.IdMS;\n";
+            	response += "      callcompliance.Number = responsetime;\n";
+            	response += "      check_ms_iscompliant@microservices_dbOutput( callcompliance )( compliance );\n";
+            	response += "      slasurvey.IsCompliant = compliance;\n";
+
+            	// operazioni riguardanti policy e remaining (se la SLA è rispettata scala il remaining, altrimenti no)
+            	response += "      if( compliance ) {\n";
+            	response += "        callidms.Id = requestinfo.IdMS;\n";
+            	response += "        retrieve_ms_policy@microservices_dbOutput( callidms )( policy );\n";
+            	response += "        remaininginfo.APIKey = requestinfo.APIKey;\n";
+
+            	// policy per numero di chiamate
+            	response += "        if( policy == 1 ) {\n";
+            	response += "          remaininginfo.Number = -1\n";
+            	response += "        }\n";
+
+            	// policy per tempo di utilizzo
+				response += "        else if( policy == 2 ) {\n";
+				response += "          println@Console( 0 - responsetime )();\n";
+            	response += "          remaininginfo.Number = 0 - responsetime\n";
+            	response += "        };\n";
+
+            	// policy per traffico dati (da implementare)
+				//response += "        else if( policy == 3 ) {\n";
+				//response += "          checkTraffic@Service( request )( reqtraffic );\n";
+				//response += "          checkTraffic@Service( response )( restraffic );\n";
+            	//response += "          remaininginfo.Number = 0 - (reqtraffic + restraffic) \n";
+            	//response += "        };\n";
+
+
+            	// aggiornamento del remaining
+            	response += "        apikey_remaining_update@transactions_dbOutput( remaininginfo )( void )\n";
+            	response += "      };\n";
+
+
+            	// archivia lo sla survey
             	response += "	   slasurvey_insert@sla_dbOutput( slasurvey )( void )\n";
             	response += "    }\n";
+
+            	// chiamata non valida
+
             	response += "  }\n"
          	}
       	};

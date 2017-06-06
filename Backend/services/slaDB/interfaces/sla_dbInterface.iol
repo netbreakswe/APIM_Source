@@ -7,8 +7,8 @@ type id: void {
 
 type slasurveylistdata: void {
 	.IdMS: int
-	.Timestamp: string
-	.ResponseTime: double
+	.Timestamp: long
+	.ResponseTime: long
 	.IsCompliant: bool
 }
 
@@ -19,8 +19,8 @@ type slasurveylist: void {
 // retrieve sla survey info from specific ms
 
 type slasurveylistmsdata: void {
-	.Timestamp: string
-	.ResponseTime: double
+	.Timestamp: long
+	.ResponseTime: long
 	.IsCompliant: bool
 }
 
@@ -33,8 +33,8 @@ type slasurveylistms: void {
 type slasurveydata: void {
 	.IdSLASurvey: int
 	.IdMS: int
-	.Timestamp: string
-	.ResponseTime: double
+	.Timestamp: long
+	.ResponseTime: long
 	.IsCompliant: bool
 }
 
@@ -47,8 +47,8 @@ type slasurvey: void {
 type slasurveydataw: void {
 	.APIKey: string
 	.IdMS: int
-	.Timestamp: string
-	.ResponseTime: double
+	.Timestamp: long
+	.ResponseTime: long
 	.IsCompliant: bool
 }
 

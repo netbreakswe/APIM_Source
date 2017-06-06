@@ -217,7 +217,7 @@ main
         println@Console("Microservice not found")()
     	}
     	else {
-        for ( i=0, i<#result.row, i++ ) {
+        for( i=0, i<#result.row, i++ ) {
         	println@Console( "Got microservice with id "+ request.Id )();
         	response << result.row[i]
      		}
@@ -225,6 +225,65 @@ main
    		println@Console("Retrieved all info about microservice " + response.Name)()
 
   	}]
+
+
+
+
+
+    // recupera tutte le info di base di un microservizio i (per web app)
+    [check_ms_iscompliant( request )( response ) {
+
+      // query
+      q = "SELECT SLAGuaranteed FROM microservices WHERE IdMS=:i";
+      with ( q ) {
+        .i = request.IdMS
+      };
+
+      query@Database( q )( result );
+
+      if( #result.row == 0 ) {
+        println@Console("Microservice not found")()
+      }
+      else {
+        slag = result.row[0].SLAGuaranteed;
+        println@Console( "Retrieved SLA Guaranteed " + slag )();
+        if( slag > request.Number ) {
+          response = true
+        }
+        else {
+          response = false
+        }
+      };
+      println@Console("Retrieved compliance of ms " + request.IdMS)()
+
+    }]
+
+
+
+
+
+    // recupera la policy di un microservizio
+    [retrieve_ms_policy( request )( response ) {
+
+      // query
+      q = "SELECT Policy FROM microservices WHERE IdMS=:i";
+      with ( q ) {
+        .i = request.Id
+      };
+
+      query@Database( q )( result );
+
+      if( #result.row == 0 ) {
+        println@Console("Microservice not found")()
+      }
+      else {
+        response = result.row[0].Policy;
+        println@Console( "Retrieved Policy number " + response )()
+      };
+      println@Console("Retrieved policy of ms " + request.Id)()
+
+    }]
+
 
 
 
@@ -237,7 +296,7 @@ main
 	    q.i = request.Id;
 	    query@Database( q )( result );
 
-	    if ( #result.row == 0 ) {
+	    if( #result.row == 0 ) {
 	    	println@Console("Interface not found")()
 	    }
 	    else {
@@ -275,7 +334,7 @@ main
             j++
           }
         };        
-        if(!trovato) {
+        if( !trovato ) {
           // se la location non è stata mai trovata nei subservice precedente è un nuovo subservice
 	         subservice_index = #response.subservices;
 	         interf_index = #response.subservices[subservice_index].interfaces;
