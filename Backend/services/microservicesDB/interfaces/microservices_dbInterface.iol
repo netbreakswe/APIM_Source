@@ -198,6 +198,7 @@ interface microservices_dbInterface {
 		homepage_ms_list( void) ( home_ms_list ),
 		retrieve_ms_info( id )( msdata ),
 		check_ms_iscompliant( compliantdata )( bool ),
+		check_ms_isactive( id )( bool ),
 		retrieve_ms_policy( id )( int ),
 		retrieve_intf_info( id )( intfdata ),
 		retrieve_ms_from_developerid( stringid )( msdevlist ),

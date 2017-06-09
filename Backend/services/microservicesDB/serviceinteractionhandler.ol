@@ -87,9 +87,9 @@ main
                 	if(!_trovato) {
                 		pos = #response.types;
 	                   	response.types[pos] << _T; 
-	                   	response.types[pos].name << "t" + primitiveextention; /*nome esteso*/
+	                   	response.types[pos].name << "t" + primitiveextention; // nome esteso
 	                   	response.types[pos].definition << "type t" + primitiveextention + ": " + response.types[pos] + 
-	                   		"{\n .key: string \n .user: string \n .api: int\n}";
+	                   		" {\n .key: string \n .user: string \n .api: int\n}";
 	                   	response.operations[ops].request << response.types[pos].name;
 	                   	primitiveextention++
 
@@ -121,6 +121,7 @@ main
     [generateClientInterface( request )( response) {
 
     	// begin generazione interfaccia client del servizio
+
        	// costruisce la lista dei tipi complessi
        	for( i=0, i<#request.types, i++ ) {
        		response += request.types[i].definition + "\n"
@@ -167,6 +168,7 @@ main
 
 
 
+
   	// genera rappresentazione in stringa del courier
   	[generateCourier( request )( response ) {
 
@@ -187,22 +189,25 @@ main
   		// include console per print varie
   		response += "include \"console.iol\"\n\n";
 
+      	// include calcMessage
+      	response += "include \"calcMessage_path.ol\"\n\n";
+
 
 		// begin service interfaces include:
       	for( i=0, i<#request.subservices, i++ ) {
       		for( j=0, j<#request.subservices[i].interfaces, j++ ) {
-            	// begin find interface name with regex
-            	findinterfname = request.subservices[i].interfaces[j];
-	            findinterfname.regex = "(?:interface |vs\\. )(\\w+)"; // parola dopo interface
-	            find@StringUtils(findinterfname)(interfname);
-	            request.subservices[i].interfaces[j].name = interfname.group[1];
-	            // end find interface name with regex
-	            response += request.subservices[i].interfaces[j] + "\n\n"
-         	}
+          		// begin find interface name with regex
+          		findinterfname = request.subservices[i].interfaces[j];
+          		findinterfname.regex = "(?:interface |vs\\. )(\\w+)"; // parola dopo interface
+          		find@StringUtils(findinterfname)(interfname);
+          		request.subservices[i].interfaces[j].name = interfname.group[1];
+          		// end find interface name with regex
+          		response += request.subservices[i].interfaces[j] + "\n\n"
+        	}
       	};
       	// end service interfaces include:
 
-       	// -------begin static content-------
+      	// -------begin static content-------
       	response += "type AuthenticationData: any {\n";
       	response += " .key: string\n";
       	response += " .user: string\n";
@@ -214,55 +219,62 @@ main
       	response += "  OneWay:\n";
       	response += "    *( AuthenticationData )\n";
       	response += "}\n\n";
-      	response += "interface AggregatorInterface {\n";
-      	response += "  RequestResponse:\n";
-      	response += "    mock(string)(string)\n";
+        response += "interface AggregatorInterface {\n";
+        response += "  RequestResponse:\n";
+      	response += "    mock( string )( string )\n";
       	response += "}\n\n";
       	// -------end static content-------
 
 
-      	// transactionsdb outputport (per la validazione user+key)
-      	
+      	// transactionsdb outputport (per la validazione user+key)	
       	response += "outputPort transactions_dbOutput {\n";
-  		response += " Location: \"socket://localhost:8131\"\n";
-  		response += " Protocol: http\n";
-  		response += " Interfaces: transactions_dbInterface\n";
-		response += "}\n\n";
+  		  response += " Location: \"socket://localhost:8131\"\n";
+  		  response += " Protocol: http\n";
+  		  response += " Interfaces: transactions_dbInterface\n";
+  		  response += "}\n\n";
 
-		// sladb outputport (per la gestione SLA)
-      	
+		    // sladb outputport (per la gestione SLA)	
       	response += "outputPort sla_dbOutput {\n";
-  		response += " Location: \"socket://localhost:8141\"\n";
-  		response += " Protocol: http\n";
-  		response += " Interfaces: sla_dbInterface\n";
-		response += "}\n\n";
+  		  response += " Location: \"socket://localhost:8141\"\n";
+  		  response += " Protocol: http\n";
+  		  response += " Interfaces: sla_dbInterface\n";
+		    response += "}\n\n";
 
-		// microservicesdb outputport (per iscompliant e policies)
-      	
+		    // microservicesdb outputport (per iscompliant e policies)
       	response += "outputPort microservices_dbOutput {\n";
-  		response += " Location: \"socket://localhost:8121\"\n";
-  		response += " Protocol: http\n";
-  		response += " Interfaces: microservices_dbInterface\n";
-		response += "}\n\n";
-		
+  		  response += " Location: \"socket://localhost:8121\"\n";
+  		  response += " Protocol: http\n";
+  		  response += " Interfaces: microservices_dbInterface\n";
+		    response += "}\n\n";
+
+        // calcMessage outputport
+        response += "outputPort calcMessageOutput {\n";
+        response += " Interfaces: calcMessageInterface\n";
+        response += "}\n\n";
+
+        // calcMessage embedding
+        response += "embedded {\n";
+        response += " Java: \"jolie.calcMessage.calcMessage\" in calcMessageOutput\n";
+        response += "}\n\n";
+
       	// begin outputports generator
 
       	for( i=0, i<#request.subservices, i++ ) {
       		response += "outputPort SubService"+i+" {\n";
-            response += " Interfaces: ";
-            for( j=0, j<#request.subservices[i].interfaces - 1, j++ ) {
+          	response += " Interfaces: ";
+          	for( j=0, j<#request.subservices[i].interfaces - 1, j++ ) {
             	response += request.subservices[i].interfaces[j].name + ", "
-            };
-            response += request.subservices[i].interfaces[j].name;
-            response += "\n Location: \""+ request.subservices[i].location+ "\"\n";
-            response += " Protocol: "+request.subservices[i].protocol+"\n";
-            response += "}\n\n"
+          	};
+          	response += request.subservices[i].interfaces[j].name;
+          	response += "\n Location: \""+ request.subservices[i].location+ "\"\n";
+          	response += " Protocol: "+request.subservices[i].protocol+"\n";
+          	response += "}\n\n"
       	};
 
       	// end outputports generator
 
-      	// -------begin static content-------
-      	response += "inputPort Client {\n";
+     	  // -------begin static content-------
+     	  response += "inputPort Client {\n";
       	response += " Location: \"local\"\n";
       	response += " Interfaces: AggregatorInterface\n";
       	response += " Aggregates: ";
@@ -270,7 +282,7 @@ main
 
       	for( i=0, i<#request.subservices - 1, i++ ) {
       		if(#request.subservices) {
-            	response += "SubService"+i+" with AuthInterfaceExtender, "
+        		response += "SubService"+i+" with AuthInterfaceExtender, "
       		}
       	};
 
@@ -280,100 +292,113 @@ main
       	response += " courier Client {\n";
       	// -------end static content-------
 
-      	// begin courier generator RequestResponse
+		    // begin courier generator RequestResponse
       	for( i=0, i<#request.subservices, i++ ) {
         	for( j=0, j<#request.subservices[i].interfaces, j++ ) {
-            	response += "  [ interface "+request.subservices[i].interfaces[j].name+"( request )( response ) ] {\n";
+          		response += "  [ interface "+request.subservices[i].interfaces[j].name+"( request )( response ) ] {\n";
+          		
+          		// error handling
+          		response += "    install( RequestNotValid =>\n";
+          		response += "    	println@Console( \"Request not valid!\" )()\n";
+          		response += "    );";
+				
 
-            	// memorizza info della request
-            	response += "    requestinfo.APIKey = request.key;\n";
-            	response += "    requestinfo.IdClient = request.user;\n";
-            	response += "    requestinfo.IdMS = request.api;\n";
+          		// memorizza info della request
+          		response += "    requestinfo.APIKey = request.key;\n";
+          		response += "    requestinfo.IdClient = request.user;\n";
+          		response += "    requestinfo.IdMS = request.api;\n";
 
-            	// organizza dati per il check apukey
-            	response += "    check.APIKey = requestinfo.APIKey;\n";
-            	response += "    check.IdClient = requestinfo.IdClient;\n";
-            	response += "    check.IdMS = requestinfo.IdMS;\n";
+          		// organizza dati per il check apikey
+          		response += "    check.APIKey = requestinfo.APIKey;\n";
+          		response += "    check.IdClient = requestinfo.IdClient;\n";
+          		response += "    check.IdMS = requestinfo.IdMS;\n";
 
-				// check apikey
-            	response += "    check_apikey_exists@transactions_dbOutput( check )( validity );\n";
+				      // check apikey
+          		response += "    check_apikey_exists@transactions_dbOutput( check )( validity );\n";
 
-            	// controllo validità
-            	response += "    if( validity ) {\n";
+          		// check isactive
+          		response += "    checkisactive.Id = requestinfo.IdMS;\n";
+          		response += "    check_ms_isactive@microservices_dbOutput( checkisactive )( availability );\n";
 
-            	// chiamata valida
+          		// controllo validità e se sia attivo
+          		response += "    if( validity && availability ) {\n";
 
-            	// assegnazioni generiche allo sla survey
-            	response += "      slasurvey.APIKey = requestinfo.APIKey;\n";
-            	response += "      slasurvey.IdMS = requestinfo.IdMS;\n";
+          		// chiamata valida
 
-            	// calcola timestamp pre-forward
-            	response += "      getCurrentTimeMillis@Time( void )( currmillis );\n";
-            	response += "      slasurvey.Timestamp = currmillis;\n";
+          		// assegnazioni generiche allo sla survey
+          		response += "      slasurvey.APIKey = requestinfo.APIKey;\n";
+          		response += "      slasurvey.IdMS = requestinfo.IdMS;\n";
 
-            	// forward
-            	response += "      forward( request )( response );\n";
+          		// calcola timestamp pre-forward
+          		response += "      getCurrentTimeMillis@Time( void )( currmillis );\n";
+          		response += "      slasurvey.Timestamp = currmillis;\n";
 
-            	// calcola response time post-forward
-            	response += "      getCurrentTimeMillis@Time( void )( responsemillis );\n";
-            	response += "      responsetime = responsemillis - currmillis;\n";
-            	response += "      println@Console( responsetime )();\n";
-            	response += "      slasurvey.ResponseTime = responsetime;\n";
+          		// forward
+          		response += "      forward( request )( response );\n";
 
-            	// calcola se la sla garantita sia rispettata
-            	response += "      callcompliance.IdMS = requestinfo.IdMS;\n";
-            	response += "      callcompliance.Number = responsetime;\n";
-            	response += "      check_ms_iscompliant@microservices_dbOutput( callcompliance )( compliance );\n";
-            	response += "      slasurvey.IsCompliant = compliance;\n";
+          		// calcola response time post-forward
+          		response += "      getCurrentTimeMillis@Time( void )( responsemillis );\n";
+          		response += "      responsetime = responsemillis - currmillis;\n";
+          		response += "      slasurvey.ResponseTime = responsetime;\n";
 
-            	// operazioni riguardanti policy e remaining (se la SLA è rispettata scala il remaining, altrimenti no)
-            	response += "      if( compliance ) {\n";
-            	response += "        callidms.Id = requestinfo.IdMS;\n";
-            	response += "        retrieve_ms_policy@microservices_dbOutput( callidms )( policy );\n";
-            	response += "        remaininginfo.APIKey = requestinfo.APIKey;\n";
+          		// calcola se la sla garantita sia rispettata
+          		response += "      callcompliance.IdMS = requestinfo.IdMS;\n";
+          		response += "      callcompliance.Number = responsetime;\n";
+              	response += "      check_ms_iscompliant@microservices_dbOutput( callcompliance )( compliance );\n";
+          		response += "      slasurvey.IsCompliant = compliance;\n";
 
-            	// policy per numero di chiamate
-            	response += "        if( policy == 1 ) {\n";
-            	response += "          remaininginfo.Number = -1\n";
-            	response += "        }\n";
+          		// operazioni riguardanti policy e remaining (se la SLA è rispettata scala il remaining, altrimenti no)
+          		response += "      if( compliance ) {\n";
+          		response += "        callidms.Id = requestinfo.IdMS;\n";
+          		response += "        retrieve_ms_policy@microservices_dbOutput( callidms )( policy );\n";
+          		response += "        remaininginfo.APIKey = requestinfo.APIKey;\n";
 
-            	// policy per tempo di utilizzo
-				response += "        else if( policy == 2 ) {\n";
-				response += "          println@Console( 0 - responsetime )();\n";
-            	response += "          remaininginfo.Number = 0 - responsetime\n";
-            	response += "        };\n";
+          		// policy per numero di chiamate
+          		response += "        if( policy == 1 ) {\n";
+          		response += "          remaininginfo.Number = -1\n";
+          		response += "        }\n";
 
-            	// policy per traffico dati (da implementare)
-				//response += "        else if( policy == 3 ) {\n";
-				//response += "          checkTraffic@Service( request )( reqtraffic );\n";
-				//response += "          checkTraffic@Service( response )( restraffic );\n";
-            	//response += "          remaininginfo.Number = 0 - (reqtraffic + restraffic) \n";
-            	//response += "        };\n";
+          		// policy per tempo di utilizzo
+		  		    response += "        else if( policy == 2 ) {\n";
+          		response += "          remaininginfo.Number = 0 - responsetime\n";
+          		response += "        }\n";
 
+          		// policy per traffico dati (da implementare)
 
-            	// aggiornamento del remaining
-            	response += "        apikey_remaining_update@transactions_dbOutput( remaininginfo )( void )\n";
-            	response += "      };\n";
+				response += "        else if( policy == 3 ) {\n";
+				response += "          calcMessage@calcMessageOutput( request )( reqtraffic );\n";
+				response += "          calcMessage@calcMessageOutput( response )( resptraffic );\n";
+				response += "          println@Console( \"Reqtraffic: \" + reqtraffic.bytesize )(); \n";
+				response += "          println@Console( \"Resptraffic: \" + resptraffic.bytesize )(); \n";
+          		response += "          remaininginfo.Number = 0 - (reqtraffic.bytesize + resptraffic.bytesize) \n";
+              	response += "        };\n";
 
+          		// aggiornamento del remaining
+          		response += "        apikey_remaining_update@transactions_dbOutput( remaininginfo )( void )\n";
+          		response += "      };\n";
 
-            	// archivia lo sla survey
-            	response += "	   slasurvey_insert@sla_dbOutput( slasurvey )( void )\n";
-            	response += "    }\n";
+          		// archivia lo sla survey
+          		response += "	   slasurvey_insert@sla_dbOutput( slasurvey )( void )\n";
+          		response += "    }\n";
 
-            	// chiamata non valida
+          		// chiamata non valida
+          		response += "    else {\n";
+          		response += "      throw( RequestNotValid )\n";
+          		response += "    }\n";
 
-            	response += "  }\n"
-         	}
+          		// parentesi finale
+          		response += "  }\n"
+        	}
       	};
       	// end courier generator RequestResponse
 
       	// begin courier generator Request
       	for( i=0, i<#request.subservices, i++ ) {
         	for( j=0, j<#request.subservices[i].interfaces, j++ ) {
-            	response += "  [ interface "+request.subservices[i].interfaces[j].name+"( request ) ] {\n";
-            	response += "    forward ( request )\n";
-            	response += "  }\n"
-         	}
+         		response += "  [ interface "+request.subservices[i].interfaces[j].name+"( request ) ] {\n";
+          		response += "    forward ( request )\n";
+          		response += "  }\n"
+        	}
       	};
       	// end courier generator Request
 

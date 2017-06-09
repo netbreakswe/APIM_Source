@@ -261,6 +261,34 @@ main
 
 
 
+    // recupera tutte le info di base di un microservizio i (per web app)
+    [check_ms_isactive( request )( response ) {
+
+      // query
+      q = "SELECT IsActive FROM microservices WHERE IdMS=:i";
+      with ( q ) {
+        .i = request.Id
+      };
+
+      query@Database( q )( result );
+
+      if( #result.row == 0 ) {
+        println@Console("Microservice not found")()
+      }
+      else {
+        if( result.row[0].IsActive == 1 ) {
+          response = true
+        }
+        else {
+          response = false
+        }
+      };
+      println@Console("Retrieved availability of ms " + request.Id)()
+
+    }]
+
+
+
 
     // recupera la policy di un microservizio
     [retrieve_ms_policy( request )( response ) {
