@@ -35,8 +35,7 @@ angular.module('APIM.registra_api')
 	// lista categorie selezionate
 	$scope.selected_cat = [];
 
-
-	// aggiunge subservizio a lista subservizi nel form. se già selezionato rimuovi             
+	// aggiunge o toglie una categoria al servizio              
 	$scope.addNewCategory = function(event) {
 		var ok = false;
 		// controlla se la categoria sia stata già selezionata
@@ -56,7 +55,7 @@ angular.module('APIM.registra_api')
 		// se non selezionata, la inserisce nell'array delle categorie selezionate
 		if(!ok) {
 			$scope.selected_cat.push(event.target.attributes.IdCategory.value);
-			// tutte le categorie selezionate avranno un look differente (Class) per far capire all'utente (da implementare?)
+			// applica la class alla categoria
 			for(i=0; i<$scope.categories.length; i++) {
 				if(event.target.attributes.IdCategory.value == $scope.categories[i].IdCategory) {
 					$scope.categories[i].Class = "label label-success";
@@ -194,7 +193,7 @@ angular.module('APIM.registra_api')
             // per i file inviati tramite form il Content-Type va messo undefined
             headers: { 'Content-Type': undefined }
         }).then(function(response){
-			//$location.path("/conferma_registrazione_api");
+			$location.path("/conferma_registrazione_api");
         });
     };
 	

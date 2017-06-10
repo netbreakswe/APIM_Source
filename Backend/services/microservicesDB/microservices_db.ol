@@ -641,16 +641,16 @@ main
     	q = "UPDATE microservices SET Name=:n,Description=:d,Version=:v,LastUpdate=:lu,Logo=:lg,DocPDF=:dp,
       		DocExternal=:de,Profit=:pf,SLAGuaranteed=:sg WHERE IdMS=:i";
     	with( request ) {
-      	q.i = .IdMS;
-      	q.n = .Name;
-      	q.d = .Description;
-		    q.v = .Version;
-		    q.lu = .LastUpdate;
-		    q.lg = .Logo;
-		    q.dp = .DocPDF;
-		    q.de = .DocExternal;
-		    q.pf = .Profit;
-		    q.sg = .SLAGuaranteed
+	      	q.i = .IdMS;
+	      	q.n = .Name;
+	      	q.d = .Description;
+			q.v = .Version;
+			q.lu = .LastUpdate;
+			q.lg = .Logo;
+			q.dp = .DocPDF;
+			q.de = .DocExternal;
+			q.pf = .Profit;
+			q.sg = .SLAGuaranteed
     	};
     	update@Database( q )( result );
     	println@Console("Updating microservice with id " + request.IdMS)()
@@ -665,10 +665,10 @@ main
     	// query
     	q = "UPDATE interfaces SET Interf=:i,Loc=:l,Protoc=:p WHERE IdInterface=:ii";
     	with( q ) {
-      	.ii = request.IdInterface;
-      	.i = request.Interf;
-      	.l = request.Loc;
-      	.p = request.Protoc
+	      	.ii = request.IdInterface;
+	      	.i = request.Interf;
+	      	.l = request.Loc;
+	      	.p = request.Protoc
     	};
    		update@Database( q )( result );
     	println@Console( "Updating interface " + request.IdInterface )()
@@ -700,7 +700,7 @@ main
     	q = "DELETE FROM jnmscat WHERE IdMS=:ims AND IdCategory=:c";
     	with( request ) {
      		q.ims = .IdMS;
-      	q.c = .IdCategory
+      		q.c = .IdCategory
     	};
     	update@Database( q )( result );
     	println@Console( "Removing category from microservice " + request.IdMS )()
@@ -719,13 +719,13 @@ main
 	    getJsonValue@JsonUtils(json)(meta_service_value);
 	    for( i=0, i<#meta_service_value.operations, i++ ) {
 	    	client_I.operations[i].name = meta_service_value.operations[i].name;
-	      client_I.operations[i].request = meta_service_value.operations[i].request;
-	      client_I.operations[i].response = meta_service_value.operations[i].response;
-	      client_I.operations[i].description = meta_service_value.operations[i].description;
-	      for( j=0, j<#meta_service_value.operations[i].ecceptions, j++ ) {
-	      	client_I.operations[i].ecceptions[j].name = meta_service_value.operations[i].ecceptions[j].name;
-	         client_I.operations[i].ecceptions[j].param = meta_service_value.operations[i].ecceptions[j].param
-	      }
+	      	client_I.operations[i].request = meta_service_value.operations[i].request;
+	      	client_I.operations[i].response = meta_service_value.operations[i].response;
+	      	client_I.operations[i].description = meta_service_value.operations[i].description;
+	      	for( j=0, j<#meta_service_value.operations[i].ecceptions, j++ ) {
+	      		client_I.operations[i].ecceptions[j].name = meta_service_value.operations[i].ecceptions[j].name;
+	        	client_I.operations[i].ecceptions[j].param = meta_service_value.operations[i].ecceptions[j].param
+	      	}
 	    };
 	    for( i=0, i<#meta_service_value.types, i++ ) {
 	    	client_I.types[i].name = meta_service_value.types[i].name;
@@ -737,7 +737,7 @@ main
 	    q = "UPDATE clientinterf SET Interface_Meta=:i_meta WHERE IdMS=:idms;";
 	    with(q) {
 	    	.idms = request.Id;
-	      .i_meta = client_I_jsonstring
+	      	.i_meta = client_I_jsonstring
 	    };
 	    update@Database( q )( result_A1 );
 	    println@Console("client interface updated")()

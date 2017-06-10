@@ -78,7 +78,11 @@ Ok.
 + Da personalizzare, tipo mettere un recap del servizio inserito
 
 Modifica API:
-Non lo so, non l'ho guardato. Comunque occorre mettere un link ad esso, tipo nel caso tu sia il developer puoi accedere alla pagina di modifica dalla schermata di visualizzazione dell'API (c'è già la funzione per vedere se sei il developer) ed inserirlo nella lista a sinistra della tua "area personale", sotto api registrate o dentro, dove vi pare.
+Da implementare.
+
+- Modifica categorie
+- Modifica interfacce API
+- Modifica interfaccia cliente
 
 Registrazione utente:
 Quasi.

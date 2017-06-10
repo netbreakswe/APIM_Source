@@ -67,13 +67,13 @@
 							<tr ng-repeat="service in services">
 								
 								<td class="text-center">
-									<a href="#!/modifica_info_api/{{service.IdMS}}">
+									<a href="#!/api/{{service.IdMS}}">
 										<img ng-src="{{service.Logo}}" alt="logo api" class="imagesmall">
 									</a>
 								</td>
 								
 								<td>
-									<a href="#!/modifica_info_api/{{service.IdMS}}">{{service.Name}}</a>
+									<a href="#!/api/{{service.IdMS}}">{{service.Name}}</a>
 								</td>
 								
 								<td ng-if="service.IsActive">
