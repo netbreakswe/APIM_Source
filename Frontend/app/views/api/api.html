@@ -16,7 +16,10 @@
 				
 				<div class="panel panel-default">
 					<div class="panel-heading"><b>Identificativo API:</b></div>
-					<div class="panel-body">{{IdMS}}</div>
+					<div class="panel-body">
+						<span id="copyTarget">{{IdMS}}</span>
+						<button id="copyButton" class="copyButton">Copia</button>
+					</div>
 				</div>
 				
 				<!-- div per controllare se si sia loggati -->
@@ -65,8 +68,10 @@
 					<td ng-if="Policy == 3" ng-cloak><a href="#!/policytr">Per traffico dati</a></td>
                 </tr>
                 <tr>
-                    <td>Documentazione Pdf:</td>
-                    <td><a href="{{DocPDF}}">link</a></td>
+                    <td>Documentazione PDF:</td>
+                    <td>
+						<a target="_self" href="{{DocPDF}}" download="{{Name}}_documentation.pdf">Download</a>
+					</td>
                 </tr>
                 <tr>
                     <td>Documentazione Esterna:</td>
@@ -90,24 +95,26 @@
 
 <!-- Visualizzazione Interfaccia API -->
 <div class="row">
-    <div class="col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
-		<h2>Interfaccia API:</h2>
-		<h3>Info per l'uso:</h3>
-		<h4>OutputPort: {{Name}}_{{IdMS}}</h4>
-		<h4><button class="btn btn-success" ng-click="Download_Client_Interface()">.iol Client Interface</button></h4>
 
-		<h3>Lista Operation:</h3>
-		<div ng-repeat="operation in operations">
+    <div class="col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
+	
+		<h2>Interfaccia API</h2>
+		<h3>Download:</h3>
+		<button class="btn btn-success" ng-click="Download_Client_Interface()">.iol Client Interface</button>
+
+		<h3>Lista Operazioni:</h3>
+		<div ng-repeat="operation in operations" ng-if="$index >= 1">
 			<h4>{{operation.name}}</h4>
 			<pre>{{operation.name}}( {{operation.request}} ) <span ng-if="operation.response != void">( {{operation.response}} )</span></pre>
-			<p>{{operation.description}}</p>
+			<p>Descrizione: {{operation.description}}</p>
 		</div>
 
 		<h3>Lista Tipi:</h3>
-
-		<div ng-repeat="type in types">
+		<div ng-repeat="type in types" ng-if="$index >= 1">
 			<h4>{{type.name}}</h4>
 			<pre>{{type.definition}}</pre>
 		</div>
+		
     </div>  
+	
 </div>

@@ -74,26 +74,19 @@ angular.module('APIM.registra_api')
 		var lastIDS = ($scope.subservices.length)-1;
 		$scope.subservices.splice(lastIDS);
 	};
+	
+	// inizializza l'interfaccia
+	$scope.subservices[0].interfaces.push("");
 
-	// aggiunge l'interfaccia al subservizio IDS nel form           
-	$scope.addNewInterface = function(IDS) {
-		$scope.subservices[IDS].interfaces.push("");
-	};
-    
-	// rimuove l'ultima interfaccia del subservizio IDS nel form             
-	$scope.removeInterface = function(IDS) {
-		var lastItem = (($scope.subservices[IDS]).interfaces.length)-1;
-		$scope.subservices[IDS].interfaces.splice(lastItem);
-	};
-
-	// non appena carica il'nterfaccia ne legge il contenuto string in subservices[IDS].interfaces[IDI].content
+	// non appena carica l'interfaccia ne legge il contenuto string in subservices[IDS].interfaces[IDI].content
 	$scope.saveInterface = function(element) {
+		
 		$scope.files = [];
 		var reader = new FileReader();
       
 		reader.onload = function(event) {
-			var ss_pos = (element.getAttribute("IDS")); //pos subservice
-			var ssi_pos = (element.getAttribute("IDI")); //pos interface in subservice
+			var ss_pos = (element.getAttribute("IDS")); // pos subservice
+			var ssi_pos = (element.getAttribute("IDI")); // pos interface in subservice
 			$scope.subservices[ss_pos].interfaces[ssi_pos] = event.target.result;
 			$scope.$apply();
 			element.style.height = (element[0].scrollHeight < 30) ? 30 + "px" : element[0].scrollHeight + "px";
@@ -161,17 +154,33 @@ angular.module('APIM.registra_api')
 
 	// submit servizio
 	$scope.submit = function() {
+		
+		// calcola data oggi
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1;
+		var yyyy = today.getFullYear();
+		if(dd<10) {
+			dd='0'+dd;
+		};
+		if(mm<10) {
+			mm='0'+mm;
+		};
+		$scope.LastUpdate = dd+'/'+mm+'/'+yyyy;
+		console.log($scope.LastUpdate);
 
 		var data = {
 			subservices : $scope.subservices,
 			categories: $scope.selected_cat,
 			Name: $scope.nomeapi,
 			Description: $scope.descrizione,
+			LastUpdate: $scope.LastUpdate,
 			IdDeveloper: localStorage.getItem("IdClient"),
 			Logo: $scope.logo_uri,
 			DocPDF: $scope.pdf_uri,
 			DocExternal: $scope.docexternal,
 			Profit: $scope.guadagno,
+			SLAGuaranteed: $scope.slagarantita,
 			Policy: $scope.policy
 		};
 
@@ -185,8 +194,9 @@ angular.module('APIM.registra_api')
             },  
             // per i file inviati tramite form il Content-Type va messo undefined
             headers: { 'Content-Type': undefined }
-        }).then(function(response){
-			$location.path("/conferma_registrazione_api");
+        }).then(function(response) {
+			//funziona per versione e lastupdate
+			//$location.path("/conferma_registrazione_api");
         });
     };
 	

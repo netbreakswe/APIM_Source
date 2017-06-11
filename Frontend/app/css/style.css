@@ -29,3 +29,9 @@
 .nounderline:link {
 	text-decoration: none;
 }
+
+.copyButton {
+	float:right;
+	max-height: 22px;
+	font-size:12px;
+}

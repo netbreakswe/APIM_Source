@@ -193,9 +193,7 @@ angular.module('APIM.modifica_info_api')
 			"&Profit=" + $scope.guadagno +
 			"&SLAGuaranteed=" + $scope.slaguaranteed
 		).then(function(response) {
-			
 			window.location.reload();
-			
 		});
 		
 	};

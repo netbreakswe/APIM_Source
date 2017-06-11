@@ -544,7 +544,7 @@ main
 
       // 1. converte il data raw in arrivo in un json string:
       rawToString@Converter( request.data )( json );
-      // 2. ottiene dati della API aggiunta(anche molto complessi) dal json ricevuto dalla web app:
+      // 2. ottiene dati della API aggiunta (anche molto complessi) dal json ricevuto dalla web app
       getJsonValue@JsonUtils( json )( api );
       // 3. salva i dati nella richiesta da fare al generatore di courier
       for( i=0, i<#api.subservices, i++ ) {
@@ -557,19 +557,19 @@ main
         }      
       };
       courier_data = "mockid"; 
-      getDateTime@Time( 0 )( date ); // data corrente
       // 4. salva gli altri dati relativi alla API dal json in arrivo
       _Name = api.Name;
       _Description = api.Description;
       _Version = 1;
-      _LastUpdate = date.year + "-" + date.month + "-" + date.day;
+      _LastUpdate = api.LastUpdate;
+      println@Console("LU: " + _LastUpdate)();
       _IdDeveloper = api.IdDeveloper;
       _Logo = api.Logo;
-      _DocPdf = api.DocPdf;
+      _DocPDF = api.DocPDF;
       _DocExternal = api.DocExternal;
       _Profit = api.Profit;
       _IsActive = true;
-      _SLAGuaranteed = 1;
+      _SLAGuaranteed = api.SLAGuaranteed;
       _Policy = api.Policy;
       // 5. genera temp Courier
       generateCourier@ServiceInteractionHandler( courier_data )( courier_string );
@@ -582,9 +582,7 @@ main
       };
       writeFile@File( file_request )();
       // 7. ricava meta-dati da courier
-      println@Console("pre service meta")();
       getServiceMetaFromCourier@ServiceInteractionHandler( file_request.filename )( meta_info_service );
-      println@Console("post service meta")();
       // 8. sicuramente non presenti errori di sintassi (error checking non implementato) 
       // 9. cancella Courier temporaneo
       deleteDir@File( file_request.filename )( deleted );

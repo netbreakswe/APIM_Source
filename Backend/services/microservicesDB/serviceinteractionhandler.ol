@@ -48,7 +48,7 @@ main
 
 	[getServiceMetaFromCourier( request )( response ) {
 
-		metareq.name.name = "Client"; metareq.name.domain = "gateway"; metareq.filename = request;
+		    metareq.name.name = "Client"; metareq.name.domain = "gateway"; metareq.filename = request;
       	// ottiene meta dati in formato MetaJolie
       	getInputPortMetaData@MetaJolie( metareq )( meta );
       	// ricava tutte le metainformazioni circa servizio APIM
@@ -86,14 +86,14 @@ main
                 	// se tipo non incontrato lo salva in array response.types
                 	if(!_trovato) {
                 		pos = #response.types;
-	                   	response.types[pos] << _T; 
-	                   	response.types[pos].name << "t" + primitiveextention; // nome esteso
-	                   	response.types[pos].definition << "type t" + primitiveextention + ": " + response.types[pos] + 
+                    response.types[pos] << _T;
+                    response.types[pos].name << "t" + primitiveextention; // nome esteso
+                    response.types[pos].definition << "type t" + primitiveextention + ": " + response.types[pos] + 
 	                   		" {\n .key: string \n .user: string \n .api: int\n}";
-	                   	response.operations[ops].request << response.types[pos].name;
-	                   	primitiveextention++
+                    response.operations[ops].request << response.types[pos].name;
+                    primitiveextention++
 
-                		// se il tipo è già stato incontrato
+                	// se il tipo è già stato incontrato
                 	} 
                 	else {
                   		response.operations[ops].request << response.types[_pos].name
@@ -123,7 +123,7 @@ main
     	// begin generazione interfaccia client del servizio
 
        	// costruisce la lista dei tipi complessi
-       	for( i=0, i<#request.types, i++ ) {
+       	for( i=1, i<#request.types, i++ ) {
        		response += request.types[i].definition + "\n"
        	};
        	// distingue tra operazioni OneWay e RequestResponse e salva in 2 array separati    
@@ -146,7 +146,7 @@ main
        	};
        	// costruisce lista di operation RequestResponse
        	response += " RequestResponse:\n";
-       	for( i=0, i<(#requestresponseOps - 1), i++ ) {
+       	for( i=1, i<(#requestresponseOps - 1), i++ ) {
             response += "   "+requestresponseOps[i].name+"("+requestresponseOps[i].request+ ")("+requestresponseOps[i].response+ "),\n"
        	};
        	if (#requestresponseOps>0 ) {
@@ -344,7 +344,7 @@ main
           		// calcola se la sla garantita sia rispettata
           		response += "      callcompliance.IdMS = requestinfo.IdMS;\n";
           		response += "      callcompliance.Number = responsetime;\n";
-              	response += "      check_ms_iscompliant@microservices_dbOutput( callcompliance )( compliance );\n";
+              response += "      check_ms_iscompliant@microservices_dbOutput( callcompliance )( compliance );\n";
           		response += "      slasurvey.IsCompliant = compliance;\n";
 
           		// operazioni riguardanti policy e remaining (se la SLA è rispettata scala il remaining, altrimenti no)
@@ -365,13 +365,13 @@ main
 
           		// policy per traffico dati (da implementare)
 
-				response += "        else if( policy == 3 ) {\n";
-				response += "          calcMessage@calcMessageOutput( request )( reqtraffic );\n";
-				response += "          calcMessage@calcMessageOutput( response )( resptraffic );\n";
-				response += "          println@Console( \"Reqtraffic: \" + reqtraffic.bytesize )(); \n";
-				response += "          println@Console( \"Resptraffic: \" + resptraffic.bytesize )(); \n";
+				      response += "        else if( policy == 3 ) {\n";
+				      response += "          calcMessage@calcMessageOutput( request )( reqtraffic );\n";
+				      response += "          calcMessage@calcMessageOutput( response )( resptraffic );\n";
+				      response += "          println@Console( \"Reqtraffic: \" + reqtraffic.bytesize )(); \n";
+				      response += "          println@Console( \"Resptraffic: \" + resptraffic.bytesize )(); \n";
           		response += "          remaininginfo.Number = 0 - (reqtraffic.bytesize + resptraffic.bytesize) \n";
-              	response += "        };\n";
+              response += "        };\n";
 
           		// aggiornamento del remaining
           		response += "        apikey_remaining_update@transactions_dbOutput( remaininginfo )( void )\n";

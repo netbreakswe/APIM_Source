@@ -10,14 +10,16 @@ Generale:
 - Limitare l'accesso diretto a zone riservate (es. registrazione nuova api da restringere a developer su ogni pagina html)
 
 + Da inserire delle pagine di guida, perlomeno per il download ed utilizza di una api acquistata? Magari regalando free un servizio hello per far capire il meccanismo senza che uno paghi e poi non sappia effettuare le chiamate
++ Le immagini vengono salvate sul server appena si apre la preview e non al salvataggio, provocando affollamento. Accade in ogni inserimento di immagine (reg utenti/api)
++ Le immagini non vengono cancellate se le si cambia. Accade in ogni inserimento di immagine (reg utenti/api)
 
 Sessioni:
 Ok.
 
 Homepage:
-Quasi.
+Ok.
 
-+ La ricerca per keywords agisce anche su campi inutili (idMS,Name,IdDeveloper,Logo,Categorie): da raffinare tramite js
++ La ricerca per keywords agisce anche su campi inutili (IdMS,Name,IdDeveloper,Logo,Categorie): da raffinare tramite js
 + Migliorare la grafica del box ricerca
 
 Login:
@@ -31,12 +33,9 @@ Homepage loggati:
 Ok.
 
 Pagina singola API:
-Ok (compreso il download) e la mancanza dell'acquisto.
+Insomma.
 
 - Mancanza di qualsiasi tipo di procedura d'acquisto
-- Controllare correttezza
-
-+ Mettere un pulsante copia rapida  vicino all'identificativo? (magari stessa cosa nel profilo utente)
 
 Pagina singola Policy:
 Quasi.
@@ -49,8 +48,6 @@ Ok.
 Gestione Account:
 Quasi.
 
-- Le immagini vengono salvate sul server appena si apre la preview e non al salvataggio, provocando affollamento. Accade in ogni inserimento di immagine (reg utenti/api)
-- Le immagini non vengono cancellate se le si cambia. Accade in ogni inserimento di immagine (reg utenti/api)
 - Controllare la gestione errori
 
 + Manca la preview della nuova immagine
@@ -66,7 +63,7 @@ Upgrade account:
 Ok.
 
 Registra API:
-Funziona, compresa la parte backend e l'utilizzo immediato dell'API.
+Ok, compresa la parte backend e l'utilizzo immediato dell'API.
 
 - Correggere testo ed abbellire tutto che è un po' confusionario
 - Controllare la gestione errori
@@ -77,13 +74,12 @@ Ok.
 + Da personalizzare, tipo mettere un recap del servizio inserito
 
 Modifica API:
-Da implementare.
+Ok.
 
-- Modifica interfacce API
-- Modifica interfaccia cliente
++ Modifica interfacce API e modifica interfaccia cliente si potrebbero fare, ma ci vorrebbe un po' di tempo per creare servizi, e secondo me un'interfaccia API deve rimanere invariata altrimenti non funziona più una sega a nessuno ed è difficile accorgersi sia cambiata
 
 Registrazione utente:
-Quasi.
+Ok.
 
 - Controllare la gestione errori
 
@@ -91,7 +87,7 @@ Recupero password:
 Da implementare.
 
 Ricarica crediti:
-Quasi.
+Da implementare.
 
 - Da collegare a PayPal le varie icone ed effettuare la vera gestione dell'acquisto e dell'attribuzione dei crediti
 

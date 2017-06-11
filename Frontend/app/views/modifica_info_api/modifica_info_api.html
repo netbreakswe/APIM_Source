@@ -47,26 +47,12 @@
 	<div class="col-xs-10 col-sm-10 col-md-7 col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
 
         <div class="row">
-			<!-- UC12.1.1 e UC12.1.2-->
-			<div class="col-md-11">
-				
-				<div class="panel panel-danger">
-					<!-- Default panel contents -->
-					<div class="panel-heading">Gestione API: <b>{{nomeapi}}</b></div>
-						<!-- List group -->
-						<ul class="list-group" >
-							<li class="list-group-item"><a href="#!/modifica_info_api/{{apicurr}}">Modifica Informazioni API</a></li>
-							<li class="list-group-item"><a href="#!/modifica_interf_cliente/{{apicurr}}">Modifica Interfaccia Cliente</a></li>
-							<li class="list-group-item"><a href="#!/modifica_interf_api/{{apicurr}}">Modifica Interfacce API</a></li>
-						</ul>
-					</div>
-				</div>
-				
-			</div>
 			
 			<div class="col-md-11">
-				<h1>Modifica Informazioni API:</h1>
+				<h1>Modifica API: "{{nomeapi}}"</h1>
+				<h3>Informazioni</h3>
 				<div class="panel panel-default mainPanelAccount">
+				
 					<form class="datiPersonaliForm">
 						<!-- Inserisci Nome API -->
 						<div class="form-group">
@@ -111,7 +97,7 @@
 					</form>
 				</div>
 				
-				<h1>Modifica Categorie API:</h1>
+				<h3>Categorie</h3>
 				<div class="panel panel-default mainPanelAccount">
 					<form class="datiPersonaliForm">
 						<!-- Scegli Categoria -->
@@ -119,6 +105,7 @@
 							<label for="categoria">Categorie:</label>
 							<button ng-repeat="category in categories" IdCategory="{{category.IdCategory}}" type="button" class="{{category.Class}}" data-ng-click="addNewCategory($event)">{{category.Name}}</button>  
 						</div>
+						<p class="help-block">Seleziona almeno una categoria altrimenti la tua API non sarà visibile</p>
 						<!-- Conferma -->
 						<button type="submit" ng-click="updateCategories()" class="btn btn-default">Aggiorna categorie</button>
 					</form>

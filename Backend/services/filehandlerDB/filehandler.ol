@@ -43,7 +43,7 @@ inputPort FileHandler {
 	Interfaces: FileHandlerInterface
 }
 
-/*1. Procedura private per aggiungere metadati di un file al db. Non ha senso esporla all'esterno*/
+// 1. Procedura private per aggiungere metadati di un file al db. Non ha senso esporla all'esterno
 define __saveFileMetadata {
   q = "INSERT INTO files(Filename, Size) VALUES (:filename, :size)";
   q.filename = _filename;
@@ -54,7 +54,7 @@ define __saveFileMetadata {
 init
 {
   println@Console( "Filehandler started" )();
-  //connect to microservices database
+  // connect to microservices database
   with( connectionInfo ) {
       .host = "u3y93bv513l7zv6o.chr7pe7iynqr.eu-west-1.rds.amazonaws.com"; 
       .driver = "mysql";
@@ -73,12 +73,7 @@ main
 {
 
 
-
-
-
-
-
-	/*controlla se il filename scelto esiste nel db*/
+	// controlla se il filename scelto esista nel db
 	[ filenameExists( request )( response ) {
 		q = "SELECT * FROM files WHERE Filename=:filename";
 	    q.filename = request.filename;
@@ -92,29 +87,31 @@ main
 
 
 
-
-
-
-
-
-
-	/*riceve un file e lo salva localmente con filename univoco e ritorna l'uri del file al chiamante*/
+	// riceve un file e lo salva localmente con filename univoco e ritorna l'uri del file al chiamante
 	[ setFile( request )( response ) {
-		/*genera stringa random con possibilita' quasi nulla di averne di identiche*/
+		// genera stringa random con possibilità quasi nulla di averne di identiche
 		getRandomUUID@StringUtils()( random );
-		getDateTime@Time(0)( time );
+		getDateTime@Time( 0 )( time );
 		getSize@File( request.file )( size );
 		randomname = random+time.day+time.hour+time.year+time.month+time.second+"."+request.extension;
-		with (file) {
-			.filename = "../../../Frontend/app/resources/uploaded_images/"+randomname; //unique filename
+		println@Console("extension: "+ request.extension)();
+		with( file ) {
+			if( request.extension == "pdf" ) {
+				println@Console("pdf")();
+				.filename = "../../../Frontend/app/resources/api_pdf/"+randomname // unique filename
+			}
+			else {
+				println@Console("image")();
+				.filename = "../../../Frontend/app/resources/uploaded_images/"+randomname // unique filename
+			};
 			.format = "binary";
 			.content -> request.file
 		};
-		/*controllo se filename gia' esistente*/
+		// controlla se il filename sia già esistente
 		filenameExists@Self(file.filename)(exists);
 		println@Console("filename: "+file.filename+ " esiste già questo filename? "+exists)();
-		if (!exists) {
-			/*se no salvalo nel db e localmente e fornisci l'uri al chiamante*/
+		if(!exists) {
+			// altrimento viene salvato nel db e localmente e viene fornito l'uri al chiamante
 			_filename = randomname;
 			_size = size/100;
 			__saveFileMetadata;
@@ -122,4 +119,6 @@ main
 			response = randomname
 		}
 	}]
+
+
 }
