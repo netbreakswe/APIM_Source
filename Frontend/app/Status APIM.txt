@@ -69,7 +69,6 @@ Registra API:
 Funziona, compresa la parte backend e l'utilizzo immediato dell'API.
 
 - Correggere testo ed abbellire tutto che è un po' confusionario
-- Nella scelta categorie, ng-repeat crea un button inutile che cliccato scompare, da sistemare
 - Controllare la gestione errori
 
 Conferma registrazione API:
@@ -80,7 +79,6 @@ Ok.
 Modifica API:
 Da implementare.
 
-- Modifica categorie
 - Modifica interfacce API
 - Modifica interfaccia cliente
 

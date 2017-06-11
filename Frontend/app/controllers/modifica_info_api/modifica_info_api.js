@@ -5,25 +5,39 @@ angular.module('APIM.modifica_info_api')
 .controller('modifica_info_api_ctrl', function($scope, $http, $routeParams) {
 	
 	$scope.apicurr = $routeParams.api_id;
-	  
+	$scope.IdMS = Number($scope.apicurr);
+	
+	// inizializza la lista delle categorie attuali dell'API
+	$scope.actualcategories = [];
+	
+	$http.post("http://localhost:8121/retrieve_categories_of_ms?Id="+$scope.IdMS).then(function(response) {
+		for(var i=0; i<response.data.categorydatalist.length; i++) {
+			$scope.actualcategories.push({
+				IdCategory: response.data.categorydatalist[i].IdCategory
+			});
+		}		
+	});
+			
 	// inizializza lista categorie apim
-	$scope.categories = [{
-		IdCategory: "", 
-        Image: "", 
-        Name: "",
-        Class: ""
-	}];
+	$scope.categories = [];
 
 	// prende dinamicamente la lista di categorie api
 	$http.post("http://localhost:8121/retrieve_category_list").then(function(response) {
+		var catclass = "label label-default";
 		for(var i=0; i<response.data.categories.length; i++) {
+			catclass = "label label-default";
+			for(var j=0; j<$scope.actualcategories.length; j++) {
+				if( $scope.actualcategories[j].IdCategory == response.data.categories[i].IdCategory ) {
+					catclass = "label label-success";
+				}
+			};
 			$scope.categories.push({
 				IdCategory: response.data.categories[i].IdCategory, 
                 Image: response.data.categories[i].Image, 
                 Name: response.data.categories[i].Name,
-                Class: "label label-default"
+                Class: catclass
             });
-        }
+		}
 	});
 
         
@@ -39,33 +53,38 @@ angular.module('APIM.modifica_info_api')
 		$scope.policy = response.data.Policy;
 	});
 	
-	// lista categorie selezionate
-	$scope.selected_cat = [];
-	
-	// aggiunge o toglie una categoria al servizio  
+	// aggiunge o toglie una categoria all'API  
 	$scope.addNewCategory = function(event) {
-		var ok = false;
-		// controlla se la categoria sia stata già selezionata
-		for(var i=0; i<$scope.selected_cat.length && !ok; i++) {
-			// se selezionata, la rimuove dalle categorie selezionate
-			if($scope.selected_cat[i] == event.target.attributes.IdCategory.value) {
-				$scope.selected_cat.splice(i,1); // rimuove elemento in indice i
-				// la deseziona dalla view
-				ok = true;
-				for(i=0; i<$scope.categories.length; i++) {
-					if(event.target.attributes.IdCategory.value == $scope.categories[i].IdCategory) {
-						$scope.categories[i].Class = "label label-default";
+		if(event.target.attributes.Class.value == "label label-success") {
+			$scope.categories[Number(event.target.attributes.IdCategory.value)-1].Class = "label label-default";
+		}
+		else {
+			$scope.categories[Number(event.target.attributes.IdCategory.value)-1].Class = "label label-success";
+		}
+	};
+	
+	// aggiorna le categorie dell'API
+	$scope.updateCategories = function() {
+		for(var i=0; i<$scope.categories.length; i++) {
+			var found = false;
+			if($scope.categories[i].Class == "label label-success") {
+				for(var j=0; j<$scope.actualcategories.length && !found; j++) {
+					if($scope.categories[i].IdCategory == $scope.actualcategories[j].IdCategory) {
+						found = true;
 					}
 				}
-			} 
-		}
-		// se non selezionata, la inserisce nell'array delle categorie selezionate
-		if(!ok) {
-			$scope.selected_cat.push(event.target.attributes.IdCategory.value);
-			// applica la class alla categoria
-			for(i=0; i<$scope.categories.length; i++) {
-				if(event.target.attributes.IdCategory.value == $scope.categories[i].IdCategory) {
-					$scope.categories[i].Class = "label label-success";
+				if(!found) {
+					$http.post("http://localhost:8121/add_category_to_ms?IdMS="+$scope.IdMS+"&IdCategory="+$scope.categories[i].IdCategory);
+				}
+			}
+			else {
+				for(var j=0; j<$scope.actualcategories.length && !found; j++) {
+					if($scope.categories[i].IdCategory == $scope.actualcategories[j].IdCategory) {
+						found = true;
+					}
+				}
+				if(found) {
+					$http.post("http://localhost:8121/remove_category_from_ms?IdMS="+$scope.IdMS+"&IdCategory="+$scope.categories[i].IdCategory);
 				}
 			}
 		}
@@ -92,7 +111,7 @@ angular.module('APIM.modifica_info_api')
 				headers: { 'Content-Type': undefined }
 			}).then(function(response){
 				// ritorna l'uri del file ottenuto dalla response di Jolie
-				$scope.pdf_uri = 'http://localhost:8000/images/uploaded_images/'+response.data.$;
+				$scope.pdf_uri = 'http://localhost:8000/resources/api_pdf/'+response.data.$;
 			});
 		}
 		// legge l'immagine come URL
@@ -121,7 +140,7 @@ angular.module('APIM.modifica_info_api')
 				headers: { 'Content-Type': undefined }
 			}).then(function(response){
 				// ritorna l'uri del file ottenuto dalla response di Jolie
-				$scope.logo_uri = 'http://localhost:8000/images/uploaded_images/'+response.data.$;
+				$scope.logo_uri = 'http://localhost:8000/resources/uploaded_images/'+response.data.$;
 			});
 		}
 		// legge l'immagine come URL
@@ -146,9 +165,21 @@ angular.module('APIM.modifica_info_api')
 	// submit servizio
 	$scope.submit = function() {
 		
+		// aggiorna versione
 		$scope.Version = $scope.versione + 1;
-		$scope.LastUpdate = Date.now();
-		$scope.IdMS = Number($scope.apicurr);
+		
+		// calcola data oggi
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1;
+		var yyyy = today.getFullYear();
+		if(dd<10) {
+			dd='0'+dd;
+		};
+		if(mm<10) {
+			mm='0'+mm;
+		};
+		$scope.LastUpdate = dd+'/'+mm+'/'+yyyy;
 		
 		$http.post("http://localhost:8121/microservice_update?" +
 			"IdMS=" + $scope.IdMS +
@@ -168,6 +199,7 @@ angular.module('APIM.modifica_info_api')
 		});
 		
 	};
+
    
 });
 

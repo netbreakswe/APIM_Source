@@ -80,7 +80,7 @@ main
 
 	/*controlla se il filename scelto esiste nel db*/
 	[ filenameExists( request )( response ) {
-		q = "select * from files where Filename = :filename";
+		q = "SELECT * FROM files WHERE Filename=:filename";
 	    q.filename = request.filename;
 	    query@Database( q )( result );
 	    response = true;
@@ -106,13 +106,13 @@ main
 		getSize@File( request.file )( size );
 		randomname = random+time.day+time.hour+time.year+time.month+time.second+"."+request.extension;
 		with (file) {
-			.filename = "../../../Frontend/app/images/uploaded_images/"+randomname; //unique filename
+			.filename = "../../../Frontend/app/resources/uploaded_images/"+randomname; //unique filename
 			.format = "binary";
 			.content -> request.file
 		};
 		/*controllo se filename gia' esistente*/
 		filenameExists@Self(file.filename)(exists);
-		println@Console("filename: "+file.filename+ " esiste gia' queste filename? "+exists)();
+		println@Console("filename: "+file.filename+ " esiste già questo filename? "+exists)();
 		if (!exists) {
 			/*se no salvalo nel db e localmente e fornisci l'uri al chiamante*/
 			_filename = randomname;

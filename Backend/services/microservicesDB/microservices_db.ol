@@ -465,9 +465,9 @@ main
     	query@Database( q )( result );
 
     	for( i=0, i<#result.row, i++ ) {
-      	response.categories[i].IdCategory = result.row[i].IdCategory;
-      	response.categories[i].Name = result.row[i].Name; 
-      	response.categories[i].Image = result.row[i].Image
+      		response.categories[i].IdCategory = result.row[i].IdCategory;
+      		response.categories[i].Name = result.row[i].Name; 
+      		response.categories[i].Image = result.row[i].Image
     	};
     	println@Console("Retrieved categories")()
 
@@ -476,7 +476,7 @@ main
 
 
 
-  	// ritorna tutti gli id delle categorie di un servizio i
+  	// ritorna tutti gli id ed info delle categorie di un servizio i
   	[retrieve_categories_of_ms( request )( response ) {
 
     	// query

@@ -6,12 +6,7 @@ angular.module('APIM.registra_api')
 	
 
 	// inizializza lista categorie apim
-	$scope.categories = [{
-		IdCategory: "", 
-        Image: "", 
-        Name: "",
-        Class: ""
-	}];
+	$scope.categories = [];
 
 	// prende dinamicamente la lista di categorie api
 	$http.post("http://localhost:8121/retrieve_category_list").then(function(response) {
@@ -63,8 +58,6 @@ angular.module('APIM.registra_api')
 			}
 		}
 	};
-
-
 
 
 	// aggiunge un subservizio alla lista subservizi nel form    
@@ -130,7 +123,7 @@ angular.module('APIM.registra_api')
 				headers: { 'Content-Type': undefined }
 			}).then(function(response){
 				// ritorna l'uri del file ottenuto dalla response di Jolie
-				$scope.pdf_uri = 'http://localhost:8000/images/uploaded_images/'+response.data.$;
+				$scope.pdf_uri = 'http://localhost:8000/resources/api_pdf/'+response.data.$;
 			});
 		}
 		// legge l'immagine come URL
@@ -159,7 +152,7 @@ angular.module('APIM.registra_api')
 				headers: { 'Content-Type': undefined }
 			}).then(function(response){
 				// ritorna l'uri del file ottenuto dalla response di Jolie
-				$scope.logo_uri = 'http://localhost:8000/images/uploaded_images/'+response.data.$;
+				$scope.logo_uri = 'http://localhost:8000/resources/uploaded_images/'+response.data.$;
 			});
 		}
 		// legge l'immagine come URL
