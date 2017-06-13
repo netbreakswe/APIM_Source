@@ -58,22 +58,6 @@ angular.module('APIM.registra_api')
 			}
 		}
 	};
-
-
-	// aggiunge un subservizio alla lista subservizi nel form    
-	$scope.addNewSubService = function() {
-		$scope.subservices.push({
-            location: "", 
-            protocol: "", 
-            interfaces: [] 
-        });
-	};
-
-	// rimuove l'ultimo subservizio dalla lista subservizi nel form       
-	$scope.removeSubService = function() {
-		var lastIDS = ($scope.subservices.length)-1;
-		$scope.subservices.splice(lastIDS);
-	};
 	
 	// inizializza l'interfaccia
 	$scope.subservices[0].interfaces.push("");

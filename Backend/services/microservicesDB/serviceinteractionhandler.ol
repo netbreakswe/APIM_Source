@@ -360,7 +360,10 @@ main
 
           		// policy per tempo di utilizzo
 		  		    response += "        else if( policy == 2 ) {\n";
-          		response += "          remaininginfo.Number = 0 - responsetime\n";
+          		response += "          remaininginfo.Number = 0 - responsetime;\n";
+              response += "          if(remaininginfo.Number == 0) {\n";
+              response += "            remaininginfo.Number = -1\n";
+              response += "          }\n";
           		response += "        }\n";
 
           		// policy per traffico dati (da implementare)
