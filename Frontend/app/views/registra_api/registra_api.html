@@ -22,7 +22,7 @@
             <!-- Subservizi_i -->
             <div  ng-repeat="subservice in subservices track by $index" class="thumbnail">
 				<div class="form-group">
-					<h3 class="text-center">Dati Tecnici Servizio:</h3>
+					<h5 class="text-center">SubServizio {{$index + 1}}:</h5>
 					<!-- Inserisci Location -->
 					<div>
 						<label for="location">Location</label>
@@ -33,19 +33,21 @@
 						<label for="protocol">Protocol</label>
 						<input type="text" ng-model="subservice.protocol" class="form-control" id="protocol" name="protocol" placeholder="Protocol: http/sodep" />
 					</div>
-					
-					<!-- Interfaccia API -->
-					<div ng-repeat="interface in subservice.interfaces track by $index">
+					<!-- Interfacce_i_j -->
+					<div  ng-repeat="interface in subservice.interfaces track by $index">
 						<div class="form-group">
-							<label for="interface">Interfaccia</label>
-							<textarea style="height: 220px;" class="form-control" ng-model="interface"></textarea>
+							<label for="interface">Interfaccia {{$index+1}}</label>
+							<textarea style="height: 100px;" class="form-control" ng-model="interface"></textarea>
 							<input accept=".iol" IDS="{{$parent.$index}}" IDI="{{$index}}" type="file" onchange="angular.element(this).scope().saveInterface(this)" id="interface" name="interface" />
 						<p class="help-block">Inserisci l'interfaccia .iol del tuo servizio</p>
 						</div>
 					</div>
-					
+					<button class="btn btn-success" ng-click="addNewInterface($index);">Aggiungi Interfaccia</button>
+					<button class="btn btn-danger" ng-click="removeInterface($index)">Rimuovi Interfaccia</button>
 				</div>
             </div>
+            <button class="btn btn-success" ng-click="addNewSubService()">Aggiungi SubServizio</button>
+            <button class="btn btn-danger" ng-click="removeSubService()">Rimuovi Subservizio</button>
 
             <!-- Inserisci documentazione pdf -->
             <div class="form-group">

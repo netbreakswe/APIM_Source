@@ -205,8 +205,7 @@ angular.module('APIM.registra_api')
             // per i file inviati tramite form il Content-Type va messo undefined
             headers: { 'Content-Type': undefined }
         }).then(function(response) {
-			//funziona per versione e lastupdate
-			//$location.path("/conferma_registrazione_api");
+			$location.path("/conferma_registrazione_api");
         });
     };
 	
