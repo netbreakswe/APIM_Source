@@ -1,102 +1,49 @@
-*Legenda*
-Prima c'è il titolo che indica la sezione di cui parlo.
-Poi la descrizione dello stato.
-Il simbolo "-" indica mancanze gravi
-Il simbolo "+" indica extra molto utili
+REROUTING	
 
-Generale:
+Da implementare il rerouting nel caso l'utente digiti direttamente l'indirizzo della pagina, accedendovi anche se non ha i permessi di developer/admin.
 
-- Impostare il rerouting nel caso uno sviluppatore entri in zone riservate a developer (es. digitando manualmente l'indirizzo)
-- Limitare l'accesso diretto a zone riservate (es. registrazione nuova api da restringere a developer su ogni pagina html)
+HELP
 
-+ Da inserire delle pagine di guida, perlomeno per il download ed utilizza di una api acquistata? Magari regalando free un servizio hello per far capire il meccanismo senza che uno paghi e poi non sappia effettuare le chiamate
-+ Le immagini vengono salvate sul server appena si apre la preview e non al salvataggio, provocando affollamento. Accade in ogni inserimento di immagine (reg utenti/api)
-+ Le immagini non vengono cancellate se le si cambia. Accade in ogni inserimento di immagine (reg utenti/api)
+Da inserire delle guide per le varie azioni. Magari un link di help nel menù utente che porti al download del manuale utente.
+Da implementare un servizio base free alla registrazione per permettere agli utenti di sperimentare i meccanismi.
 
-Sessioni:
-Ok.
+UPLOAD
 
-Homepage:
-Ok.
+I file vengono uploadati alla conferma dello "scegli file..." e non alla conferma dell'operazione.
+I file non vengono cancellati quando terminano il loro scopo.
 
-+ La ricerca per keywords agisce anche su campi inutili (IdMS,Name,IdDeveloper,Logo,Categorie): da raffinare tramite js
-+ Migliorare la grafica del box ricerca
+UTENTI
 
-Login:
-Quasi.
+Le info developer-only sono diventate disponibili anche agli utenti basic.
 
-- Controllare la gestione errori
+ACQUISTO
 
-+ Decidere se le info developer-only rimangono tali, oppure se possono venire impostate anche da utenti basic (aboutme, cittadinanza, linktoself, paypal)
+Da implementare completamente.
+Da implementare recap acquisto.
 
-Homepage loggati:
-Ok.
+RICARICA CREDITI
 
-Pagina singola API:
-Insomma.
+Da implementare completamente.
 
-- Mancanza di qualsiasi tipo di procedura d'acquisto
+CONTROLLO CORRETTEZZA
 
-Pagina singola Policy:
-Quasi.
+Da verificare la gestione errori di tutti i form e simili.
 
-- Da controllare correttezza del testo e formula
+RECUPERO PASSWORD
 
-Pagina singolo Utente:
-Ok.
-
-Gestione Account:
-Quasi.
-
-- Controllare la gestione errori
-
-+ Manca la preview della nuova immagine
-+ In realtà valgono altri formati oltre a png, jpeg, gif tipo btm
-
-API Registrate:
-Ok.
-
-API Acquistate:
-Ok.
-
-Upgrade account:
-Ok.
-
-Registra API:
-Ok, compresa la parte backend e l'utilizzo immediato dell'API.
-
-- Correggere testo ed abbellire tutto che è un po' confusionario
-- Controllare la gestione errori
-
-Conferma registrazione API:
-Ok.
-
-+ Da personalizzare, tipo mettere un recap del servizio inserito
-
-Modifica API:
-Ok.
-
-+ Modifica interfacce API e modifica interfaccia cliente si potrebbero fare, ma ci vorrebbe un po' di tempo per creare servizi, e secondo me un'interfaccia API deve rimanere invariata altrimenti non funziona più una sega a nessuno ed è difficile accorgersi sia cambiata
-
-Registrazione utente:
-Ok.
-
-- Controllare la gestione errori
-
-Recupero password:
 Da implementare.
 
-Ricarica crediti:
+RICARICA CREDITI
+
 Da implementare.
 
-- Da collegare a PayPal le varie icone ed effettuare la vera gestione dell'acquisto e dell'attribuzione dei crediti
+REGISTRO TRANSAZIONI
 
-Registro transazioni:
-Insomma.
+Da implementare.
 
 - Da implementare anche i pagamenti al developer ed integrarli in view e controller
 - Da mettere il servizio al posto della APIKey come valore nella tabella
 
-Parte Admin:
+PARTE ADMIN
 Da implementare.
 

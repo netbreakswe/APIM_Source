@@ -47,29 +47,45 @@ angular.module('APIM.lista_api')
 		}
 	});
 	
+	$scope.activeCategory = "0";
+	
 	// funzione per filtrare tutte le categorie
 	$scope.FilterAll = function() {
-		for(var i=0; i<$scope.services.length; i++) {
-			$scope.services[i].Display = true;
+		if( $scope.activeCategory != 0 ) {
+			var elem = document.getElementById("cat0");
+			elem.classList.add("lead");
+			elem = document.getElementById("cat"+$scope.activeCategory.toString());
+			elem.classList.remove("lead");
+			$scope.activeCategory = "0";
+			for(var i=0; i<$scope.services.length; i++) {
+				$scope.services[i].Display = true;
+			}
 		}
 	};
-
+	
 	// funzione per filtrare per categorie
-	$scope.FilterCategory = function(event) { 
-		// scorri i servizi nella lista
-		for(var i=0; i<$scope.services.length; i++) {
-			var trovato = false;
-			//scorri le categorie di ogni servizio
-			for(var j=0; j<$scope.services[i].categories.length && !trovato; j++) {
-				//se trovi categoria allora mostra quel servizio
-				if($scope.services[i].categories[j].IdCategory == event.target.attributes.IdCategory.value) {
-					$scope.services[i].Display = true;
-					trovato = true;
+	$scope.FilterCategory = function(event) {
+		if( $scope.activeCategory != event.target.attributes.IdCategory.value ) {
+			$(event.target).addClass("lead");
+			var elem = document.getElementById("cat"+$scope.activeCategory.toString());
+			elem.classList.remove("lead");
+			$scope.activeCategory = event.target.attributes.IdCategory.value;
+			// scorri i servizi nella lista
+			for(var i=0; i<$scope.services.length; i++) {
+				var trovato = false;
+				//scorri le categorie di ogni servizio
+				for(var j=0; j<$scope.services[i].categories.length && !trovato; j++) {
+					//se trovi categoria allora mostra quel servizio
+					if($scope.services[i].categories[j].IdCategory == event.target.attributes.IdCategory.value) {
+						$scope.services[i].Display = true;
+						trovato = true;
+						
+					}
+				} 
+				// se non la trovi nascondi il servizio
+				if(!trovato) {
+					$scope.services[i].Display = false;
 				}
-			} 
-			// se non la trovi nascondi il servizio
-			if(!trovato) {
-				$scope.services[i].Display = false;
 			}
 		}
     };
@@ -83,5 +99,9 @@ angular.module('APIM.lista_api')
 			$scope.orderName = "Name";
 		}
 	};
+	
+	// filtra developers
+	$scope.AllDevelopers = [ "25","26","29" ];
+	
 
 });

@@ -39,6 +39,26 @@
 						<div class="panel-heading"><b>Questa API è stata registrata da te.</b></div>
 					</div>
 					
+					<!-- API attualmente attiva -->
+					<div ng-if="IsActive" ng-cloak>
+						<!-- visuallizza isactive API -->
+						<div class="panel panel-success">
+							<div class="panel-heading"><b>Questa API è attualmente attiva.</b></div>
+						</div>
+						<!-- opzione settaggio non attiva per l'API propria -->
+						<div class="panel" ng-if="isDeveloper()"><button class="btn btn-danger" ng-click="changeIsActive()">Disattiva API</button></div>
+					</div>
+					
+					<!-- API attualmente inattiva -->
+					<div ng-if="!IsActive" ng-cloak>
+						<!-- visuallizza isactive API -->
+						<div class="panel panel-danger">
+							<div class="panel-heading"><b>Questa API è attualmente inattiva.</b></div>
+						</div>
+						<!-- opzione settaggio non attiva per l'API propria -->
+						<div class="panel" ng-if="isDeveloper()"><button class="btn btn-success" ng-click="changeIsActive()">Riattiva API</button></div>
+					</div>
+					
 				</div>
 				
 				<!-- table per visualizzare le informazioni delle api -->

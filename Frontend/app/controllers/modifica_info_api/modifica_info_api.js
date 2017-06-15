@@ -51,6 +51,7 @@ angular.module('APIM.modifica_info_api')
 		$scope.slaguaranteed = response.data.SLAGuaranteed;
 		$scope.versione = response.data.Version;
 		$scope.policy = response.data.Policy;
+		$scope.IsActive = response.data.IsActive;
 	});
 	
 	// aggiunge o toglie una categoria all'API  
@@ -88,6 +89,7 @@ angular.module('APIM.modifica_info_api')
 				}
 			}
 		}
+		window.location.reload();
 	};
 	
 	// funzione che invia pdf a filehandler Jolie subito dopo che l'immagine è stata caricata
@@ -196,6 +198,33 @@ angular.module('APIM.modifica_info_api')
 			window.location.reload();
 		});
 		
+	};
+	
+	// controlla se l'utente sia il developer dell'API
+	$scope.isDeveloper = function () {
+		if(localStorage.getItem("IdClient") == $scope.IdDeveloper) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	};
+
+	// cambia valore isactive
+	$scope.changeIsActive = function() {
+		var newavailability;
+		if( $scope.IsActive ) {
+			newavailability = false;
+		}
+		else {
+			newavailability = true;
+		}
+		$http.post("http://localhost:8121/change_isactive?" +
+			"IdMS=" + $scope.IdMS +
+			"&IsActive=" + newavailability)
+		.then(function(response) {
+			window.location.reload();
+		});
 	};
 
    

@@ -55,7 +55,6 @@ angular.module('APIM.api')
 	};
 	
 	// controlla se l'utente sia il developer dell'API
-	
 	$scope.isDeveloper = function () {
 		if(localStorage.getItem("IdClient") == $scope.IdDeveloper) {
 			return true;
@@ -63,7 +62,25 @@ angular.module('APIM.api')
 		else {
 			return false;
 		}
-	}
+	};
+
+	// cambia valore isactive
+	$scope.changeIsActive = function() {
+		var newavailability;
+		if( $scope.IsActive ) {
+			newavailability = false;
+		}
+		else {
+			newavailability = true;
+		}
+		$http.post("http://localhost:8121/change_isactive?" +
+			"IdMS=" + $scope.IdMS +
+			"&IsActive=" + newavailability)
+		.then(function(response) {
+			window.location.reload();
+		});
+	};
+	
 	// controlla se l'utente possieda una licenza attiva per l'API
 	$http.post("http://localhost:8131/check_apikey_isactive?" +
 		"IdClient=" + localStorage.getItem("IdClient") +

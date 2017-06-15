@@ -70,6 +70,7 @@ angular.module('APIM', [
 	$scope.Name = localStorage.getItem("Name");
 	$scope.Surname = localStorage.getItem("Surname");
 	$scope.Avatar = localStorage.getItem("Avatar");
+	$scope.ClientType = localStorage.getItem("ClientType");
 	
 	$scope.getSession = function() {
 		if(localStorage.getItem("Session") == 'true') {
@@ -226,4 +227,3 @@ angular.module('APIM', [
         .otherwise({ redirectTo: '/lista_api' });
 	}
 ]);
-

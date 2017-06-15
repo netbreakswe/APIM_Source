@@ -70,9 +70,9 @@
 				<p class="text-centered text-primary">Attualmente possiedi {{Credits}} crediti.</p>
 				
 				<p class="text-centered text-success" ng-if="enoughCredits()">Hai crediti sufficienti per passare allo status di Sviluppatore.</p>
-				<p class="text-centered text-danger" ng-if="!enoughCredits()">Devi avere almeno 2000 crediti per passare allo status di Sviluppatore.</p>
+				<p class="text-centered text-danger" ng-if="!enoughCredits()">Devi avere almeno {{CreditsNeeded}} crediti per passare allo status di Sviluppatore.</p>
 				
-				<button type="button" ng-click="developerUpgrade()" class="btn btn-info">Diventa Sviluppatore</button>
+				<button type="button" ng-click="developerUpgrade()" ng-if="enoughCredits()"class="btn btn-info">Diventa Sviluppatore</button>
 
             </div>
             

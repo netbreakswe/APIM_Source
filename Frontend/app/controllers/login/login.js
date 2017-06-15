@@ -32,12 +32,14 @@ angular.module('APIM.login')
 						localStorage.setItem("Name", response.data.Name);
 						localStorage.setItem("Surname", response.data.Surname);
 						localStorage.setItem("Avatar", response.data.Avatar);
+						localStorage.setItem("ClientType", response.data.ClientType);
 						
 						$scope.Name = response.data.Name;
 						$scope.Surname = response.data.Surname;
 						$scope.Avatar = response.data.Avatar;
+						$scope.ClientType = response.data.ClientType;
 
-						// reindirizzamento e reload per 
+						// reindirizzamento e reload
 						window.location.reload();
 						$location.path("/conferma_login");
 	   				});

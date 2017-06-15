@@ -35,6 +35,8 @@ angular.module('APIM.diventa_sviluppatore')
 	
 	$scope.developerUpgrade = function() {
 		$http.post("http://localhost:8101/developer_upgrade?Id="+localStorage.getItem("IdClient")).then(function(response) {
+			localStorage.setItem("ClientType", 2);
+			window.location.reload();
 			$location.path("/conferma_diventa_sviluppatore");
 		});
 	}

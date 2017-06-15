@@ -188,6 +188,13 @@ type msdevlist: void {
 	}
 }
 
+// rappr di un id ms e del campo isactive
+
+type availabilitydata: void {
+	.IdMS: int
+	.IsActive: bool
+}
+
 
 // read e write
 
@@ -213,5 +220,6 @@ interface microservices_dbInterface {
 		interface_update( intfupdata )( void ),
 		add_category_to_ms( categorydataw )( void ),
 		remove_category_from_ms( categorydataw )( void ),
-		update_client_interface_by_id( Info_Interf_update )( void )
+		update_client_interface_by_id( Info_Interf_update )( void ),
+		change_isactive( availabilitydata )( void )
 }

@@ -122,6 +122,7 @@ init
 
 main
 {
+
     // Il gateway recupera tutte le info che gli servono per impostare le redirezioni dinamiche e creare courier 
     // PRE = (posso assumere che non ci sono inconsistenze a livello di database)
   	[retrieve_all_ms_gateway_meta( request )( response ) {
@@ -214,12 +215,12 @@ main
     	query@Database( q )( result );
 
     	if( #result.row == 0 ) {
-        println@Console("Microservice not found")()
+        	println@Console("Microservice not found")()
     	}
     	else {
-        for( i=0, i<#result.row, i++ ) {
-        	println@Console( "Got microservice with id "+ request.Id )();
-        	response << result.row[i]
+        	for( i=0, i<#result.row, i++ ) {
+        		println@Console( "Got microservice with id "+ request.Id )();
+        		response << result.row[i]
      		}
     	};
    		println@Console("Retrieved all info about microservice " + response.Name)()
@@ -506,7 +507,7 @@ main
     	// query
     	q = "SELECT microservices.IdMS,microservices.Name,microservices.IdDeveloper,microservices.Logo,categories.IdCategory,categories.Name 
     		AS CatName FROM microservices JOIN jnmscat JOIN categories ON jnmscat.IdMs=microservices.IdMS 
-    		AND jnmscat.IdCategory=categories.IdCategory ORDER BY IdMS ASC ";
+    		AND jnmscat.IdCategory=categories.IdCategory WHERE microservices.IsActive=true ORDER BY IdMS ASC";
     	query@Database( q )( result );
 
     	idms = -1; 
@@ -742,5 +743,20 @@ main
 
   	}]
 
+
+
+
+  	// inverte il valore isactive del servizio corrispondente all'id
+  	[change_isactive( request )( response ) {
+
+    	q = "UPDATE microservices SET IsActive=:ia WHERE IdMS=:i";
+    	with( request ) {
+	      	q.i = .IdMS;
+	      	q.ia = .IsActive
+	    };
+    	update@Database( q )( result );
+    	println@Console("Set isactive to " + request.IsActive + " of microservice with id " + request.IdMS)()
+
+  	}]
 
 }

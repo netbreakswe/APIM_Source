@@ -60,7 +60,33 @@ angular.module('APIM.registra_api')
 	};
 	
 	// inizializza l'interfaccia
-	$scope.subservices[0].interfaces.push("");
+	//$scope.subservices[0].interfaces.push("");
+	
+	// aggiunge un subservizio alla lista subservizi nel form    
+	$scope.addNewSubService = function() {
+		$scope.subservices.push({
+            location: "", 
+            protocol: "", 
+            interfaces: [] 
+        });
+	};
+
+	// rimuove l'ultimo subservizio dalla lista subservizi nel form       
+	$scope.removeSubService = function() {
+		var lastIDS = ($scope.subservices.length)-1;
+		$scope.subservices.splice(lastIDS);
+	};
+
+	// aggiunge l'interfaccia al subservizio IDS nel form           
+	$scope.addNewInterface = function(IDS) {
+		$scope.subservices[IDS].interfaces.push("");
+	};
+    
+	// rimuove l'ultima interfaccia del subservizio IDS nel form             
+	$scope.removeInterface = function(IDS) {
+		var lastItem = (($scope.subservices[IDS]).interfaces.length)-1;
+		$scope.subservices[IDS].interfaces.splice(lastItem);
+	};
 
 	// non appena carica l'interfaccia ne legge il contenuto string in subservices[IDS].interfaces[IDI].content
 	$scope.saveInterface = function(element) {

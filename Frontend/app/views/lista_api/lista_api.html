@@ -5,8 +5,8 @@
         <div class="panel panel-primary">
 			<div class="panel-heading">Categorie</div>
 			<div class="list-group">
-				<button type="button" class="list-group-item" ng-click="FilterAll()">Tutte</button>
-				<button ng-repeat="category in categories" IdCategory="{{category.IdCategory}}" type="button" class="list-group-item" data-ng-click="FilterCategory($event)">{{category.Name}}</button>
+				<button id="cat0" type="button" class="list-group-item" ng-click="FilterAll()">Tutte</button>
+				<button ng-repeat="category in categories" id="cat{{category.IdCategory}}" IdCategory="{{category.IdCategory}}" type="button" class="list-group-item" data-ng-click="FilterCategory($event)">{{category.Name}}</button>
 			</div>
         </div>
 		
@@ -30,14 +30,20 @@
 	
 		<div class="row">
 			<div class="col-xs-10 col-sm-6 col-md-4 col-xs-offset-1 col-sm-offset-0 col-md-offset-0">
-			<input ng-model="searchText" class="form-control" placeholder="Ricerca API" />
+				<div class="thumbnail smallpadding">
+					<label for="searchname">Ricerca per API: </label>
+					<input ng-model="search.Name" id="searchname" class="form-control" placeholder="Nome API" />
+					<label class="smallermargintop">Ricerca per Developer: </label>
+					<select ng-model="search.Developer" class="form-control">
+						<option value="{{undefined}}" selected>Tutti</option>
+						<option ng-repeat="developer in AllDevelopers" value="{{developer}}">{{anagraphics[developer]}}</option>
+					</select>
+				</div>
 			</div>
 		</div>
 		
-		<div class="row"><p></p><p></p></div>
-		
-		<div class="row">
-			<div ng-repeat="service in services | filter:searchText | orderBy:orderName" ng-if="service.Display == true" class="col-xs-10 col-sm-6 col-md-4 col-xs-offset-1 col-sm-offset-0 col-md-offset-0">
+		<div class="row smallmargintop">
+			<div ng-repeat="service in services | filter:search:strict | orderBy:orderName" ng-if="service.Display == true" class="col-xs-10 col-sm-6 col-md-4 col-xs-offset-1 col-sm-offset-0 col-md-offset-0">
 				<div class="thumbnail">
 					<a href="#!/api/{{service.IdMS}}"><img ng-src="{{service.Logo}}" alt="logo api" class="logomedium"></a>
 					<div class="caption">

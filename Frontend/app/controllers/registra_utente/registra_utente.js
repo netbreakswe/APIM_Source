@@ -148,7 +148,7 @@ angular.module('APIM.registra_utente')
 				headers: { 'Content-Type': undefined }
 			}).then(function(response){
 				// ritorna l'uri del file ottenuto dalla response di Jolie
-				$scope.avataruri = 'http://localhost:8000/images/uploaded_images/'+response.data.$;
+				$scope.avataruri = 'http://localhost:8000/resources/uploaded_images/'+response.data.$;
            });
        }
        // legge l'immagine come URL

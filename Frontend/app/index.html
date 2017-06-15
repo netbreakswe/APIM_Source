@@ -33,7 +33,9 @@
         <span class="icon-bar"></span>
       </button>
       <!-- Logo APIMarket -->
-      <a class="navbar-brand" href="#!">APIMarket</a>
+	  <a class="navbar-brand" href="#!">
+		<img src="http://localhost:8000/resources/icons/netbreaklogo.png" class="netbreaklogo">APIMarket
+	</a>
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		
@@ -45,7 +47,7 @@
 					<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img class="img-circle imagesmall avatarmarginr" ng-src="{{Avatar}}" alt="apilogo">{{Name}} {{Surname}}<span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="#!/account">Gestione Account</a></li>
-						<li><a href="#!/registra_api">Registrazione nuova API</a></li>
+						<li ng-if="ClientType == 2" ng-cloak><a href="#!/registra_api">Registrazione nuova API</a></li>
 						<li role="separator" class="divider"></li>
 						<li><a href="#!/logout">Logout</a></li>
 					</ul>

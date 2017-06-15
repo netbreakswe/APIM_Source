@@ -1,5 +1,22 @@
+.netbreaklogo {
+	max-height: 26px;
+	float:left;
+}
+
 .categories {
 	background-color: lightblue;
+}
+
+.smallmargintop {
+	margin-top: 30px;
+}
+
+.smallpadding {
+	padding: 15px;
+}
+
+.smallermargintop {
+	margin-top: 18px;
 }
 
 .mainPanelAccount {
