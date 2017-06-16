@@ -93,7 +93,7 @@ angular.module('APIM', [
 			templateUrl: 'views/account/account.html'
 		})
 		
-		.when('/acquista_api', {
+		.when('/acquista_api/:api_id', {
 			controller: 'acquista_api_ctrl',
 			templateUrl: 'views/acquista_api/acquista_api.html'
 		})

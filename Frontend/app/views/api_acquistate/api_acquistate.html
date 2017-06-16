@@ -63,7 +63,7 @@
                     <th colspan=2>Lista API</th>
                     <th>Attiva?</th>
 					<th>Scadenza tra</th>
-					<th>Ottieni nuova chiave API (da implementare)</th>
+					<th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -89,7 +89,7 @@
 						
 						<td>{{service.Remaining}} {{getRemainingSuffix(servicesidpolicy[service.IdMS])}}</td>
 						
-						<td><button type="button" ng-click="getNewAPIKey()" class="btn btn-warning">Nuova chiave API (implementare UUID)</button></td>
+						<td><button id="newapikey{{service.IdMS}}" type="button" ng-click="getNewAPIKey(service.APIKey,service.IdMS)" class="btn btn-warning">Nuova chiave API</button></td>
 						
                   </tr>
 

@@ -284,7 +284,7 @@ main
     	__email_SLAWP4I = request.Email;
     	__mail_exists; // controllo se mail esiste già
     	if (!__mail_exists_confirmed) {
-          println@Console("basicclient_registration execution started")();
+          println@Console("Basicclient_registration execution started")();
       		getDateTime@Time( 0 )( date ); //data corrente
 
       		// query
@@ -297,7 +297,7 @@ main
 	            .email = request.Email;
 	            .password = request.Password;
 	            .avataruri = request.Avatar;
-	            .regdate = date.year + "-" + date.month + "-" + date.day;
+	            .regdate = date.day + "/" + date.month + "/" + date.year;
 	            .aboutme = request.AboutMe;
 	            .cittadinanza = request.Citizenship;
 	            .linkweb = request.LinkToSelf;
@@ -378,7 +378,7 @@ main
 	      	q.s = .Surname;
 	      	q.e = .Email;
 	      	q.a = .Avatar;
-	     	q.am = .AboutMe;
+	     	  q.am = .AboutMe;
 	      	q.ct = .Citizenship;
 	      	q.l = .LinkToSelf;
 	      	q.pp = .PayPal
@@ -403,6 +403,24 @@ main
     	println@Console("Deleting client with id " + request.Id + " forever")()
 
   	}]
+
+
+
+
+    // aggiornamento crediti di un cliente
+    [credits_update( request )( response ) {
+
+      // query
+      q = "UPDATE clients SET Credits = Credits + :c WHERE IdClient=:i";
+      with( request ) {
+          q.i = .IdClient;
+          q.c = .Credits
+      };
+      update@Database( q )( result );
+      println@Console("Updated credits of client with id " + request.IdClient + " by the amount of " + request.Credits )()
+
+    }]
+
 
 
 }

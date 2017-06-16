@@ -78,8 +78,8 @@
                     <td>{{LastUpdate}}</td>
                 </tr>
                 <tr>
-                    <td>Prezzo:</td>
-                    <td>{{Profit}}&euro;</td>
+                    <td>Costo:</td>
+                    <td>{{Profit}} crediti</td>
                 </tr>
                 <tr>
                     <td>Policy Vendita:</td>
@@ -106,8 +106,12 @@
                     <td>Tempo di risposta &lt; {{SLAGuaranteed}}ms</td>
                 </tr>
 				</tbody>
-                </table> 
-                <a href="#!/acquista_api" class="btn btn-primary" role="button">Acquista</a>
+                </table>
+				<p class="text-centered text-primary">Attualmente possiedi <b>{{Credits}}</b> crediti.</p>
+				<p class="text-centered text-success" ng-if="enoughCredits()">Puoi acquistare {{Uses}} {{PolicyUnit}} dell'API {{Name}} per un totale di {{totalCost()}} crediti.</p>
+				<p class="text-centered text-danger" ng-if="!enoughCredits()">Non puoi acquistare {{Uses}} {{PolicyUnit}} dell'API {{Name}} per un totale di {{totalCost()}} crediti.</p>
+				<input type="number" max="999" ng-model="Uses"/>
+                <button href="#!/acquista_api" class="btn btn-primary" ng-click="buyAPI()" ng-cloak>Acquista {{Uses}} uso/i</button>
             </div>
         </div>
     </div>

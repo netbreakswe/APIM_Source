@@ -73,6 +73,7 @@ type purchaseslist: void {
 
 type msremainingdata: void {
 	.IdMS: int
+	.APIKey: string
 	.Remaining: int
 }
 
@@ -82,13 +83,26 @@ type msremaininglist: void {
 	.msremaininglist[0,*]: msremainingdata
 }
 
-// apikey remaining update
+// rappr apikey remaining update
 
 type apikeyremainingdata: void {
 	.APIKey: string
 	.Number: int
 }
 
+// rappr apikey vecchia ed apikey nuova
+
+type apikeyupdatedata: void {
+	.OldAPIKey: string
+	.NewAPIKey: string
+}
+
+// rappr idms e client
+
+type idmsandclient: void {
+	.IdMS: int
+	.IdClient: string
+}
 
 // read e write
 
@@ -98,11 +112,13 @@ interface transactions_dbInterface {
 		retrieve_apikey_info( apikeylicense )( apikeydata ),
 		check_apikey_isactive( apikeyactivedata )( bool ),
 		retrieve_active_apikey_from_userid( stringid )( apikeyslist ),
+		retrieve_apikey_from_msidandclient( idmsandclient )( string ),
 		retrieve_active_apikey_number_from_msid( id )( apikeynumber ),
 		retrieve_purchases_list_from_userid( stringid )( purchaseslist ),
 		retrieve_mslist_from_clientid( stringid )( msremaininglist ),
 
 		apikey_registration( apikeydata )( void ),
 		purchase_registration( purchasedata )( void ),
+		apikey_update( apikeyupdatedata )( void ),
 		apikey_remaining_update( apikeyremainingdata )( void )
 }

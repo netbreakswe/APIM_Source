@@ -9,34 +9,13 @@ angular.module('APIM.api_acquistate')
 	$scope.serviceslogo = [];
 	$scope.servicesisactive = [];
 	$scope.servicesidpolicy = [];
-	
-	/*
-	// recupera gli id dei microservizi con licenze attive dell'utente attuale
-	$http.get("http://localhost:8131/retrieve_mslist_from_clientid?Id="+localStorage.getItem("IdClient")).then(function(response) {
-		for(var i=0; i<response.data.msremaininglist.length; i++) {
-			$scope.servicesid.push({
-				IdMS: response.data.msremaininglist[i].IdMS,
-				Remaining: response.data.msremaininglist[i].Remaining
-			});
-		}
-	}).then(function(response) {
-		for(var i=0; i<$scope.servicesid.length; i++) {
-			// recupera i dati dei microservizi ottenuti dalla lista degli id appena recuperata
-			$http.post("http://localhost:8121/retrieve_ms_info?Id="+$scope.servicesid[i].IdMS).then(function(response) {
-				$scope.servicesname[response.data.IdMS] = response.data.Name;
-				$scope.serviceslogo[response.data.IdMS] = response.data.Logo;
-				$scope.servicesisactive[response.data.IdMS] = response.data.IsActive;
-				$scope.servicesidpolicy[response.data.IdMS] = response.data.Policy;
-			});
-		}
-	});
-	*/
 
 	// recupera gli id dei microservizi con licenze attive dell'utente attuale
 	$http.get("http://localhost:8131/retrieve_mslist_from_clientid?Id="+localStorage.getItem("IdClient")).then(function(response) {
 		if(response.data.msremaininglist) {
 			for(var i=0; i<response.data.msremaininglist.length; i++) {
 				$scope.servicesid.push({
+					APIKey: response.data.msremaininglist[i].APIKey,
 					IdMS: response.data.msremaininglist[i].IdMS,
 					Remaining: response.data.msremaininglist[i].Remaining
 				});
@@ -73,17 +52,29 @@ angular.module('APIM.api_acquistate')
 	}
 	
 	
-	$scope.getNewAPIKey = function() {
-		$scope.Math = window.Math;
-		var key = "";
-		var keylength = 8; // lunghezza APIKey
-		var characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	$scope.getNewAPIKey = function(oldapikey,idms) {
+		
+		function generateUUID() {
+			var d = new Date().getTime();
+			if(typeof performance !== 'undefined' && typeof performance.now === 'function') {
+				d += performance.now(); // use high-precision timer if available
+			};
+							
+			var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+				var r = (d + Math.random()*16)%16 | 0;
+				d = Math.floor(d/16);
+				return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+			});
 
-		for(var i=0; i<keylength; i++) {
-			key += characters.substr($scope.Math.floor(($scope.Math.random() * characters.length) + 1), 1);
-			console.log(key);
-		}
-		alert("Chiave: "+key);
+			return uuid;
+		};
+		
+		var newapikey = generateUUID();
+		
+		$http.post("http://localhost:8131/apikey_update?OldAPIKey="+oldapikey+"&NewAPIKey="+newapikey).then(function(response) {
+			document.getElementById("newapikey"+idms).style.display = "none";
+			window.prompt("Copia la nuova APIKey: Ctrl+C, Enter", newapikey);
+		});
 	}
 	
 	

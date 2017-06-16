@@ -19,4 +19,11 @@ angular.module('APIM.ricarica_crediti')
 		}
 	});
 	
+	$scope.updateCredits = function() {
+		$http.post("http://localhost:8101/credits_update?IdClient=" + localStorage.getItem("IdClient") + "&Credits=" + 100).then(function(response) {
+			console.log("Ciao");
+			window.location.reload();
+		});
+	};
+	
 });

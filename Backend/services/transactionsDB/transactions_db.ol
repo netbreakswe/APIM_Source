@@ -118,6 +118,33 @@ main
 
 
 
+    // recupera una apikey a partire dall'id di un servizio
+    [retrieve_apikey_from_msidandclient( request )( response ) {
+
+      // query
+      q = "SELECT APIKey FROM apikeys WHERE IdMS=:ims AND IdClient=:ic";
+      with( request ) {
+        q.ims = .IdMS;
+        q.ic = .IdClient
+      };
+      query@Database( q )( result );
+
+      if( #result.row == 0 ) {
+        println@Console("APIKey not found")()
+      }
+      else {
+        for( i=0, i<#result.row, i++ ) {
+          println@Console( "Got APIKey "+ result.row[i].APIKey )();
+          response = result.row[i].APIKey
+        }
+      };
+      println@Console( "Retrieved apikey of the ms with id " + request.Id )()
+
+    }]
+
+
+
+
   	// recupera le apikey attive a partire dall'id di un utente
   	[retrieve_active_apikey_from_userid( request )( response ) {
 
@@ -195,7 +222,7 @@ main
     [retrieve_mslist_from_clientid( request )( response ) {
 
       // query
-      q = "SELECT IdMS,Remaining FROM apikeys WHERE IdClient=:i AND Remaining > 0";
+      q = "SELECT APIKey,IdMS,Remaining FROM apikeys WHERE IdClient=:i AND Remaining > 0";
       q.i = request.Id;
       query@Database( q )( result );
 
@@ -251,6 +278,22 @@ main
     	println@Console( "Registering new purchase with apikey " + request.APIKey + " by client " + request.IdClient )()
 
   	}]
+
+
+
+    // aggiorna l'apikey con una nuova
+    [apikey_update( request )( response ) {
+
+      // query
+      q = "UPDATE apikeys SET APIKey=:nak WHERE APIKey=:oak";
+      with( request ) {
+        q.oak = .OldAPIKey;
+        q.nak = .NewAPIKey
+      };
+      update@Database( q )( result );
+      println@Console( "Updating new APIKey " + request.NewAPIKey )()
+
+    }]
 
 
 

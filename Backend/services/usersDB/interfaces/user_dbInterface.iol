@@ -143,6 +143,13 @@ type userupdata: void {
 	.PayPal: string
 }
 
+// rappr delle info per aggiornare i crediti di un utente
+
+type creditsupdata: void {
+	.IdClient: string
+	.Credits: int
+} 
+
 
 // read e write
 
@@ -163,5 +170,6 @@ interface user_dbInterface {
 		basicclient_downgrade( stringid )( void ),
 		client_moderation( smallentrydata )( void ),
 		client_update( userupdata )( void ),
-		client_delete( stringid )( void )
+		client_delete( stringid )( void ),
+		credits_update( creditsupdata )( void )
 }

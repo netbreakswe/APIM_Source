@@ -313,7 +313,7 @@ main
           		response += "    check.IdClient = requestinfo.IdClient;\n";
           		response += "    check.IdMS = requestinfo.IdMS;\n";
 
-				      // check apikey
+				// check apikey
           		response += "    check_apikey_exists@transactions_dbOutput( check )( validity );\n";
 
           		// check isactive
@@ -344,7 +344,7 @@ main
           		// calcola se la sla garantita sia rispettata
           		response += "      callcompliance.IdMS = requestinfo.IdMS;\n";
           		response += "      callcompliance.Number = responsetime;\n";
-              response += "      check_ms_iscompliant@microservices_dbOutput( callcompliance )( compliance );\n";
+              	response += "      check_ms_iscompliant@microservices_dbOutput( callcompliance )( compliance );\n";
           		response += "      slasurvey.IsCompliant = compliance;\n";
 
           		// operazioni riguardanti policy e remaining (se la SLA è rispettata scala il remaining, altrimenti no)
@@ -359,22 +359,22 @@ main
           		response += "        }\n";
 
           		// policy per tempo di utilizzo
-		  		    response += "        else if( policy == 2 ) {\n";
+		  		response += "        else if( policy == 2 ) {\n";
           		response += "          remaininginfo.Number = 0 - responsetime;\n";
-              response += "          if(remaininginfo.Number == 0) {\n";
-              response += "            remaininginfo.Number = -1\n";
-              response += "          }\n";
+              	response += "          if(remaininginfo.Number == 0) {\n";
+              	response += "            remaininginfo.Number = -1\n";
+              	response += "          }\n";
           		response += "        }\n";
 
           		// policy per traffico dati (da implementare)
 
-				      response += "        else if( policy == 3 ) {\n";
-				      response += "          calcMessage@calcMessageOutput( request )( reqtraffic );\n";
-				      response += "          calcMessage@calcMessageOutput( response )( resptraffic );\n";
-				      response += "          println@Console( \"Reqtraffic: \" + reqtraffic.bytesize )(); \n";
-				      response += "          println@Console( \"Resptraffic: \" + resptraffic.bytesize )(); \n";
+				response += "        else if( policy == 3 ) {\n";
+				response += "          calcMessage@calcMessageOutput( request )( reqtraffic );\n";
+				response += "          calcMessage@calcMessageOutput( response )( resptraffic );\n";
+				response += "          println@Console( \"Reqtraffic: \" + reqtraffic.bytesize )(); \n";
+				response += "          println@Console( \"Resptraffic: \" + resptraffic.bytesize )(); \n";
           		response += "          remaininginfo.Number = 0 - (reqtraffic.bytesize + resptraffic.bytesize) \n";
-              response += "        };\n";
+                response += "        };\n";
 
           		// aggiornamento del remaining
           		response += "        apikey_remaining_update@transactions_dbOutput( remaininginfo )( void )\n";
