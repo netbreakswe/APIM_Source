@@ -177,7 +177,6 @@ angular.module('APIM.registra_api')
 			mm='0'+mm;
 		};
 		$scope.LastUpdate = dd+'/'+mm+'/'+yyyy;
-		console.log($scope.LastUpdate);
 
 		var data = {
 			subservices : $scope.subservices,

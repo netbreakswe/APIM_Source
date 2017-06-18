@@ -18,8 +18,6 @@ angular.module('APIM.lista_api', []);
 angular.module('APIM.login', []);
 angular.module('APIM.logout', []);
 angular.module('APIM.modifica_info_api', []);
-angular.module('APIM.modifica_interf_api', []);
-angular.module('APIM.modifica_interf_cliente', []);
 angular.module('APIM.policych', []);
 angular.module('APIM.policytp', []);
 angular.module('APIM.policytr', []);
@@ -50,8 +48,6 @@ angular.module('APIM', [
 	'APIM.login',
 	'APIM.logout',
 	'APIM.modifica_info_api',
-	'APIM.modifica_interf_api',
-	'APIM.modifica_interf_cliente',
 	'APIM.policych',
 	'APIM.policytp',
 	'APIM.policytr',
@@ -161,16 +157,6 @@ angular.module('APIM', [
 		.when('/modifica_info_api/:api_id', {
 			controller: 'modifica_info_api_ctrl',
 			templateUrl: 'views/modifica_info_api/modifica_info_api.html'
-		})
-		
-		.when('/modifica_interf_api/:api_id', {
-			controller: 'modifica_interf_api_ctrl',
-			templateUrl: 'views/modifica_interf_api/modifica_interf_api.html'
-		})
-		
-		.when('/modifica_interf_cliente/:api_id', {
-			controller: 'modifica_interf_cliente_ctrl',
-			templateUrl: 'views/modifica_interf_cliente/modifica_interf_cliente.html'
 		})
 		
 		.when('/policych', {

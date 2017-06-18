@@ -7,43 +7,11 @@ HELP
 Da inserire delle guide per le varie azioni. Magari un link di help nel menù utente che porti al download del manuale utente.
 Da implementare un servizio base free alla registrazione per permettere agli utenti di sperimentare i meccanismi.
 
-UPLOAD
-
-I file vengono uploadati alla conferma dello "scegli file..." e non alla conferma dell'operazione.
-I file non vengono cancellati quando terminano il loro scopo.
-
-UTENTI
-
-Le info developer-only sono diventate disponibili anche agli utenti basic.
-
-ACQUISTO
-
-Da implementare completamente.
-Da implementare recap acquisto.
-
-RICARICA CREDITI
-
-Da implementare completamente.
-
-CONTROLLO CORRETTEZZA
-
-Da verificare la gestione errori di tutti i form e simili.
-
 RECUPERO PASSWORD
 
 Da implementare.
 
-RICARICA CREDITI
-
-Da implementare.
-
-REGISTRO TRANSAZIONI
-
-Da implementare.
-
-- Da implementare anche i pagamenti al developer ed integrarli in view e controller
-- Da mettere il servizio al posto della APIKey come valore nella tabella
-
 PARTE ADMIN
+
 Da implementare.
 

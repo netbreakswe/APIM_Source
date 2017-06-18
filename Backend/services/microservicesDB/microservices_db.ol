@@ -206,6 +206,44 @@ main
 
 
 
+    // recupera info di tutti i servizi con categorie associate per la home presentation
+    [homepage_ms_list( request )( response ) {
+
+      // query
+      q = "SELECT microservices.IdMS,microservices.Name,microservices.IdDeveloper,microservices.Logo,categories.IdCategory,categories.Name 
+        AS CatName FROM microservices JOIN jnmscat JOIN categories ON jnmscat.IdMs=microservices.IdMS 
+        AND jnmscat.IdCategory=categories.IdCategory WHERE microservices.IsActive=true ORDER BY IdMS ASC";
+      query@Database( q )( result );
+
+      idms = -1; 
+      s_i = #response.services; // microservizio corrente + index ms corrente
+    
+      // scorre righe del risultato
+      for( i=0, i<#result.row, i++ ) {
+        // salva le info del servizio se ho un nuovo servizio
+        if( result.row[i].IdMS != idms ) {
+          idms = result.row[i].IdMS; // salva l'id del microservizio corrente
+          s_i = #response.services; // ricava l'indice dove inserire il nuovo servizio
+          response.services[s_i].Name = result.row[i].Name;
+          response.services[s_i].Logo = result.row[i].Logo;
+          response.services[s_i].IdMS = result.row[i].IdMS;
+          response.services[s_i].IdDeveloper = result.row[i].IdDeveloper;
+          c_i = #response.services[s_i].categories; // ricava l'indice dove inserire la categoria
+          response.services[s_i].categories[c_i].IdCategory = result.row[i].IdCategory;
+          response.services[s_i].categories[c_i].CatName = result.row[i].CatName
+        } 
+        else {
+          c_i = #response.services[s_i].categories; // ricava l'indice dove inserire la categoria
+          println@Console(result.row[i].IdCategory)();
+          response.services[s_i].categories[c_i].IdCategory = result.row[i].IdCategory;
+          response.services[s_i].categories[c_i].CatName = result.row[i].CatName
+        }
+      }
+
+    }]
+
+
+
   	// recupera tutte le info di base di un microservizio i (per web app)
   	[retrieve_ms_info( request )( response ) {
 
@@ -501,41 +539,50 @@ main
 
 
 
-  	// recupera info di tutti i servizi con categorie associate per la home presentation
-  	[homepage_ms_list( request )( response ) {
+    // ritorna il numero di servizi registrati dal developer id specificato
+    [retrieve_msnumber_from_devid( request )( response ) {
 
-    	// query
-    	q = "SELECT microservices.IdMS,microservices.Name,microservices.IdDeveloper,microservices.Logo,categories.IdCategory,categories.Name 
-    		AS CatName FROM microservices JOIN jnmscat JOIN categories ON jnmscat.IdMs=microservices.IdMS 
-    		AND jnmscat.IdCategory=categories.IdCategory WHERE microservices.IsActive=true ORDER BY IdMS ASC";
-    	query@Database( q )( result );
+      // query
+      q = "SELECT IdMS FROM microservices WHERE IdDeveloper=:i";
+      q.i = request.Id;
+      query@Database( q )( result );
 
-    	idms = -1; 
-    	s_i = #response.services; // microservizio corrente + index ms corrente
-    
-    	// scorre righe del risultato
-    	for( i=0, i<#result.row, i++ ) {
-       	// salva le info del servizio se ho un nuovo servizio
-       	if( result.row[i].IdMS != idms ) {
-          idms = result.row[i].IdMS; // salva l'id del microservizio corrente
-          s_i = #response.services; // ricava l'indice dove inserire il nuovo servizio
-          response.services[s_i].Name = result.row[i].Name;
-          response.services[s_i].Logo = result.row[i].Logo;
-	        response.services[s_i].IdMS = result.row[i].IdMS;
-          response.services[s_i].IdDeveloper = result.row[i].IdDeveloper;
-          c_i = #response.services[s_i].categories; // ricava l'indice dove inserire la categoria
-          response.services[s_i].categories[c_i].IdCategory = result.row[i].IdCategory;
-          response.services[s_i].categories[c_i].CatName = result.row[i].CatName
-        } 
-        else {
-          c_i = #response.services[s_i].categories; // ricava l'indice dove inserire la categoria
-          println@Console(result.row[i].IdCategory)();
-          response.services[s_i].categories[c_i].IdCategory = result.row[i].IdCategory;
-          response.services[s_i].categories[c_i].CatName = result.row[i].CatName
-        }
-      }
+      response = #result.row;
+      println@Console("Retrieved number of registered services of developer id" + request.Id)()
 
-  	}]
+    }]
+
+
+
+
+    // ritorna il numero di servizi attivi registrati dal developer id specificato
+    [retrieve_active_msnumber_from_devid( request )( response ) {
+
+      // query
+      q = "SELECT IdMS FROM microservices WHERE IdDeveloper=:i AND IsActive=true";
+      q.i = request.Id;
+      query@Database( q )( result );
+
+      response = #result.row;
+      println@Console("Retrieved number of registered active services of developer id" + request.Id)()
+
+    }]
+
+
+
+
+    // ritorna il numero di servizi inattivi registrati dal developer id specificato
+    [retrieve_inactive_msnumber_from_devid( request )( response ) {
+
+      // query
+      q = "SELECT IdMS FROM microservices WHERE IdDeveloper=:i AND IsActive=false";
+      q.i = request.Id;
+      query@Database( q )( result );
+
+      response = #result.row;
+      println@Console("Retrieved number of registered inactive services of developer id" + request.Id)()
+
+    }]
 
 
 

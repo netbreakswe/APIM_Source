@@ -64,21 +64,18 @@ angular.module('APIM.registra_utente')
 		
         // lunga lista di gestione errori lato client
 		
-        if( $scope.nome == null ) {$scope.errors.push("Nome obbligatorio"); $scope.ok = false;}
+        if( $scope.nome == null ) {console.log("nome");$scope.errors.push("Nome obbligatorio"); $scope.ok = false;}
         if( $scope.cognome == null ) {$scope.errors.push("Cognome obbligatorio"); $scope.ok = false;}
         if( $scope.email == null  || !validateEmail($scope.email)) {$scope.errors.push("Email non fornita o non valida"); $scope.ok = false;}
         if( $scope.cittadinanza == null ) {$scope.errors.push("Cittadinanza obbligatoria"); $scope.ok = false;}
-        if( $scope.aboutme == null ) {$scope.errors.push("About Me obbligatorio"); $scope.ok = false;}
-        if( $scope.linksito == null ) {$scope.errors.push("Link al Sito obbligatorio"); $scope.ok = false;}
         if( $scope.password != $scope.repassword || !checkPassword($scope.password)) {$scope.errors.push("Password non coincidono o del formato sbagliato"); $scope.ok = false;}
-        if( $scope.paypal == null  || !validateEmail($scope.paypal)) {$scope.errors.push("Email Paypal non fornita o non valida"); $scope.ok = false;}
-        if( $scope.avataruri == null) {$scope.errors.push("Avatar non e' stato caricato con successo o non scelto"); $scope.ok = false;}
+        if( $scope.avataruri == null) {$scope.errors.push("Avatar non caricato con successo o non scelto"); $scope.ok = false;}
         if( !$scope.ok ) {
+			console.log("Non ok!");
           $window.scrollTo(0, 0);
         }
-		$scope.ok = true;
         // se non ci sono errori
-        if( $scope.ok ) {
+        if( $scope.ok == true ) {
 			// applica hash con formato md5
 			var passmd5 = (MD5($scope.password));
 		  

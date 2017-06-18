@@ -18,6 +18,7 @@ inputPort sla_dbJSONInput {
   Interfaces: sla_dbInterface
 }
 
+
 init
 {
 
@@ -36,6 +37,7 @@ init
     println@Console("DB connected, connection is running on host:" + connectionInfo.host )()
 
 }
+
 
 main
 {
@@ -133,6 +135,30 @@ main
 
   }]
 
+
+
+
+  [retrieve_average_response_time_from_msid( request )( response ) {
+
+    //query
+    q = "SELECT ResponseTime FROM slasurveys WHERE IdMS=:i";
+    q.i = request.Id;
+    query@Database( q )( result );
+
+    if( #result.row == 0 ) {
+      println@Console("Sla surveys not found")()
+    }
+    else {
+      length = #result.row;
+      sum = double(0);
+      for( i=0, i<#result.row, i++ ) {
+        sum += result.row[i].ResponseTime
+      }
+    };
+    println@Console("Retrieved sla survey average response time of the microservice " + request.Id)();
+    response = sum / length
+
+  }]
 
 
 

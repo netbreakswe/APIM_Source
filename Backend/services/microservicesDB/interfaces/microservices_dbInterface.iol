@@ -214,6 +214,9 @@ interface microservices_dbInterface {
 		retrieve_category_info( id )( categorydata ),
 		retrieve_category_list( void )( categorylist ),
 		retrieve_categories_of_ms( id )( categorydatalist ),
+		retrieve_msnumber_from_devid( stringid )( int ),
+		retrieve_active_msnumber_from_devid( stringid )( int ),
+		retrieve_inactive_msnumber_from_devid( stringid )( int ),
 
 		microservice_registration( msdataw )( int ),
 		microservice_update( msupdata )( void ),

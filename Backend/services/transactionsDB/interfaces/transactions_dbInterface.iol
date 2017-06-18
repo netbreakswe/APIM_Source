@@ -54,6 +54,12 @@ type apikeynumber: void {
 	.Licenses: int
 }
 
+// rappr di una lista di utenti
+
+type useridlist: void {
+	.idlist[0,*]: stringid
+}
+
 // rappr di un acquisto
 
 type purchasedata: void {
@@ -70,6 +76,8 @@ type purchasedata: void {
 type purchaseslist: void {
 	.purchaseslist[0,*]: purchasedata
 }
+
+// rappr di una apikey con le info di idms e remaining
 
 type msremainingdata: void {
 	.IdMS: int
@@ -114,6 +122,7 @@ interface transactions_dbInterface {
 		retrieve_active_apikey_from_userid( stringid )( apikeyslist ),
 		retrieve_apikey_from_msidandclient( idmsandclient )( string ),
 		retrieve_active_apikey_number_from_msid( id )( apikeynumber ),
+		retrieve_active_apikey_userid_from_msid( stringid )( useridlist ),
 		retrieve_purchases_list_from_userid( stringid )( purchaseslist ),
 		retrieve_mslist_from_clientid( stringid )( msremaininglist ),
 

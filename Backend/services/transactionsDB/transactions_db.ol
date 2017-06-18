@@ -169,7 +169,7 @@ main
 
 
 
-  	// recupera il numero di apikey attive a partire dall'id di un utente
+  	// recupera il numero di apikey attive a partire dall'id di un servizio
   	[retrieve_active_apikey_number_from_msid( request )( response ) {
 
   		// query
@@ -190,6 +190,30 @@ main
     	println@Console("Retrieved " + response + " of active apikeys")()
 
   	}]
+
+
+
+
+    // recupera la lista id degli utenti con licenze attive partire dall'id di un servizio
+    [retrieve_active_apikey_userid_from_msid( request )( response ) {
+
+      // query
+      q = "SELECT IdClient FROM apikeys WHERE Remaining > 0 AND IdMS=:i";
+      q.i = request.Id;
+      query@Database( q )( result );
+
+      if( #result.row == 0 ) {
+        println@Console("Active APIKeys not found")()
+      }
+      else {
+        for( i=0, i<#result.row, i++ ) {
+          println@Console( "Got client id from ms " + result.row[i].IdClient )();
+          response.idlist[i].Id << result.row[i].IdClient
+        }
+      };
+      println@Console("Retrieved " + response + " of users with active apikeys")()
+
+    }]
 
 
 

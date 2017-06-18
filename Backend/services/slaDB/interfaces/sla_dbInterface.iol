@@ -8,7 +8,7 @@ type id: void {
 type slasurveylistdata: void {
 	.IdMS: int
 	.Timestamp: long
-	.ResponseTime: long
+	.ResponseTime: double
 	.IsCompliant: bool
 }
 
@@ -20,7 +20,7 @@ type slasurveylist: void {
 
 type slasurveylistmsdata: void {
 	.Timestamp: long
-	.ResponseTime: long
+	.ResponseTime: double
 	.IsCompliant: bool
 }
 
@@ -34,7 +34,7 @@ type slasurveydata: void {
 	.IdSLASurvey: int
 	.IdMS: int
 	.Timestamp: long
-	.ResponseTime: long
+	.ResponseTime: double
 	.IsCompliant: bool
 }
 
@@ -48,7 +48,7 @@ type slasurveydataw: void {
 	.APIKey: string
 	.IdMS: int
 	.Timestamp: long
-	.ResponseTime: long
+	.ResponseTime: double
 	.IsCompliant: bool
 }
 
@@ -61,6 +61,7 @@ interface sla_dbInterface {
 		retrieve_ms_slasurvey_list( id )( slasurveylistms ),
 		retrieve_slasurvey_info( id )( slasurvey ),
 		retrieve_slasurvey_iscompliant( id )( bool ),
+		retrieve_average_response_time_from_msid( id )( double ),
 
 		slasurvey_insert( slasurveydataw )( void )
 }

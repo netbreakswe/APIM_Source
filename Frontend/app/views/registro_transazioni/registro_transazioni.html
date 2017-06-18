@@ -53,11 +53,10 @@
 				</div>
 				
 				<div class="thumbnail">
-				<select>
-					<option value="impl">Da implementare la tabella che cambia in base alle opzioni</option>
-					<option value="tutte">Tutte</option>
-					<option value="acquisti">Solo Acquisti</option>
-					<option value="pagamenti">Solo Pagamenti</option>
+				<select ng-model="limit">
+					<option value="10" selected>Ultimi 10 acquisti</option>
+					<option value="20">Ultimi 20 acquisti</option>
+					<option value="Infinity">Tutti gli acquisti</option>
 				</select>
 				</div>
 
@@ -75,7 +74,7 @@
 						</thead>
 						<tbody>
 						
-							<tr ng-repeat="purchase in purchases | limitTo:10 | orderBy:'-Timestamp'" class="danger">
+							<tr ng-repeat="purchase in purchases | limitTo:limit | orderBy:'-Timestamp'" class="danger">
 								<td>{{purchase.IdPurchase}}</td>
 								<td>{{purchase.APIKey}}</td>
 								<td>{{purchase.Timestamp}}</td>
