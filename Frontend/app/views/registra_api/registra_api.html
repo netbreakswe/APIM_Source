@@ -3,6 +3,11 @@
         <h1 class="text-center">Registrazione Nuova API:</h1>
         <form class="smallmargintop">
 			<p class="help-block">Registra una nuova API da esporre ai clienti APIMarket.</p>
+			<div class="alert alert-danger" ng-if="!ok" role="alert">
+				<ul ng-repeat="error in errors">
+					<li>{{error}}</li>
+				</ul>
+			</div>
             <!-- Inserisci Nome API -->
             <div class="form-group">
 				<label for="name">Nome API</label>
@@ -20,37 +25,37 @@
 				<p class="help-block">Seleziona almeno una categoria altrimenti la tua API non sarà visibile</p>
             </div>
             <!-- Subservizi_i -->
-            <div  ng-repeat="subservice in subservices track by $index" class="thumbnail">
+            <div ng-repeat="subservice in subservices track by $index" class="thumbnail">
 				<div class="form-group">
-					<h5 class="text-center">SubServizio {{$index + 1}}:</h5>
+					<h3 class="text-center" ng-if="$index == 0" ng-cloak><b>API</b></h3>
+					<h3 class="text-center" ng-if="$index > 0" ng-cloak>SubServizio {{$index}}</h3>
 					<!-- Inserisci Location -->
 					<div>
-						<label for="location">Location</label>
+						<label for="location">Location:</label>
 						<input type="text" ng-model="subservice.location" class="form-control" id="location" name="location" placeholder="Location:socket://localhost:8030" />
 					</div>
 					<!-- Inserisci Protocol -->
 					<div class="form-group">
-						<label for="protocol">Protocol</label>
+						<label for="protocol">Protocol:</label>
 						<input type="text" ng-model="subservice.protocol" class="form-control" id="protocol" name="protocol" placeholder="Protocol: http/sodep" />
 					</div>
 					<!-- Interfacce_i_j -->
 					<div  ng-repeat="interface in subservice.interfaces track by $index">
 						<div class="form-group">
-							<label for="interface">Interfaccia {{$index+1}}</label>
-							<textarea style="height: 100px;" class="form-control" ng-model="interface"></textarea>
+							<label for="interface">Interface:</label>
+							<textarea style="height: 100px; resize:vertical;" class="form-control" ng-model="interface"></textarea>
 							<input accept=".iol" IDS="{{$parent.$index}}" IDI="{{$index}}" type="file" onchange="angular.element(this).scope().saveInterface(this)" id="interface" name="interface" />
-						<p class="help-block">Inserisci l'interfaccia .iol del tuo servizio</p>
+							<p class="help-block" ng-if="$parent.$index == 0" ng-cloak>Inserisci l'interfaccia .iol del tuo servizio</p>
+							<p class="help-block" ng-if="$parent.$index > 0" ng-cloak>Inserisci l'interfaccia .iol del subservizio. Attenzione, deve essere un'interfaccia originale. Le interfacce ricavate da API Market non funzioneranno.</p>
 						</div>
 					</div>
-					<button class="btn btn-success" ng-click="addNewInterface($index);">Aggiungi Interfaccia</button>
-					<button class="btn btn-danger" ng-click="removeInterface($index)">Rimuovi Interfaccia</button>
 				</div>
             </div>
-            <button class="btn btn-success" ng-click="addNewSubService()">Aggiungi SubServizio</button>
-            <button class="btn btn-danger" ng-click="removeSubService()">Rimuovi Subservizio</button>
+			<button class="btn btn-success" ng-click="addNewSubService()">Aggiungi SubServizio</button>
+			<button class="btn btn-danger" ng-click="removeSubService()">Rimuovi Subservizio</button>
 
             <!-- Inserisci documentazione pdf -->
-            <div class="form-group">
+            <div class="form-group smallmargintop">
                 <label for="docpdf">Inserisci la documentazione in formato pdf</label>
                 <input accept=".pdf" type="file" id="docpdf" name="docpdf" onchange="angular.element(this).scope().uploadpdf(this)" />
                 <p class="help-block">La documentazione è importante nella fornitura di un servizio</p>

@@ -2,7 +2,7 @@
 
 angular.module('APIM.registra_api')
 
-.controller('registra_api_ctrl', function($scope, $http, $location) {
+.controller('registra_api_ctrl', function($scope, $http, $window, $location) {
 	
 
 	// inizializza lista categorie apim
@@ -59,9 +59,6 @@ angular.module('APIM.registra_api')
 		}
 	};
 	
-	// inizializza l'interfaccia
-	//$scope.subservices[0].interfaces.push("");
-	
 	// aggiunge un subservizio alla lista subservizi nel form    
 	$scope.addNewSubService = function() {
 		$scope.subservices.push({
@@ -69,28 +66,26 @@ angular.module('APIM.registra_api')
             protocol: "", 
             interfaces: [] 
         });
+		// inizializza l'interfaccia del subservizio
+		var lastIDS = ($scope.subservices.length)-1;
+		$scope.subservices[lastIDS].interfaces.push("");
 	};
 
 	// rimuove l'ultimo subservizio dalla lista subservizi nel form       
 	$scope.removeSubService = function() {
 		var lastIDS = ($scope.subservices.length)-1;
-		$scope.subservices.splice(lastIDS);
+		if( lastIDS > 0 ) {
+			// se è un subservizio
+			$scope.subservices.splice(lastIDS);
+		}
+		// se è il servizio principale, non lo rimuove
 	};
-
-	// aggiunge l'interfaccia al subservizio IDS nel form           
-	$scope.addNewInterface = function(IDS) {
-		$scope.subservices[IDS].interfaces.push("");
-	};
-    
-	// rimuove l'ultima interfaccia del subservizio IDS nel form             
-	$scope.removeInterface = function(IDS) {
-		var lastItem = (($scope.subservices[IDS]).interfaces.length)-1;
-		$scope.subservices[IDS].interfaces.splice(lastItem);
-	};
+	
+	// inizializza l'interfaccia del servizio
+	$scope.subservices[0].interfaces.push("");
 
 	// non appena carica l'interfaccia ne legge il contenuto string in subservices[IDS].interfaces[IDI].content
 	$scope.saveInterface = function(element) {
-		
 		$scope.files = [];
 		var reader = new FileReader();
       
@@ -161,9 +156,15 @@ angular.module('APIM.registra_api')
 		// legge l'immagine come URL
 		reader.readAsDataURL(element.files[0]);
 	};
+	
+	$scope.errors = [];
+	$scope.ok = true;
 
 	// submit servizio
 	$scope.submit = function() {
+		
+		// rimuove/inizializza errori dell'interfaccia grafica
+        $scope.errors = [];
 		
 		// calcola data oggi
 		var today = new Date();
@@ -177,35 +178,42 @@ angular.module('APIM.registra_api')
 			mm='0'+mm;
 		};
 		$scope.LastUpdate = dd+'/'+mm+'/'+yyyy;
+		
+		if( $scope.subservices[0].location == "" || $scope.subservices[0].protocol == "" || $scope.subservices[0].interfaces == "" || $scope.nomeapi == null || $scope.descrizione == null || $scope.logo_uri == null || $scope.pdf_uri == null || $scope.docexternal == null || $scope.guadagno == null || $scope.slagarantita == null || $scope.policy == null) {
+			$scope.ok = false;
+			$scope.errors.push("Errore/i nella registrazione dell'API. Attenzione, tutti i campi sono obbligatori.");
+			$window.scrollTo(0, 0);
+		}
+		else {
+			var data = {
+				subservices : $scope.subservices,
+				categories: $scope.selected_cat,
+				Name: $scope.nomeapi,
+				Description: $scope.descrizione,
+				LastUpdate: $scope.LastUpdate,
+				IdDeveloper: localStorage.getItem("IdClient"),
+				Logo: $scope.logo_uri,
+				DocPDF: $scope.pdf_uri,
+				DocExternal: $scope.docexternal,
+				Profit: $scope.guadagno,
+				SLAGuaranteed: $scope.slagarantita,
+				Policy: $scope.policy
+			};
 
-		var data = {
-			subservices : $scope.subservices,
-			categories: $scope.selected_cat,
-			Name: $scope.nomeapi,
-			Description: $scope.descrizione,
-			LastUpdate: $scope.LastUpdate,
-			IdDeveloper: localStorage.getItem("IdClient"),
-			Logo: $scope.logo_uri,
-			DocPDF: $scope.pdf_uri,
-			DocExternal: $scope.docexternal,
-			Profit: $scope.guadagno,
-			SLAGuaranteed: $scope.slagarantita,
-			Policy: $scope.policy
+			$http({
+				method  : 'POST',
+				url     : "http://localhost:8121/microservice_registration",
+				transformRequest: function () {
+					var formData = new FormData();
+					formData.append("data", JSON.stringify(data));  
+					return formData;  
+				},  
+				// per i file inviati tramite form il Content-Type va messo undefined
+				headers: { 'Content-Type': undefined }
+			}).then(function(response) {
+				$location.path("/conferma_registrazione_api");
+			});
 		};
-
-		$http({
-			method  : 'POST',
-            url     : "http://localhost:8121/microservice_registration",
-            transformRequest: function () {
-                var formData = new FormData();
-                formData.append("data", JSON.stringify(data));  
-                return formData;  
-            },  
-            // per i file inviati tramite form il Content-Type va messo undefined
-            headers: { 'Content-Type': undefined }
-        }).then(function(response) {
-			$location.path("/conferma_registrazione_api");
-        });
     };
 	
 

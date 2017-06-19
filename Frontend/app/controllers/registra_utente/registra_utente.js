@@ -71,7 +71,6 @@ angular.module('APIM.registra_utente')
         if( $scope.password != $scope.repassword || !checkPassword($scope.password)) {$scope.errors.push("Password non coincidono o del formato sbagliato"); $scope.ok = false;}
         if( $scope.avataruri == null) {$scope.errors.push("Avatar non caricato con successo o non scelto"); $scope.ok = false;}
         if( !$scope.ok ) {
-			console.log("Non ok!");
           $window.scrollTo(0, 0);
         }
         // se non ci sono errori

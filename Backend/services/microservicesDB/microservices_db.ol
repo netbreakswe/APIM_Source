@@ -187,7 +187,7 @@ main
 	    	response.operations[i].name = meta_service_value.operations[i].name;
 	      response.operations[i].request = meta_service_value.operations[i].request;
 	     	response.operations[i].response = meta_service_value.operations[i].response;
-	      if( meta_service_value.operations[i].description != void) {
+	      if( meta_service_value.operations[i].description != void ) {
           response.operations[i].description = meta_service_value.operations[i].description
 	      };
 	      for( j=0, j<#meta_service_value.operations[i].ecceptions, j++ ) {

@@ -123,7 +123,7 @@ main
     	// begin generazione interfaccia client del servizio
 
        	// costruisce la lista dei tipi complessi
-       	for( i=1, i<#request.types, i++ ) {
+       	for( i=0, i<#request.types, i++ ) {
        		response += request.types[i].definition + "\n"
        	};
        	// distingue tra operazioni OneWay e RequestResponse e salva in 2 array separati    
@@ -138,7 +138,7 @@ main
        	response += "interface "+request.ms_name+"Interface {\n";
        	// costruisce la lista di operation OneWay
        	response += " OneWay:\n";
-       	for( i=0, i<(#onewayOps-1), i++ ) {
+       	for( i=0, i<(#onewayOps), i++ ) {
        		response += "   "+onewayOps[i].name+"("+onewayOps[i].request+ "),\n"
        	};
        	if( #onewayOps>0 ) {
@@ -146,7 +146,7 @@ main
        	};
        	// costruisce lista di operation RequestResponse
        	response += " RequestResponse:\n";
-       	for( i=1, i<(#requestresponseOps - 1), i++ ) {
+       	for( i=0, i<(#requestresponseOps), i++ ) {
             response += "   "+requestresponseOps[i].name+"("+requestresponseOps[i].request+ ")("+requestresponseOps[i].response+ "),\n"
        	};
        	if (#requestresponseOps>0 ) {
