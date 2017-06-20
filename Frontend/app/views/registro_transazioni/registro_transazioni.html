@@ -8,6 +8,7 @@
 			<!-- List group -->
 			<ul class="list-group">
 				<li class="list-group-item"><a href="#!/account">Dati personali</a></li>
+				<li class="list-group-item"><a href="#!/cambio_password">Cambio password</a></li>
 				<li class="list-group-item"><a href="#!/api_acquistate">API acquistate</a></li>
 				<li class="list-group-item" ng-if="ClientType == 'Basic'">API registrate</li>
 				<li class="list-group-item" ng-if="ClientType == 'Developer'"><a href="#!/api_registrate">API registrate</a></li>
@@ -47,17 +48,18 @@
     <div class="col-xs-10 col-sm-10 col-md-7 col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
 		<div class="row">
 			<!-- UC12.2 e UC12.2.2 -->
-			<div class="col-md-11" >
+			<div class="col-md-11">
 				<div class="page-header">
 					<h1>Registro transazioni</h1>
 				</div>
 				
-				<div class="thumbnail">
-				<select ng-model="limit">
-					<option value="10" selected>Ultimi 10 acquisti</option>
-					<option value="20">Ultimi 20 acquisti</option>
-					<option value="Infinity">Tutti gli acquisti</option>
-				</select>
+				<div class="thumbnail datiPersonaliForm">
+					Filtro:
+					<select ng-model="limit">
+						<option value="10" selected>Ultimi 10 acquisti</option>
+						<option value="20">Ultimi 20 acquisti</option>
+						<option value="Infinity">Tutti gli acquisti</option>
+					</select>
 				</div>
 
 				<div class="panel panel-default mainPanelAccount">

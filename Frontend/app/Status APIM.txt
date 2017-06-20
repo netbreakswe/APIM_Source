@@ -1,7 +1,3 @@
-REROUTING	
-
-Da implementare il rerouting nel caso l'utente digiti direttamente l'indirizzo della pagina, accedendovi anche se non ha i permessi di developer/admin.
-
 HELP
 
 Da inserire delle guide per le varie azioni. Magari un link di help nel menù utente che porti al download del manuale utente.
@@ -15,3 +11,6 @@ PARTE ADMIN
 
 Da implementare.
 
+API Registrate
+
+Guadagno attuale da implementare.

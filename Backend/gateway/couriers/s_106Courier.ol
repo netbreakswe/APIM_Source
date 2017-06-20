@@ -7,11 +7,28 @@ include "console.iol"
 
 include "calcMessage_path.ol"
 
-interface JavaInterface {
-	RequestResponse: 
-		getA(void)( string ),	
-		getB(void)(string),
-		getC(void)(string)
+type t0: string {
+ .key: string 
+ .user: string 
+ .api: int
+}
+type t1: int {
+ .key: string 
+ .user: string 
+ .api: int
+}
+
+interface twice2Interface {
+ OneWay:
+ RequestResponse:
+   mock(t0)(string),
+   twice(t1)(int)
+}
+
+outputPort twice2_49 {
+  Location:"socket://localhost:2002/!/twice2_49"
+  Protocol:sodep
+  Interfaces: twice2Interface
 }
 
 type AuthenticationData: any {
@@ -59,9 +76,9 @@ embedded {
 }
 
 outputPort SubService0 {
- Interfaces: JavaInterface
- Location: "socket://localhost:8310"
- Protocol: http
+ Interfaces: twice2Interface
+ Location: "socket://localhost:9000"
+ Protocol: sodep
 }
 
 inputPort Client {
@@ -71,7 +88,7 @@ inputPort Client {
 }
 
  courier Client {
-  [ interface JavaInterface( request )( response ) ] {
+  [ interface twice2Interface( request )( response ) ] {
     install( RequestNotValid =>
     	println@Console( "Request not valid!" )()
     );    requestinfo.APIKey = request.key;
@@ -127,7 +144,7 @@ inputPort Client {
       throw( RequestNotValid )
     }
   }
-  [ interface JavaInterface( request ) ] {
+  [ interface twice2Interface( request ) ] {
     forward ( request )
   }
  }

@@ -11,9 +11,13 @@ angular.module('APIM.login')
 	
 	$scope.login = function() {
 		$scope.ok = true;
-		$scope.errors = []; //svuota lista errori
-
-		if ($scope.email == null || $scope.password == null) {
+		$scope.errors = []; // svuota lista errori
+		
+		if( localStorage.getItem("Session") == 'true' ) {
+			$scope.errors.push("Sei già loggato. Non puoi effettuare nuovamente il login.");
+			$scope.ok = false;
+		}
+		else if ($scope.email == null || $scope.password == null) {
 			$scope.errors.push("Inserisci info per autenticarti!");
         	$scope.ok = false;
 		} else {

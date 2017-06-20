@@ -371,12 +371,16 @@ main
 				response += "        else if( policy == 3 ) {\n";
 				response += "          calcMessage@calcMessageOutput( request )( reqtraffic );\n";
 				response += "          calcMessage@calcMessageOutput( response )( resptraffic );\n";
-				response += "          println@Console( \"Reqtraffic: \" + reqtraffic.bytesize )(); \n";
-				response += "          println@Console( \"Resptraffic: \" + resptraffic.bytesize )(); \n";
-          		response += "          remaininginfo.Number = 0 - (reqtraffic.bytesize + resptraffic.bytesize) \n";
+				response += "          println@Console( \"Reqtraffic: \" + reqtraffic.bytesize )();\n";
+				response += "          println@Console( \"Resptraffic: \" + resptraffic.bytesize )();\n";
+          		response += "          remaininginfo.Number = 0 - (reqtraffic.bytesize + resptraffic.bytesize);\n";
+          		response += "          if(remaininginfo.Number == 0) {\n";
+              	response += "            remaininginfo.Number = -1\n";
+              	response += "          }\n";
                 response += "        };\n";
 
           		// aggiornamento del remaining
+
           		response += "        apikey_remaining_update@transactions_dbOutput( remaininginfo )( void )\n";
           		response += "      };\n";
 

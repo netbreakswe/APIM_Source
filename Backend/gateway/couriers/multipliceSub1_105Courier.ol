@@ -121,9 +121,12 @@ inputPort Client {
         else if( policy == 3 ) {
           calcMessage@calcMessageOutput( request )( reqtraffic );
           calcMessage@calcMessageOutput( response )( resptraffic );
-          println@Console( "Reqtraffic: " + reqtraffic.bytesize )(); 
-          println@Console( "Resptraffic: " + resptraffic.bytesize )(); 
-          remaininginfo.Number = 0 - (reqtraffic.bytesize + resptraffic.bytesize) 
+          println@Console( "Reqtraffic: " + reqtraffic.bytesize )();
+          println@Console( "Resptraffic: " + resptraffic.bytesize )();
+          remaininginfo.Number = 0 - (reqtraffic.bytesize + resptraffic.bytesize);
+          if(remaininginfo.Number == 0) {
+            remaininginfo.Number = -1
+          }
         };
         apikey_remaining_update@transactions_dbOutput( remaininginfo )( void )
       };
@@ -174,9 +177,12 @@ inputPort Client {
         else if( policy == 3 ) {
           calcMessage@calcMessageOutput( request )( reqtraffic );
           calcMessage@calcMessageOutput( response )( resptraffic );
-          println@Console( "Reqtraffic: " + reqtraffic.bytesize )(); 
-          println@Console( "Resptraffic: " + resptraffic.bytesize )(); 
-          remaininginfo.Number = 0 - (reqtraffic.bytesize + resptraffic.bytesize) 
+          println@Console( "Reqtraffic: " + reqtraffic.bytesize )();
+          println@Console( "Resptraffic: " + resptraffic.bytesize )();
+          remaininginfo.Number = 0 - (reqtraffic.bytesize + resptraffic.bytesize);
+          if(remaininginfo.Number == 0) {
+            remaininginfo.Number = -1
+          }
         };
         apikey_remaining_update@transactions_dbOutput( remaininginfo )( void )
       };

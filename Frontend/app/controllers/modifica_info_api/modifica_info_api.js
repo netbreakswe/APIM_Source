@@ -52,6 +52,7 @@ angular.module('APIM.modifica_info_api')
 		$scope.versione = response.data.Version;
 		$scope.policy = response.data.Policy;
 		$scope.IsActive = response.data.IsActive;
+		$scope.IdDeveloper = response.data.IdDeveloper;
 	});
 	
 	// aggiunge o toglie una categoria all'API  
@@ -66,30 +67,36 @@ angular.module('APIM.modifica_info_api')
 	
 	// aggiorna le categorie dell'API
 	$scope.updateCategories = function() {
-		for(var i=0; i<$scope.categories.length; i++) {
-			var found = false;
-			if($scope.categories[i].Class == "label label-success") {
-				for(var j=0; j<$scope.actualcategories.length && !found; j++) {
-					if($scope.categories[i].IdCategory == $scope.actualcategories[j].IdCategory) {
-						found = true;
+		// controlla se l'utente sia il developer dell'API
+		if(localStorage.getItem("IdClient") == $scope.IdDeveloper && localStorage.getItem("Session") == 'true') {
+			for(var i=0; i<$scope.categories.length; i++) {
+				var found = false;
+				if($scope.categories[i].Class == "label label-success") {
+					for(var j=0; j<$scope.actualcategories.length && !found; j++) {
+						if($scope.categories[i].IdCategory == $scope.actualcategories[j].IdCategory) {
+							found = true;
+						}
+					}
+					if(!found) {
+						$http.post("http://localhost:8121/add_category_to_ms?IdMS="+$scope.IdMS+"&IdCategory="+$scope.categories[i].IdCategory);
 					}
 				}
-				if(!found) {
-					$http.post("http://localhost:8121/add_category_to_ms?IdMS="+$scope.IdMS+"&IdCategory="+$scope.categories[i].IdCategory);
-				}
-			}
-			else {
-				for(var j=0; j<$scope.actualcategories.length && !found; j++) {
-					if($scope.categories[i].IdCategory == $scope.actualcategories[j].IdCategory) {
-						found = true;
+				else {
+					for(var j=0; j<$scope.actualcategories.length && !found; j++) {
+						if($scope.categories[i].IdCategory == $scope.actualcategories[j].IdCategory) {
+							found = true;
+						}
+					}
+					if(found) {
+						$http.post("http://localhost:8121/remove_category_from_ms?IdMS="+$scope.IdMS+"&IdCategory="+$scope.categories[i].IdCategory);
 					}
 				}
-				if(found) {
-					$http.post("http://localhost:8121/remove_category_from_ms?IdMS="+$scope.IdMS+"&IdCategory="+$scope.categories[i].IdCategory);
-				}
 			}
+			window.location.reload();
 		}
-		window.location.reload();
+		else {
+			console.log("ma cazzo");
+		}
 	};
 	
 	// funzione che invia pdf a filehandler Jolie subito dopo che l'immagine è stata caricata
@@ -183,48 +190,44 @@ angular.module('APIM.modifica_info_api')
 		};
 		$scope.LastUpdate = dd+'/'+mm+'/'+yyyy;
 		
-		$http.post("http://localhost:8121/microservice_update?" +
-			"IdMS=" + $scope.IdMS +
-			"&Name=" + $scope.nomeapi +
-			"&Description=" + $scope.descrizione +
-			"&Version=" + $scope.Version +
-			"&LastUpdate=" + $scope.LastUpdate +
-			"&Logo=" + $scope.logo_uri +
-			"&DocPDF=" + $scope.pdf_uri +
-			"&DocExternal=" + $scope.docexternal +
-			"&Profit=" + $scope.guadagno +
-			"&SLAGuaranteed=" + $scope.slaguaranteed
-		).then(function(response) {
-			window.location.reload();
-		});
+		// controlla se l'utente sia il developer dell'API
+		if(localStorage.getItem("IdClient") == $scope.IdDeveloper && localStorage.getItem("Session") == 'true') {
+			$http.post("http://localhost:8121/microservice_update?" +
+				"IdMS=" + $scope.IdMS +
+				"&Name=" + $scope.nomeapi +
+				"&Description=" + $scope.descrizione +
+				"&Version=" + $scope.Version +
+				"&LastUpdate=" + $scope.LastUpdate +
+				"&Logo=" + $scope.logo_uri +
+				"&DocPDF=" + $scope.pdf_uri +
+				"&DocExternal=" + $scope.docexternal +
+				"&Profit=" + $scope.guadagno +
+				"&SLAGuaranteed=" + $scope.slaguaranteed
+			).then(function(response) {
+				window.location.reload();
+			});
+		};
 		
-	};
-	
-	// controlla se l'utente sia il developer dell'API
-	$scope.isDeveloper = function () {
-		if(localStorage.getItem("IdClient") == $scope.IdDeveloper) {
-			return true;
-		}
-		else {
-			return false;
-		}
 	};
 
 	// cambia valore isactive
 	$scope.changeIsActive = function() {
-		var newavailability;
-		if( $scope.IsActive ) {
-			newavailability = false;
-		}
-		else {
-			newavailability = true;
-		}
-		$http.post("http://localhost:8121/change_isactive?" +
-			"IdMS=" + $scope.IdMS +
-			"&IsActive=" + newavailability)
-		.then(function(response) {
-			window.location.reload();
-		});
+		// controlla se l'utente sia il developer dell'API
+		if(localStorage.getItem("IdClient") == $scope.IdDeveloper && localStorage.getItem("Session") == 'true') {
+			var newavailability;
+			if( $scope.IsActive ) {
+				newavailability = false;
+			}
+			else {
+				newavailability = true;
+			}
+			$http.post("http://localhost:8121/change_isactive?" +
+				"IdMS=" + $scope.IdMS +
+				"&IsActive=" + newavailability)
+			.then(function(response) {
+				window.location.reload();
+			});
+		};
 	};
 
    

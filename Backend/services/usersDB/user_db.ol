@@ -292,22 +292,22 @@ main
            		VALUES (:idclient,:nome,:cognome,:email,:password,:avataruri,:regdate,100,1,:aboutme,:cittadinanza,:linkweb,:paypal)";
         	with( q ) {
         		.idclient = request.IdClient;
-	            .nome = request.Name;
-	            .cognome = request.Surname;
-	            .email = request.Email;
-	            .password = request.Password;
-	            .avataruri = request.Avatar;
-	            .regdate = date.day + "/" + date.month + "/" + date.year;
-	            .aboutme = request.AboutMe;
-	            .cittadinanza = request.Citizenship;
-	            .linkweb = request.LinkToSelf;
-	            .paypal = request.PayPal
+	          .nome = request.Name;
+	          .cognome = request.Surname;
+	          .email = request.Email;
+	          .password = request.Password;
+	          .avataruri = request.Avatar;
+	          .regdate = date.day + "/" + date.month + "/" + date.year;
+	          .aboutme = request.AboutMe;
+	          .cittadinanza = request.Citizenship;
+	          .linkweb = request.LinkToSelf;
+	          .paypal = request.PayPal
       		};
      		  update@Database( q )( result );
       		response = false // l'utente non esiste ed è stato creato
     	} 
     	else {
-      		response = true // l'utente esiste pertanto non è stato creato
+      	response = true // l'utente esiste pertanto non è stato creato
     	}
 
   	}]
@@ -321,7 +321,7 @@ main
     	// query
     	q = "UPDATE clients SET ClientType=2,Credits=Credits-1000 WHERE IdClient=:i";
     	with( request ) {
-      		q.i = .Id
+      	q.i = .Id
     	};
     	update@Database( q )( result );
     	println@Console("Upgrading basic client with id " + request.IdClient + " to developer status")()
@@ -337,7 +337,7 @@ main
     	// query
    		q = "UPDATE clients SET ClientType=1,AboutMe='',Citizenship='',LinkToSelf='',PayPal='' WHERE IdClient=:i";
     	with( request ) {
-      		q.i = .Id
+      	q.i = .Id
     	};
     	update@Database( q )( result );
     	println@Console("Downgrading developer with id " + request.Id + " to basic client status")()
@@ -353,16 +353,33 @@ main
     	// query
     	q = "INSERT INTO moderationlog (IdClient,IdAdmin,Timestamp,ModType,Report) VALUES (:ic,:ia,:t,:mt,:r)";
     	with( request ) {
-      		q.ic = .IdClient;
-		     q.ia = .IdAdmin;
-		     q.t = .Timestamp;
-		     q.mt = .ModType;
-		     q.r = .Report
+      	q.ic = .IdClient;
+		    q.ia = .IdAdmin;
+		    q.t = .Timestamp;
+		    q.mt = .ModType;
+		    q.r = .Report
     	};
     	update@Database( q )( result );
     	println@Console("Creating new moderation entry")()
 
   	}]
+
+
+
+
+    // aggiorna i dati di un cliente
+    [client_password_change( request )( response ) {
+
+      // query
+      q = "UPDATE clients SET Password=:p WHERE IdClient=:i";
+      with( request ) {
+        q.i = .IdClient;
+        q.p = .Password
+      };
+      update@Database( q )( result );
+      println@Console("Changing password of user with id " + request.IdClient)()
+
+    }]
 
 
 
@@ -374,14 +391,14 @@ main
     	q = "UPDATE clients SET Name=:n,Surname=:s,Email=:e,Avatar=:a,AboutMe=:am,Citizenship=:ct,LinkToSelf=:l,PayPal=:pp WHERE IdClient=:i";
     	with( request ) {
 	    	q.i = .IdClient;
-	      	q.n = .Name;
-	      	q.s = .Surname;
-	      	q.e = .Email;
-	      	q.a = .Avatar;
-	     	  q.am = .AboutMe;
-	      	q.ct = .Citizenship;
-	      	q.l = .LinkToSelf;
-	      	q.pp = .PayPal
+	      q.n = .Name;
+	      q.s = .Surname;
+	      q.e = .Email;
+	      q.a = .Avatar;
+	     	q.am = .AboutMe;
+	      q.ct = .Citizenship;
+	      q.l = .LinkToSelf;
+	      q.pp = .PayPal
     	};
     	update@Database( q )( result );
     	println@Console("Updating user profile with id " + request.IdClient)()
@@ -397,7 +414,7 @@ main
     	// query
     	q = "DELETE FROM clients WHERE IdClient=:i";
     	with( request ) {
-      		q.i = .Id
+      	q.i = .Id
     	};
     	update@Database( q )( result );
     	println@Console("Deleting client with id " + request.Id + " forever")()
@@ -413,8 +430,8 @@ main
       // query
       q = "UPDATE clients SET Credits = Credits + :c WHERE IdClient=:i";
       with( request ) {
-          q.i = .IdClient;
-          q.c = .Credits
+        q.i = .IdClient;
+        q.c = .Credits
       };
       update@Database( q )( result );
       println@Console("Updated credits of client with id " + request.IdClient + " by the amount of " + request.Credits )()

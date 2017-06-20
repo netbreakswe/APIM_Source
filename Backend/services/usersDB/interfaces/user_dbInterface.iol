@@ -108,17 +108,6 @@ type basicclientdata: void {
 	.PayPal: string
 }
 
-// rappr di un utente developer
-/* non necessaria se utente e developer hanno le stesse informazioni
-type developerdata: void {
-	.IdClient: int
-	.AboutMe: string
-	.Citizenship: string
-	.LinkToSelf: string
-	.PayPal: string
-}
-*/
-
 // rappr di una entry di moderazione (senza campo id)
 
 type smallentrydata: void {
@@ -148,8 +137,14 @@ type userupdata: void {
 type creditsupdata: void {
 	.IdClient: string
 	.Credits: int
-} 
+}
 
+// rappr delle info per il cambio di password
+
+type passupdata: void {
+	.IdClient: string
+	.Password: string
+}
 
 // read e write
 
@@ -170,6 +165,7 @@ interface user_dbInterface {
 		basicclient_downgrade( stringid )( void ),
 		client_moderation( smallentrydata )( void ),
 		client_update( userupdata )( void ),
+		client_password_change( passupdata )( void ),
 		client_delete( stringid )( void ),
 		credits_update( creditsupdata )( void )
 }

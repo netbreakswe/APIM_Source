@@ -1,32 +1,42 @@
 <div class="row" >
-	<div class="col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
-		<div class="panel panel-default">
-			<div class="panel-body">
-				<img src="http://localhost:8000/resources/policies/policy.jpeg" alt="immagine policy" class="logomedium">
-				<h3>Policy per traffico dati</h3>
-				<p>Si paga per ogni chiamata e per il traffico generato. Questa policy è stata pensata per API che richiedono il passaggio di dati pesanti (esempio: un rielaboratore di immagini). L'acquisto non avviene prima dell'uso, invece l'utilizzo viene monitorato per poi scalare l'importo dovuto dal conto dell'utente. C'è la possibilità di ricevere un'email ogni volta che si supera una threshold prestabilita di importo dovuto.</p>
-				<table class="table">
-					<tr>
-						<td>CM</td>
-						<td>Costo mantenimento API Market per chiamata. Serve per evitare che API Market vada in perdita</td>
-                    </tr>
-                    <tr>
-						<td>GpB</td>
-						<td>Guadagno per byte impostato dallo sviluppatore</td>
-                    </tr>
-                    <tr>
-						<td>Commissione</td>
-						<td>Percentuale trattenuta da API Market sul guadagno impostato</td>
-                    </tr>
-                    <tr>
-						<td>NB</td>
-						<td>Numero byte di traffico (ottenuti da byte dei parametri in entrata e di ritorno)</td>
-                    </tr>
-					<tr>
-						<td>Formula</td>
-						<td>CM + (GpB + Commissione) * NB</td>
-					</tr>
-                </table>
+    <div class="col-xs-10 col-sm-8 col-md-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3">
+        <div class="thumbnail">
+			<img src="http://localhost:8000/resources/policies/policy.jpeg" alt="immagine policy" class="logomedium">
+			<div class="caption">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<h3>Policy per traffico dati</h3>
+						<p>Si paga in base al traffico dati generato.</p>
+						<p>Con traffico dati si intende la somma delle dimensioni dei parametri di richiesta e di risposta dell'API, che comunque rimarrà limitato inferiormente ad 1 byte.</p>
+						<p>Questa policy è stata pensata per API caratterizzate da un passaggio di dati considerevoli, ad esempio la rielaborazione di immagini in alta risoluzione.</p>
+						<table class="table">
+							<tr>
+								<td>NBRQ:</td>
+								<td>Numero byte dei parametri della richiesta all'API, calcolati secondo il protocollo SODEP</td>
+							</tr>
+							<tr>
+								<td>NBRS:</td>
+								<td>Numero byte dei parametri della risposta dell'API, calcolati secondo il protocollo SODEP</td>
+							</tr>
+							<tr>
+								<td>VA:</td>
+								<td>Valore attuale chiave API</td>
+							</tr>
+							<tr>
+								<td>VF:</td>
+								<td>Valore finale chiave API</td>
+							</tr>
+							<tr>
+								<td>Vincoli:</td>
+								<td>( NBRQ + NBRS ) &gt; 1</td>
+							</tr>
+							<tr>
+								<td>Formula:</td>
+								<td>VF = VA - ( NBRQ + NBRS )</td>
+							</tr>
+						</table>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

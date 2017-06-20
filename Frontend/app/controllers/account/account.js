@@ -2,7 +2,16 @@
 
 angular.module('APIM.account')
 
-.controller('account_ctrl', function($scope, $http) {
+.controller('account_ctrl', function($scope, $http, $location, $window) {
+	
+	$scope.errors = [];
+	$scope.ok = true;
+	
+	// funzione per validare le email con regex
+	function validateEmail(email) {
+		var re = /\S+@\S+\.\S+/;
+		return re.test(email);
+	};
 	
 	// lista Paesi del mondo
 	$scope.countries = [
@@ -65,25 +74,49 @@ angular.module('APIM.account')
 		
 	// aggiorna il profilo utente
 	$scope.updateProfile = function() {
-		$http.post("http://localhost:8101/client_update?" +
-			"IdClient=" + localStorage.getItem("IdClient") +
-			"&Name=" + $scope.Name +
-			"&Surname=" + $scope.Surname +
-			"&Email=" + $scope.Email +
-			"&Avatar=" + $scope.Avatar +
-			"&AboutMe=" + $scope.AboutMe +
-			"&Citizenship=" + $scope.Citizenship +
-			"&LinkToSelf=" + $scope.LinkToSelf +
-			"&PayPal=" + $scope.PayPal
-		).then(function(response) {
+		
+		if( localStorage.getItem("Session") != 'true' ) {
+			$location.path("/");
+		}
+		else {
 			
-			localStorage.setItem("Name", $scope.Name);
-			localStorage.setItem("Surname", $scope.Surname);
-			localStorage.setItem("Avatar", $scope.Avatar);
+			// rimuove/inizializza errori dell'interfaccia grafica
+			$scope.errors = [];
+			$scope.ok = true;
 			
-			window.location.reload();
+			if( $scope.Name == null || $scope.Name == "") {$scope.errors.push("Nome obbligatorio"); $scope.ok = false;}
+			if( $scope.Surname == null || $scope.Surname == "" ) {$scope.errors.push("Cognome obbligatorio"); $scope.ok = false;}
+			if( $scope.Email == null  || $scope.Email == "" || !validateEmail($scope.Email)) {$scope.errors.push("Email non fornita o non valida"); $scope.ok = false;}
+			if( $scope.Citizenship == null ) {$scope.errors.push("Cittadinanza obbligatoria"); $scope.ok = false;}
+			if( $scope.Avatar == null ) {$scope.errors.push("Avatar non caricato con successo o non scelto"); $scope.ok = false;}
 			
-		});
+			if( !$scope.ok ) {
+				$window.scrollTo(0, 0);
+			}
+			
+			if( $scope.ok ) {
+		
+				$http.post("http://localhost:8101/client_update?" +
+					"IdClient=" + localStorage.getItem("IdClient") +
+					"&Name=" + $scope.Name +
+					"&Surname=" + $scope.Surname +
+					"&Email=" + $scope.Email +
+					"&Avatar=" + $scope.Avatar +
+					"&AboutMe=" + $scope.AboutMe +
+					"&Citizenship=" + $scope.Citizenship +
+					"&LinkToSelf=" + $scope.LinkToSelf +
+					"&PayPal=" + $scope.PayPal
+				).then(function(response) {
+					
+					localStorage.setItem("Name", $scope.Name);
+					localStorage.setItem("Surname", $scope.Surname);
+					localStorage.setItem("Avatar", $scope.Avatar);
+					
+					window.location.reload();
+					
+				});
+			}
+		}
 		
 	};
 	

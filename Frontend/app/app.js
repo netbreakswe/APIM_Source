@@ -8,6 +8,7 @@ angular.module('APIM.acquista_api', []);
 angular.module('APIM.api', []);
 angular.module('APIM.api_acquistate', []);
 angular.module('APIM.api_registrate', []);
+angular.module('APIM.cambio_password', []);
 angular.module('APIM.categoria', []);
 angular.module('APIM.conferma_login', []);
 angular.module('APIM.conferma_registrazione', []);
@@ -25,7 +26,6 @@ angular.module('APIM.recupero_password', []);
 angular.module('APIM.registra_api', []);
 angular.module('APIM.registra_utente', []);
 angular.module('APIM.registro_transazioni', []);
-angular.module('APIM.reset_password', []);
 angular.module('APIM.ricarica_crediti', []);
 angular.module('APIM.visualizza_utente', []);
 
@@ -38,6 +38,7 @@ angular.module('APIM', [
 	'APIM.api',
 	'APIM.api_acquistate',
 	'APIM.api_registrate',
+	'APIM.cambio_password',
 	'APIM.categoria',
 	'APIM.conferma_login',
 	'APIM.conferma_registrazione',
@@ -55,7 +56,6 @@ angular.module('APIM', [
 	'APIM.registra_api',
 	'APIM.registra_utente',
 	'APIM.registro_transazioni',
-	'APIM.reset_password',
 	'APIM.ricarica_crediti',
 	'APIM.version',
 	'APIM.visualizza_utente'
@@ -107,6 +107,11 @@ angular.module('APIM', [
 		.when('/api_registrate', {
 			controller: 'api_registrate_ctrl',
 			templateUrl: 'views/api_registrate/api_registrate.html'
+		})
+		
+		.when('/cambio_password', {
+			controller: 'cambio_password_ctrl',
+			templateUrl: 'views/cambio_password/cambio_password.html'
 		})
 		
 		.when('/categoria/:cat_id', {
@@ -192,11 +197,6 @@ angular.module('APIM', [
 		.when('/registro_transazioni', {
 			controller: 'registro_transazioni_ctrl',
 			templateUrl: 'views/registro_transazioni/registro_transazioni.html'
-		})
-		
-		.when('/reset_password', {
-			controller: 'reset_password_ctrl',
-			templateUrl: 'views/reset_password/reset_password.html'
 		})
 		
 		.when('/ricarica_crediti', {

@@ -4,7 +4,6 @@ angular.module('APIM.registra_api')
 
 .controller('registra_api_ctrl', function($scope, $http, $window, $location) {
 	
-
 	// inizializza lista categorie apim
 	$scope.categories = [];
 
@@ -179,7 +178,12 @@ angular.module('APIM.registra_api')
 		};
 		$scope.LastUpdate = dd+'/'+mm+'/'+yyyy;
 		
-		if( $scope.subservices[0].location == "" || $scope.subservices[0].protocol == "" || $scope.subservices[0].interfaces == "" || $scope.nomeapi == null || $scope.descrizione == null || $scope.logo_uri == null || $scope.pdf_uri == null || $scope.docexternal == null || $scope.guadagno == null || $scope.slagarantita == null || $scope.policy == null) {
+		if( localStorage.getItem("ClientType") != 2 ) {
+			$scope.ok = false;
+			$scope.errors.push("Non sei uno sviluppatore. Non puoi registrare nuove API.");
+			$window.scrollTo(0, 0);
+		}
+		else if( $scope.subservices[0].location == "" || $scope.subservices[0].protocol == "" || $scope.subservices[0].interfaces == "" || $scope.nomeapi == null || $scope.descrizione == null || $scope.logo_uri == null || $scope.pdf_uri == null || $scope.docexternal == null || $scope.guadagno == null || $scope.slagarantita == null || $scope.policy == null) {
 			$scope.ok = false;
 			$scope.errors.push("Errore/i nella registrazione dell'API. Attenzione, tutti i campi sono obbligatori.");
 			$window.scrollTo(0, 0);
