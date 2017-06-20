@@ -1,4 +1,0 @@
-Potete usare sia le funzionalità già implementate (tipo diventa_sviluppatore), sia direttamente manipolare i dati nei db.
-
-Per le credenziali, guardate nei singoli db in backend/services/*****_db.ol nella parte init {}
-Magari create dati nuovi per sperimentare, così da non intralciarci nel caso entrambe modifichino lo stesso microservizio/utente

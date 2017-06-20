@@ -1,6 +1,0 @@
-Basta guardare il file d'interfaccia del servizio che vi serve.
--Il nome del servizio, per scriverlo in $http.post("NOMESERVIZIO")
--Il tipo di request, per mandarlo in $http.post.....?TIPOREQUEST=x
--Il tipo di response, per catturarlo con .then(function(response) {} e metterlo in uno $scope tipo response.data.TIPORESPONSE oppure response.data.TIPORESPONSE[i].SOTTOTIPORESPONSE
-
-Non dovreste mai aver bisogno di guardare il file .ol, perchè lì c'è solo l'implementazione. Nell'interfaccia .iol, guardando i tipi avete tutte le informazioni necessarie.
