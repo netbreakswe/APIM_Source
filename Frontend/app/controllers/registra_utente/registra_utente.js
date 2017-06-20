@@ -100,30 +100,29 @@ angular.module('APIM.registra_utente')
 				return uuid;
 			}
 
-          // è stato scelto questo metodo di inviare i dati, alla fine, a causa di problemi molto gravi di interfacciamento con Jolie, causati da HTTP access control (CORS) che, nonostante gestito lato server, non permetteva comunque lo scambio di dati, poichè vi era un inconsistenza nell'handshake iniziale client/server
-
-          $http.post("http://localhost:8101/basicclient_registration?"
-		    +"IdClient="+generateUUID()
-            +"&Name="+$scope.nome
-            +"&Surname="+$scope.cognome
-            +"&Email="+$scope.email
-            +"&Password="+passmd5
-            +"&Avatar="+$scope.avataruri
-            +"&PayPal="+$scope.paypal
-            +"&Citizenship="+$scope.cittadinanza
-            +"&AboutMe="+$scope.aboutme
-            +"&LinkToSelf="+$scope.linksito
-            ).then(function(response) {
-                // l'utente esiste già?
-                if (response.data.$ == false) {
-                    $location.path("/conferma_registrazione");   
-                } else {
-                    $scope.ok = false;
-                    $scope.errors.push("Utente con questa mail gia' registrato");
-                    $window.scrollTo(0, 0);
-                }
-           });
-
+			$http.post("http://localhost:8101/basicclient_registration?"
+				+"IdClient="+generateUUID()
+				+"&Name="+$scope.nome
+				+"&Surname="+$scope.cognome
+				+"&Email="+$scope.email
+				+"&Password="+passmd5
+				+"&Avatar="+$scope.avataruri
+				+"&AboutMe="+$scope.aboutme
+				+"&Citizenship="+$scope.cittadinanza
+				+"&LinkToSelf="+$scope.linksito
+				+"&PayPal="+$scope.paypal
+			).then(function(response) {
+				// l'utente esiste già
+				if(response.data.$ == true) {
+					$location.path("/conferma_registrazione");   
+				} 
+				else {
+					$scope.ok = false;
+					$scope.errors.push("Utente con questa email già registrato");
+					$window.scrollTo(0, 0);
+				}
+			});
+			
         }        
     };
 

@@ -36,7 +36,7 @@
 					<label class="smallermargintop">Ricerca per Developer: </label>
 					<select ng-model="search.Developer" class="form-control">
 						<option value="{{undefined}}" selected>Tutti</option>
-						<option ng-repeat="developer in AllDevelopers" value="{{developer}}">{{anagraphics[developer]}}</option>
+						<option ng-repeat="developer in AllDevelopers" value="{{developer.IdDeveloper}}">{{anagraphics[developer.IdDeveloper]}}</option>
 					</select>
 				</div>
 			</div>

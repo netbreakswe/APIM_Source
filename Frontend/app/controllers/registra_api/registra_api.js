@@ -218,6 +218,7 @@ angular.module('APIM.registra_api')
 				$location.path("/conferma_registrazione_api");
 			});
 		};
+		
     };
 	
 

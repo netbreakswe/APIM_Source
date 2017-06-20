@@ -1,6 +1,5 @@
 HELP
 
-Da inserire delle guide per le varie azioni. Magari un link di help nel menù utente che porti al download del manuale utente.
 Da implementare un servizio base free alla registrazione per permettere agli utenti di sperimentare i meccanismi.
 
 RECUPERO PASSWORD
@@ -10,3 +9,7 @@ Da implementare.
 PARTE ADMIN
 
 Da implementare.
+
+GESTIONE DB
+
+Da finire il reset dei db con nuovi dati definitivi piÃ¹ seri.

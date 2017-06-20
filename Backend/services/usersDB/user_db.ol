@@ -2,6 +2,7 @@ include "interfaces/user_dbInterface.iol"
 
 include "database.iol"
 include "console.iol"
+include "string_utils.iol"
 include "time.iol"
 
 
@@ -23,7 +24,7 @@ inputPort user_dbJSONInput {
 
 // 1. Procedura che controlla se esiste mail
 define __mail_exists {
-	q_SLAWP4I = "SELECT * FROM clients WHERE Email=:email;";
+	q_SLAWP4I = "SELECT * FROM clients WHERE Email=:email";
 	q_SLAWP4I.email = __email_SLAWP4I;
 	query@Database( q_SLAWP4I )( result_SLAWP4I );
 	// se non lo trova vuol dire che non esiste
@@ -278,6 +279,29 @@ main
 
 
 
+    // ritorna tutti gli id dei developers
+    [retrieve_all_devid( request )( response ) {
+
+      // query
+      q = "SELECT IdClient FROM clients WHERE ClientType=2";
+      query@Database( q )( result );
+
+      if ( #result.row == 0 ) {
+          println@Console("Developers not found")()
+      }
+      else {
+          for ( i=0, i<#result.row, i++ ) {
+            println@Console( "Got developer "+ result.row[i].IdClient )();
+            response.devidlist[i].Id = result.row[i].IdClient
+          }
+      };
+      println@Console("Retrieved all developers id")()
+
+    }]
+
+
+
+
   	// registrazione di un utente ad apim
   	[basicclient_registration( request )( response ) {
 
@@ -285,7 +309,17 @@ main
     	__mail_exists; // controllo se mail esiste già
     	if (!__mail_exists_confirmed) {
           println@Console("Basicclient_registration execution started")();
-      		getDateTime@Time( 0 )( date ); //data corrente
+      		getCurrentDateValues@Time( void )( currdate ); // data corrente
+
+          length@StringUtils( string(currdate.day) )( dayl );
+          if( dayl == 1 ) {
+            currdate.day = "0" + string(currdate.day)
+          };
+
+          length@StringUtils( string(currdate.month) )( monthl );
+          if( monthl == 1 ) {
+            currdate.month = "0" + string(currdate.month)
+          };
 
       		// query
       		q = "INSERT INTO clients (IdClient,Name,Surname,Email,Password,Avatar,Registration,Credits,ClientType,AboutMe,Citizenship,LinkToSelf,PayPal) 
@@ -297,17 +331,17 @@ main
 	          .email = request.Email;
 	          .password = request.Password;
 	          .avataruri = request.Avatar;
-	          .regdate = date.day + "/" + date.month + "/" + date.year;
+	          .regdate = currdate.day + "/" + currdate.month + "/" + currdate.year;
 	          .aboutme = request.AboutMe;
 	          .cittadinanza = request.Citizenship;
 	          .linkweb = request.LinkToSelf;
 	          .paypal = request.PayPal
       		};
      		  update@Database( q )( result );
-      		response = false // l'utente non esiste ed è stato creato
+      		response = true // l'utente non esiste ed è stato creato
     	} 
     	else {
-      	response = true // l'utente esiste pertanto non è stato creato
+      	response = false // l'utente esiste pertanto non è stato creato
     	}
 
   	}]

@@ -100,8 +100,17 @@ angular.module('APIM.lista_api')
 		}
 	};
 	
-	// filtra developers
-	$scope.AllDevelopers = [ "25","26","29" ];
+	// inizializza tutti i developers
+	$scope.AllDevelopers = [];
+	
+	// recupera tutti i developers per la ricerca
+	$http.post("http://localhost:8101/retrieve_all_devid").then(function(response) {
+		for(var i=0; i < response.data.devidlist.length; i++) {
+			$scope.AllDevelopers.push({
+				IdDeveloper: response.data.devidlist[i].Id
+			});
+		}
+	});
 	
 
 });

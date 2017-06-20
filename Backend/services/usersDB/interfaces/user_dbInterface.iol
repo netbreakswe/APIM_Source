@@ -93,6 +93,12 @@ type clienttypedata: void {
 	.Description: string
 }
 
+// rappr di una lista di id developers
+
+type devidlist: void {
+	.devidlist[0,*]: stringid
+}
+
 // rappr di un utente basic
 
 type basicclientdata: void {
@@ -159,6 +165,7 @@ interface user_dbInterface {
 		retrieve_moderation_info( id )( entrydata ),
 		retrieve_modtype_info( id )( modtypedata ),
 		retrieve_clienttype_info( id )( clienttypedata ),
+		retrieve_all_devid( void )( devidlist ),
 
 		basicclient_registration( basicclientdata )( bool ),
 		developer_upgrade( stringid )( void ),
