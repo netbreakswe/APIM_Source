@@ -77,6 +77,13 @@ type purchaseslist: void {
 	.purchaseslist[0,*]: purchasedata
 }
 
+// rappr somma dei pagamenti
+
+type purchasessumdata: void {
+	.IdMS: int
+	.Sum: int
+}
+
 // rappr di una apikey con le info di idms e remaining
 
 type msremainingdata: void {
@@ -124,6 +131,8 @@ interface transactions_dbInterface {
 		retrieve_active_apikey_number_from_msid( id )( apikeynumber ),
 		retrieve_active_apikey_userid_from_msid( stringid )( useridlist ),
 		retrieve_purchases_list_from_userid( stringid )( purchaseslist ),
+		retrieve_purchases_sum_from_msid( id )( purchasessumdata ),
+		retrieve_monthly_purchases_sum_from_msid( id )( purchasessumdata ),
 		retrieve_mslist_from_clientid( stringid )( msremaininglist ),
 
 		apikey_registration( apikeydata )( void ),

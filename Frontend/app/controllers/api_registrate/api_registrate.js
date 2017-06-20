@@ -8,6 +8,12 @@ angular.module('APIM.api_registrate')
 	$scope.services = [];
 	// inizializza lista licenze attive
 	$scope.activelicenses = [];
+	// inizializza lista guadagni desiderati dal developer
+	$scope.devprofits = [];
+	// inizializza lista guadagni del mese attuale
+	$scope.monthprofits = [];
+	// inizializza lista guadagni totali
+	$scope.profits = [];
 	
 	// recupera i microservizi registrati dal developer
 	$http.post("http://localhost:8121/retrieve_ms_from_developerid?Id="+localStorage.getItem("IdClient")).then(function(response) {
@@ -17,8 +23,9 @@ angular.module('APIM.api_registrate')
 					IdMS: response.data.msdevdata[i].IdMS,
 					Name: response.data.msdevdata[i].Name,
 					Logo: response.data.msdevdata[i].Logo,
-					IsActive: response.data.msdevdata[i].IsActive
+					IsActive: response.data.msdevdata[i].IsActive,
 				});
+				$scope.devprofits[response.data.msdevdata[i].IdMS] = response.data.msdevdata[i].Profit;
 			}
 		}
 	}).then(function(response) {
@@ -27,6 +34,16 @@ angular.module('APIM.api_registrate')
 			$http.post("http://localhost:8131/retrieve_active_apikey_number_from_msid?Id="+$scope.services[i].IdMS).then(function(response) {
 				if(response.data) {
 					$scope.activelicenses[response.data.IdMS] = response.data.Licenses;
+				}
+			});
+			$http.post("http://localhost:8131/retrieve_monthly_purchases_sum_from_msid?Id="+$scope.services[i].IdMS).then(function(response) {
+				if(response.data) {
+					$scope.monthprofits[response.data.IdMS] = (response.data.Sum * $scope.devprofits[response.data.IdMS]) / 100;
+				}
+			});
+			$http.post("http://localhost:8131/retrieve_purchases_sum_from_msid?Id="+$scope.services[i].IdMS).then(function(response) {
+				if(response.data) {
+					$scope.profits[response.data.IdMS] = (response.data.Sum * $scope.devprofits[response.data.IdMS]) / 100;
 				}
 			});
 		}

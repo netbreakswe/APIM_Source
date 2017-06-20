@@ -60,7 +60,8 @@
 								<th colspan=2>Lista API</th>
 								<th>Attiva?</th>
 								<th>Numero licenze attive</th>
-								<th>Guadagno attuale</th>
+								<th>Guadagno mese attuale</th>
+								<th>Guadagno totale</th>
 								<th>Modifica API</th>
 							</tr>
 						</thead>
@@ -87,7 +88,9 @@
 								
 								<td>{{activelicenses[service.IdMS]}} licenza/e</td>
 								
-								<td>5€ (da implementare)</td>
+								<td>{{monthprofits[service.IdMS]}} &euro;</td>
+								
+								<td>{{profits[service.IdMS]}} &euro;</td>
 								
 								<td class="text-center">
 									<a href="#!/modifica_info_api/{{service.IdMS}}">

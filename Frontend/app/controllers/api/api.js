@@ -195,8 +195,10 @@ angular.module('APIM.api')
 		return succeed;
 	};
 	
+	$scope.Uses = 0;
+	
 	$scope.totalCost = function() {
-		return $scope.Profit * $scope.Uses;
+		return ($scope.Profit * $scope.Uses);
 	}
 	
 	$scope.enoughCredits = function() {
@@ -208,8 +210,6 @@ angular.module('APIM.api')
 			return false;
 		}
 	};
-	
-	$scope.Uses = 0;
 	
 	$scope.buyAPI = function() {
 		

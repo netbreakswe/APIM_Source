@@ -2,7 +2,7 @@
 	<div class="col-xs-8 col-sm-8 col-md-8 col-xs-offset-2 col-sm-offset-2 col-md-offset-2">
         <h1 class="text-center">Registrazione Nuova API:</h1>
         <form class="smallmargintop">
-			<p class="help-block">Registra una nuova API da esporre ai clienti APIMarket.</p>
+			<p class="help-block">Registra una nuova API da esporre ai clienti di APIMarket.</p>
 			<div class="alert alert-danger" ng-if="!ok" role="alert">
 				<ul ng-repeat="error in errors">
 					<li>{{error}}</li>
@@ -58,14 +58,16 @@
             <div class="form-group smallmargintop">
                 <label for="docpdf">Inserisci la documentazione in formato pdf</label>
                 <input accept=".pdf" type="file" id="docpdf" name="docpdf" onchange="angular.element(this).scope().uploadpdf(this)" />
-                <p class="help-block">La documentazione è importante nella fornitura di un servizio</p>
+                <p class="help-block" ng-if="docpdf == null">La documentazione è importante nella fornitura di un servizio</p>
             </div>
 			
             <!-- Inserisci documentazione esterna -->
             <div class="form-group">
                 <label for="docext">Inserisci link alla documentazione esterna</label>
                 <input type="text" ng-model = "docexternal" class="form-control" id="docext" name="docext" placeholder="Link Doc Esterna" />
+				<p class="help-block" ng-if="docexternal == null">La documentazione è importante nella fornitura di un servizio</p>
             </div>
+			
             <!-- Scegli Policy -->
             <div class="form-group">
                 <label for="policy">Policy di Vendita</label>
@@ -73,34 +75,41 @@
                 <div class="radio">
 					<label>
 						<input type="radio" ng-model="policy" name="optionsRadios" id="optionsRadios1" value="1" checked />
-						<p>Per numero di chiamate</p>
+						<p>Per numero di chiamate (per singola chiamata)</p>
 					</label>
                 </div>
                 <!-- Sceglio Policy a tempo -->
                 <div class="radio">
 					<label>
 						<input type="radio" ng-model="policy" name="optionsRadios" id="optionsRadios2" value="2" />
-						<p>Per tempo di utilizzo</p>
+						<p>Per tempo di utilizzo (per ogni millisecondo)</p>
 					</label>
                 </div>
                 <!-- Sceglio Policy per traffico -->
                 <div class="radio">
 					<label>
 						<input type="radio" ng-model="policy" name="optionsRadios" id="optionsRadios2" value="3" />
-						<p>Per traffico dati</p>
+						<p>Per traffico dati (per ciascun byte)</p>
 					</label>
                 </div>
             </div>
+			
             <!-- Inserisci Guadagno -->
             <div class="form-group">
                 <label for="guadagno">Inserisci guadagno API</label>
                 <input type="text" ng-model="guadagno" class="form-control" id="guadagno" name="guadagno" placeholder="Guadagno" />
+				<p class="help-block" ng-if="guadagno == null">Inserisci il guadagno in &euro; che desideri ottenere per chiamata/millisecondo di utilizzo/byte di traffico</p>
+				<p class="help-block" ng-if="guadagno != null">Guadagnerai {{0.01 * guadagno}}&euro; per chiamata/millisecondo di utilizzo/byte di traffico</p>
             </div>
+			
 			 <!-- Inserisci SLA Garantita -->
             <div class="form-group">
                 <label for="slagarantita">Inserisci SLA garantita API</label>
                 <input type="text" ng-model="slagarantita" class="form-control" id="slagarantita" name="slagarantita" placeholder="SLA garantita" />
+				<p class="help-block" ng-if="slagarantita == null">Inserisci il tempo di risposta massimo garantito dalla tua API. Attenzione, le chiamate che lo superano, saranno gratuite</p>
+				<p class="help-block" ng-if="slagarantita != null">Le chiamate alla tua API che avranno un tempo di risposta &gt;{{slagarantita}} millisecondi saranno gratuite</p>
             </div>
+			
             <!-- Inserisci Logo -->
             <div class="form-group">
                 <img ng-src="{{logo_presentation}}" class="img-responsive" class="img-thumbnail">
@@ -108,6 +117,7 @@
                 <input accept="image/*" type="file" onchange="angular.element(this).scope().uploadlogo(this)" id="logo" name="logo" />
                 <p class="help-block">Il logo deve essere in formato png, jpeg oppure gif</p>
             </div>
+			
             <!-- Conferma -->
             <button type="submit" ng-click="submit()" class="btn btn-primary">Conferma registrazione API</button>
         </form>

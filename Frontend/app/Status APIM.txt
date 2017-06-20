@@ -10,7 +10,3 @@ Da implementare.
 PARTE ADMIN
 
 Da implementare.
-
-API Registrate
-
-Guadagno attuale da implementare.

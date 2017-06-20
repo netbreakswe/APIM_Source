@@ -184,6 +184,7 @@ type msdevlist: void {
 		.IdMS: int
 		.Name: string
 		.Logo: string
+		.Profit: int
 		.IsActive: bool
 	}
 }

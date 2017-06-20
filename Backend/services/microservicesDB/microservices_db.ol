@@ -449,7 +449,7 @@ main
   	[retrieve_ms_from_developerid( request )( response ) {
 
     	// query
-    	q = "SELECT IdMS,Name,Logo,IsActive FROM microservices WHERE IdDeveloper=:i";
+    	q = "SELECT IdMS,Name,Logo,Profit,IsActive FROM microservices WHERE IdDeveloper=:i";
     	q.i = request.Id;
     	query@Database( q )( result );
 
@@ -462,6 +462,7 @@ main
         	response.msdevdata[i].IdMS = result.row[i].IdMS;
         	response.msdevdata[i].Name = result.row[i].Name;
         	response.msdevdata[i].Logo = result.row[i].Logo;
+          response.msdevdata[i].Profit = result.row[i].Profit;
 				  response.msdevdata[i].IsActive = result.row[i].IsActive
       	}
    		};

@@ -3,6 +3,7 @@ include "interfaces/transactions_dbInterface.iol"
 include "database.iol"
 include "console.iol"
 include "string_utils.iol"
+include "time.iol"
 
 
 execution { sequential }
@@ -112,7 +113,7 @@ main
         	response = true
       	}
     	};
-    	println@Console("Retrieved validity of and APIKey")()
+    	println@Console("Retrieved validity of APIKey")()
   	}]
 
 
@@ -121,7 +122,7 @@ main
     // recupera una apikey a partire dall'id di un servizio
     [retrieve_apikey_from_msidandclient( request )( response ) {
 
-      // query
+      // quactive ery
       q = "SELECT APIKey FROM apikeys WHERE IdMS=:ims AND IdClient=:ic";
       with( request ) {
         q.ims = .IdMS;
@@ -187,7 +188,7 @@ main
     		response.IdMS = result.row[i].IdMS;
     		response.Licenses = #result.row
       };
-    	println@Console("Retrieved " + response + " of active apikeys")()
+    	println@Console("Retrieved " + response.Licenses + " of active apikeys")()
 
   	}]
 
@@ -218,7 +219,7 @@ main
 
 
 
-    // recupera la lista delle transazioni di un utente
+    // recupera la lista degli acquisti di un utente
     [retrieve_purchases_list_from_userid( request )( response ) {
 
       // query
@@ -236,6 +237,79 @@ main
         }
       };
       println@Console("Retrieved purchases list of the user with id " + request.Id)()
+
+    }]
+
+
+
+
+    // recupera la somma dell'ammontare degli acquisti di un servizio
+    [retrieve_purchases_sum_from_msid( request )( response ) {
+
+      // query
+      q = "SELECT purchases.Amount, apikeys.IdMS FROM purchases JOIN apikeys ON (purchases.APIKey = apikeys.APIKey) WHERE apikeys.IdMS=:ims";
+      q.ims = request.Id;
+      query@Database( q )( result );
+
+      sum = 0;
+      if( #result.row == 0 ) {
+        println@Console("Purchases not found")()
+      }
+      else {
+        for( i=0, i<#result.row, i++ ) {
+          println@Console( "Got purchase amount " + result.row[i].Amount )();
+          response.IdMS = result.row[i].IdMS;
+          sum += 0 - result.row[i].Amount
+        }
+      };
+      response.Sum = sum;
+      println@Console("Retrieved sum of purchases amount of service with id " + request.Id)()
+
+    }]
+
+
+
+
+    // recupera la somma dell'ammontare degli acquisti di un servizio
+    [retrieve_monthly_purchases_sum_from_msid( request )( response ) {
+
+      // query
+      q = "SELECT purchases.Amount, purchases.Timestamp, apikeys.IdMS FROM purchases JOIN apikeys ON (purchases.APIKey = apikeys.APIKey) WHERE apikeys.IdMS=:ims";
+      q.ims = request.Id;
+      query@Database( q )( result );
+
+      sum = 0;
+      if( #result.row == 0 ) {
+        println@Console("Purchases not found")()
+      }
+      else {
+        for( i=0, i<#result.row, i++ ) {
+          response.IdMS = result.row[i].IdMS;
+          ss = result.row[i].Timestamp;
+          ss.begin = 3;
+          ss.end = 5;
+          substring@StringUtils( ss )( month );
+          sw = month;
+          sw.prefix = "0";
+          startsWith@StringUtils( sw )( singledigit );
+          if( singledigit ) {
+          	ss2 = month;
+          	ss2.begin = 1;
+          	ss2.end = 2;
+          	substring@StringUtils( ss2 )( month )
+          };
+          println@Console("Month " + month)();
+          println@Console( "Got purchase amount " + result.row[i].Amount + " of month " + month )();
+          getCurrentDateValues@Time( void )( currentdate );
+          currentmonth = currentdate.month;
+          println@Console("Current Month " + currentmonth)();
+          if( month == currentmonth ) {
+          	sum += 0 - result.row[i].Amount
+          }
+        }
+      };
+      response.Sum = sum;
+      println@Console("Retrieved sum of purchases amount of service with id " + request.Id)()
 
     }]
 
