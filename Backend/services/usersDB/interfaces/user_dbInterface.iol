@@ -151,10 +151,17 @@ type creditsupdata: void {
 	.Credits: int
 }
 
-// rappr delle info per il cambio di password
+// rappr delle info per il cambio della password
 
 type passupdata: void {
 	.IdClient: string
+	.Password: string
+}
+
+// rappr delle info per il recupero della password
+
+type recoverpassupdata: void {
+	.Email: string
 	.Password: string
 }
 
@@ -162,6 +169,7 @@ type passupdata: void {
 
 interface user_dbInterface {
 	RequestResponse:
+		email_exists( email )( bool ),
 	    user_exists( logininfo )( bool ),
 	    admin_exists( logininfo )( bool ),
 		retrieve_admin_info( stringid )( admindata ),
@@ -182,6 +190,7 @@ interface user_dbInterface {
 		client_moderation( smallentrydata )( void ),
 		client_update( userupdata )( void ),
 		client_password_change( passupdata )( void ),
+		client_password_recover( recoverpassupdata )( void ),
 		client_delete( stringid )( void ),
 		credits_update( creditsupdata )( void )
 }

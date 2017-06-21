@@ -247,6 +247,6 @@ interface microservices_dbInterface {
 		add_category_to_ms( categorydataw )( void ),
 		remove_category_from_ms( categorydataw )( void ),
 		update_client_interface_by_id( Info_Interf_update )( void ),
-		change_isactive( availabilitydata )( void )
+		change_isactive( availabilitydata )( void ),
 		delete_ms( id )( bool )
 }

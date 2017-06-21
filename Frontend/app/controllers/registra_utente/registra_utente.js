@@ -66,7 +66,7 @@ angular.module('APIM.registra_utente')
         // lunga lista di gestione errori lato client
 		
 		if( localStorage.getItem("Session") == 'true' ) {
-			$scope.errors.push("Sei già loggato. Non puoi registrare un nuovo account.");
+			$scope.errors.push("Sei già loggato. Non puoi registrare un nuovo account");
 			$scope.ok = false;
 		}
 		else {

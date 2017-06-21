@@ -64,6 +64,30 @@ main
 {
 	
 
+    // recupero password, verifica se esiste un'email già registrata
+    [email_exists( request )( response ) {
+
+      // query
+      q = "SELECT Email FROM clients WHERE Email=:email";
+      q.email = request.Email;
+      query@Database( q )( result );
+
+      // se non lo trovi vuol dire che non esiste
+      if ( #result.row == 0 ) {
+          println@Console("Email not found")();
+        response = false
+      }
+      // altrimenti esiste
+      else {
+          println@Console("Email " + request.Email + " exists")();
+          response = true
+      }
+
+    }]
+
+
+
+
 	  // in seguito al login verifica se l'utente autenticato esista come cliente/developer e se si ritorna true
   	[user_exists( request )( response ) {
 
@@ -441,7 +465,7 @@ main
 
 
 
-    // aggiorna i dati di un cliente
+    // cambia la password di un utente
     [client_password_change( request )( response ) {
 
       // query
@@ -452,6 +476,23 @@ main
       };
       update@Database( q )( result );
       println@Console("Changing password of user with id " + request.IdClient)()
+
+    }]
+
+
+
+
+    // cambia la password di un utente che ha richiesto il recupero
+    [client_password_recover( request )( response ) {
+
+      // query
+      q = "UPDATE clients SET Password=:p WHERE Email=:e";
+      with( request ) {
+        q.e = .Email;
+        q.p = .Password
+      };
+      update@Database( q )( result );
+      println@Console("Changing password of user with email " + request.EMail + " after a recovery request")()
 
     }]
 
