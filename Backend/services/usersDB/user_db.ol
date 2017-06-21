@@ -86,7 +86,27 @@ main
 
   	}]
 
+    // in seguito al login verifica se l'admin autenticato esista e se si ritorna true
+    [admin_exists( request )( response ) {
 
+      // query
+      q = "SELECT * FROM admins WHERE Email=:email AND Password=:password";
+      q.email = request.Email;
+      q.password = request.Password;
+      query@Database( q )( result );
+
+      // se non lo trovi vuol dire che non esiste
+      if ( #result.row == 0 ) {
+          println@Console("Client not found")();
+        response = false
+      }
+      // altrimenti esiste
+      else {
+          println@Console("Client exists with info " + request.Email + " " + request.Password)();
+          response = true
+      }
+
+    }]
 
 
   	// recupera tutte le info di base di un admin
@@ -111,6 +131,26 @@ main
   	}]
 
 
+    // recupera tutte le info di base di un admin
+    [retrieve_admin_info_from_email( request )( response ) {
+
+      // query
+      q = "SELECT * FROM admins WHERE Email=:m";
+      q.i = request.Id;
+      query@Database( q )( result );
+
+      if ( #result.row == 0 ) {
+          println@Console("Admin not found")()
+      }
+      else {
+          for ( i=0, i<#result.row, i++ ) {
+            println@Console( "Got admin " + result.row[i].Name )();
+            response << result.row[i]
+          }
+      };
+      println@Console("Retrieved info about admin " + response.Name + " " + response.Surname)()
+
+    }]
 
 
   	// ritorna tutte le info di un cliente/developer sulla base del suo id

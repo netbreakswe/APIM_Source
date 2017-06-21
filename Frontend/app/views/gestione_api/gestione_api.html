@@ -1,0 +1,78 @@
+<div class="row">
+
+	<div class="col-xs-10 col-sm-10 col-md-3 col-xs-offset-1 col-sm-offset-1 col-md-offset-0">
+	
+		<div class="panel panel-primary">
+			<!-- Default panel contents -->
+			<div class="panel-heading">Amministrazione</div>
+			<!-- List group -->
+			<ul class="list-group">
+				<li class="list-group-item"><a href="#!/gestione_utenti">Utenti</a></li>
+				<li class="list-group-item"><a href="#!/gestione_api">API</a></li>
+			</ul>
+		</div>
+		
+	</div>
+
+    <div class="col-xs-10 col-sm-10 col-md-7 col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
+
+        <div class="row">
+			<!-- UC12.1.1 e UC12.1.2-->
+			<div class="col-md-11">
+				<h1>Gestione API</h1>
+				<div class="panel panel-default mainPanelAccount">
+
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Lista API</th>
+                    <th>Nome</th>
+                    <th>Stato</th>
+					<th></th>
+					<th></th>
+
+                  </tr>
+                </thead>
+                <tbody>
+					<tr ng-repeat="service in services">
+					
+						<td class="text-center">
+							<a href="#!/gestione_api_detail/{{service.IdMS}}">
+								<img ng-src="{{service.Logo}}" alt="logo api" class="imagesmall">
+							</a>
+						</td>
+					
+						<td>
+							<a href="#!/gestione_api_detail/{{service.IdMS}}">{{service.Name}}</a>
+						</td>
+						
+						<td ng-if="service.IsActive">
+							<img src="http://localhost:8000/images/icons/checked.png" alt="attiva">
+						</td>
+						
+						<td ng-if="!service.IsActive">
+							<img src="http://localhost:8000/images/icons/unchecked.png" alt="inattiva">
+						</td>
+
+						<td ng-if="service.IsActive">
+							<button type="button" ng-click="disattivaAPI(service.IdMS)" class="btn btn-warning">Disattiva API</button>
+						</td>
+						
+						<td ng-if="!service.IsActive">
+							<button type="button" ng-click="attivaAPI(service.IdMS)" class="btn btn-warning">Attiva API</button>
+						</td>
+
+
+						<td><button type="button" ng-click="showConfirm($event, service.IdMS, service.IsActive)" class="btn btn-warning">Cancella API</button></td>
+						
+                  </tr>
+
+                </tbody>
+              </table>
+
+            </div>
+			</div>
+        </div>
+    </div>
+	
+</div>

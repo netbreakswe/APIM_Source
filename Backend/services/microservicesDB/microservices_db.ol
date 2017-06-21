@@ -266,10 +266,50 @@ main
   	}]
 
 
+    // recupera tutte le info di base di tutti i microservizi (per web app)
+    [retrieve_all_ms_info( request )( response ) {
+
+      // query
+      q = "SELECT * FROM microservices";
+
+      query@Database( q )( result );
+
+      if( #result.row == 0 ) {
+        println@Console("Microservice not found")()
+      }
+      else {
+        println@Console( "Got all microservices")();
+        
+//        idms = -1; 
+        s_i = #response.services; // microservizio corrente + index ms corrente
+
+        // scorre righe del risultato
+        for( i=0, i<#result.row, i++ ) {
+
+            idms = result.row[i].IdMS; // salva l'id del microservizio corrente
+            s_i = #response.services; // ricava l'indice dove inserire il nuovo servizio
+            response.services[s_i].IdMS = result.row[i].IdMS;
+            response.services[s_i].Name = result.row[i].Name;
+            response.services[s_i].Description = result.row[i].Description;
+            response.services[s_i].Version = result.row[i].Version;
+            response.services[s_i].LastUpdate = result.row[i].LastUpdate;
+            response.services[s_i].IdDeveloper = result.row[i].IdDeveloper;
+            response.services[s_i].Logo = result.row[i].Logo;
+            response.services[s_i].DocPDF = result.row[i].DocPDF;
+            response.services[s_i].DocExternal = result.row[i].DocExternal;
+            response.services[s_i].Profit = result.row[i].Profit;
+            response.services[s_i].IsActive = result.row[i].IsActive;
+            response.services[s_i].SLAGuaranteed = result.row[i].SLAGuaranteed;
+            response.services[s_i].Policy = result.row[i].Policy
+
+        }
+      }
+      //println@Console("Retrieved all info about microservice " + response.Name)()
+
+    }]
 
 
-
-    // recupera tutte le info di base di un microservizio i (per web app)
+    // controlla se un microsrvizio i soddisfa i rquisiti SLA (per web app)
     [check_ms_iscompliant( request )( response ) {
 
       // query
@@ -300,7 +340,7 @@ main
 
 
 
-    // recupera tutte le info di base di un microservizio i (per web app)
+    // controlla lo stato attivo/disattivo di un microservizio i (per web app)
     [check_ms_isactive( request )( response ) {
 
       // query
@@ -792,6 +832,16 @@ main
   	}]
 
 
+    [delete_ms( request )( response ) {
+
+      // query
+      q = "DELETE FROM microservices WHERE IdMS=:id";
+      q.id = request.Id;
+      update@Database( q )( result );
+      println@Console( "Deleting microservice " + request.IdMS )();
+      response = true
+
+    }]
 
 
   	// inverte il valore isactive del servizio corrispondente all'id

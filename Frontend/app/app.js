@@ -5,6 +5,7 @@
 // ordine alfabetico
 angular.module('APIM.account', []);
 angular.module('APIM.acquista_api', []);
+angular.module('APIM.admin_home', []);
 angular.module('APIM.api', []);
 angular.module('APIM.api_acquistate', []);
 angular.module('APIM.api_registrate', []);
@@ -15,8 +16,12 @@ angular.module('APIM.conferma_registrazione', []);
 angular.module('APIM.conferma_registrazione_api', []);
 angular.module('APIM.conferma_diventa_sviluppatore', []);
 angular.module('APIM.diventa_sviluppatore', []);
+angular.module('APIM.gestione_api', []);
+angular.module('APIM.gestione_api_detail', []);
+angular.module('APIM.gestione_utenti', []);
 angular.module('APIM.lista_api', []);
 angular.module('APIM.login', []);
+angular.module('APIM.login_admin', []);
 angular.module('APIM.logout', []);
 angular.module('APIM.modifica_info_api', []);
 angular.module('APIM.policych', []);
@@ -31,10 +36,12 @@ angular.module('APIM.visualizza_utente', []);
 
 // ordine alfabetico
 angular.module('APIM', [
+	'ngMaterial',
     'ngRoute',
     'ngCookies',
 	'APIM.account',
 	'APIM.acquista_api',
+	'APIM.admin_home',
 	'APIM.api',
 	'APIM.api_acquistate',
 	'APIM.api_registrate',
@@ -45,8 +52,12 @@ angular.module('APIM', [
 	'APIM.conferma_registrazione_api',
 	'APIM.conferma_diventa_sviluppatore',
 	'APIM.diventa_sviluppatore',
+	'APIM.gestione_api',
+	'APIM.gestione_api_detail',
+	'APIM.gestione_utenti',
 	'APIM.lista_api',
 	'APIM.login',
+	'APIM.login_admin',
 	'APIM.logout',
 	'APIM.modifica_info_api',
 	'APIM.policych',
@@ -87,6 +98,11 @@ angular.module('APIM', [
 		.when('/account', {
 			controller: 'account_ctrl',
 			templateUrl: 'views/account/account.html'
+		})
+
+		.when('/admin_home', {
+			controller: 'admin_home_ctrl',
+			templateUrl: 'views/admin_home/admin_home.html'
 		})
 		
 		.when('/acquista_api/:api_id', {
@@ -143,6 +159,24 @@ angular.module('APIM', [
             controller: 'diventa_sviluppatore_ctrl',
             templateUrl: 'views/diventa_sviluppatore/diventa_sviluppatore.html'
         })
+
+        .when('/gestione_api', {
+            controller: 'gestione_api_ctrl',
+            templateUrl: 'views/gestione_api/gestione_api.html'
+        })
+
+        
+
+        .when('/gestione_api_detail/:IdMS', {
+            controller: 'gestione_api_detail_ctrl',
+            templateUrl: 'views/gestione_api_detail/gestione_api_detail.html'
+        })
+
+
+        .when('/gestione_utenti', {
+            controller: 'gestione_utenti_ctrl',
+            templateUrl: 'views/gestione_utenti/gestione_utenti.html'
+        })
 		
 		.when('/lista_api', {
             controller: 'lista_api_ctrl',
@@ -153,6 +187,11 @@ angular.module('APIM', [
             controller: 'login_ctrl',
             templateUrl: 'views/login/login.html'
         })
+
+		.when('/login_admin', {
+            controller: 'login_admin_ctrl',
+            templateUrl: 'views/login_admin/login_admin.html'
+        })        
 		
 		.when('/logout', {
             controller: 'logout_ctrl',

@@ -51,6 +51,27 @@ type msdata: void {
 	.Policy: int
 }
 
+//rappr microservizzi
+
+type allmsdata: void {
+	.services[0,*]: void {
+		.IdMS: int
+		.Name: string
+		.Description: string
+		.Version: int
+		.LastUpdate: string
+		.IdDeveloper: string
+		.Logo: string
+		.DocPDF: string
+		.DocExternal: string
+		.Profit: int
+		.IsActive: bool
+		.SLAGuaranteed: double
+		.Policy: int
+	}
+}
+
+
 // rappr id ms e numero da paragonare
 
 type compliantdata: void {
@@ -204,6 +225,7 @@ interface microservices_dbInterface {
 		retrieve_all_ms_gateway_meta( void )( listservices ),
 		retrieve_client_interface_from_id( id )( Info_Interf ),
 		homepage_ms_list( void) ( home_ms_list ),
+		retrieve_all_ms_info(void)( allmsdata ),
 		retrieve_ms_info( id )( msdata ),
 		check_ms_iscompliant( compliantdata )( bool ),
 		check_ms_isactive( id )( bool ),
@@ -226,4 +248,5 @@ interface microservices_dbInterface {
 		remove_category_from_ms( categorydataw )( void ),
 		update_client_interface_by_id( Info_Interf_update )( void ),
 		change_isactive( availabilitydata )( void )
+		delete_ms( id )( bool )
 }
