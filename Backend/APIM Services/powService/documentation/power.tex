@@ -1,0 +1,51 @@
+\documentclass[a4paper]{article}
+
+%% Language and font encodings
+\usepackage[italian]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+
+%% Sets page size and margins
+\usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\title{Power}
+\author{Yvette Chance}
+
+\begin{document}
+\maketitle
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.3\linewidth]{Power.jpg}
+	\caption{Logo Power}
+\end{figure}
+
+\section{Descrizione}
+
+Power permette di elevare a potenza qualsiasi coppia di numeri.
+L'implementazione di Power è stata effettuata in linguaggio Java ed embeddata in Jolie.
+
+\section{Operazioni}
+
+Power espone una sola operazione di segnatura power( powr )( double ).
+
+\section{Tipi}
+
+Il tipo powr è la variante utilizzata da Power del tipo di autenticazione di APIMarket.
+\begin{itemize}
+	\item powr: void;
+	\begin{itemize}
+		\item .x: double;
+		\item .y: double;
+		\item .key: string;
+		\item .user: string;
+		\item .api: int.
+	\end{itemize}
+\end{itemize}
+
+\end{document}

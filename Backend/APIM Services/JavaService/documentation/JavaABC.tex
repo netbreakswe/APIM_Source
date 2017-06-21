@@ -1,0 +1,48 @@
+\documentclass[a4paper]{article}
+
+%% Language and font encodings
+\usepackage[italian]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+
+%% Sets page size and margins
+\usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\title{JavaABC}
+\author{Jolanda Geelen}
+
+\begin{document}
+\maketitle
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.3\linewidth]{JavaABC.png}
+	\caption{Logo JavaABC}
+\end{figure}
+
+\section{Descrizione}
+
+JavaABC è un servizio test per il funzionamento di servizi implementati in Java embeddando Jolie.
+
+\section{Operazioni}
+
+JavaABC espone tre operazioni di segnatura getA( void )( string ), getB( void )( string ), getC( void )( string ).
+
+\section{Tipi}
+
+Il tipo t1 è la variante utilizzata da JavaABC del tipo di autenticazione di APIMarket.
+\begin{itemize}
+	\item t1: void;
+	\begin{itemize}
+		\item .key: string;
+		\item .user: string;
+		\item .api: int.
+	\end{itemize}
+\end{itemize}
+
+\end{document}

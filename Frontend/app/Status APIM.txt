@@ -1,7 +1,3 @@
-HELP
-
-Da implementare un servizio base free alla registrazione per permettere agli utenti di sperimentare i meccanismi.
-
 RECUPERO PASSWORD
 
 Da implementare.
@@ -9,7 +5,3 @@ Da implementare.
 PARTE ADMIN
 
 Da implementare.
-
-GESTIONE DB
-
-Da finire il reset dei db con nuovi dati definitivi più seri.

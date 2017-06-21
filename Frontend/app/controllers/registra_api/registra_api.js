@@ -22,7 +22,7 @@ angular.module('APIM.registra_api')
 	// inizializza lista subservizi di un api con un solo subservizio
 	$scope.subservices = [{
         location: "", 
-        protocol: "", 
+        protocol: "sodep", 
         interfaces: [] 
 	}];
 
@@ -62,7 +62,7 @@ angular.module('APIM.registra_api')
 	$scope.addNewSubService = function() {
 		$scope.subservices.push({
             location: "", 
-            protocol: "", 
+            protocol: "sodep", 
             interfaces: [] 
         });
 		// inizializza l'interfaccia del subservizio

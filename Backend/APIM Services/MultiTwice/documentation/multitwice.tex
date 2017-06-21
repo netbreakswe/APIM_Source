@@ -1,0 +1,45 @@
+\documentclass[a4paper]{article}
+
+%% Language and font encodings
+\usepackage[italian]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+
+%% Sets page size and margins
+\usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\title{MultiTwice}
+\author{Girolamo Crocetti}
+
+\begin{document}
+\maketitle
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.3\linewidth]{MultiTwice.jpg}
+	\caption{Logo MultiTwice}
+\end{figure}
+
+\section{Descrizione}
+
+MultiTwice permette di raddoppiare, triplicare o quadruplicare un numero intero.
+
+\section{Operazioni}
+
+MultiTwice espone tre operazioni:
+\begin{itemize}
+	\item Un'operazione di segnatura twice\_APIcall( twicetype )( int );
+	\item Un'operazione di segnatura thrice( int )( int );
+	\item Un'operazione di segnatura quadrice( int )( int ).
+\end{itemize}
+
+\section{Tipi}
+
+Il tipo twicetype è il tipo di MultiTwice dell'autenticazione ad APIMarket. Contiene i dati per effettuare la chiamata all'API twice.
+
+\end{document}
