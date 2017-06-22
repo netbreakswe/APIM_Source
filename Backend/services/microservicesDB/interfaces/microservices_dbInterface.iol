@@ -224,8 +224,8 @@ interface microservices_dbInterface {
 	RequestResponse:
 		retrieve_all_ms_gateway_meta( void )( listservices ),
 		retrieve_client_interface_from_id( id )( Info_Interf ),
-		homepage_ms_list( void) ( home_ms_list ),
-		retrieve_all_ms_info(void)( allmsdata ),
+		homepage_ms_list( void ) ( home_ms_list ),
+		retrieve_all_ms_info( void )( allmsdata ),
 		retrieve_ms_info( id )( msdata ),
 		check_ms_iscompliant( compliantdata )( bool ),
 		check_ms_isactive( id )( bool ),

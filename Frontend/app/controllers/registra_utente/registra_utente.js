@@ -80,11 +80,15 @@ angular.module('APIM.registra_utente')
         if( !$scope.ok ) {
           $window.scrollTo(0, 0);
         }
+		
         // se non ci sono errori
         if( $scope.ok == true ) {
+			
+			
 			// applica hash con formato md5
 			var passmd5 = (MD5($scope.password));
-		  
+			
+			// algoritmo generazione UUID v4
 			function generateUUID() {
 				var d = new Date().getTime();
 				if(typeof performance !== 'undefined' && typeof performance.now === 'function') {
@@ -92,13 +96,15 @@ angular.module('APIM.registra_utente')
 				}
 				
 				var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-				var r = (d + Math.random()*16)%16 | 0;
-				d = Math.floor(d/16);
-				return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+					var r = (d + Math.random()*16)%16 | 0;
+					d = Math.floor(d/16);
+					return (c=='x' ? r : (r&0x3|0x8)).toString(16);
 				});
 
 				return uuid;
 			}
+			
+			
 
 			$http.post("http://localhost:8101/basicclient_registration?"
 				+"IdClient="+generateUUID()
