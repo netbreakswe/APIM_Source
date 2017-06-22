@@ -11,7 +11,7 @@ angular.module('APIM.gestione_utenti')
 
 
 	// recupera la lista di tutti gli utenti con le informazioni da visualizzare nell'elenco
-	$http.post("http://localhost:8101/retrieve_all_client_info").then(function(response) {
+	$http.post("http://localhost:8101/retrieve_all_dev_info").then(function(response) {
 		for(var i=0; i < response.data.users.length; i++) {
 
 			$scope.users.push({

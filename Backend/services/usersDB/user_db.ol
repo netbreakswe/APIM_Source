@@ -175,10 +175,10 @@ main
   	}]
 
     // ritorna tutte le info di un cliente/developer sulla base del suo id
-    [retrieve_all_client_info( request )( response ) {
+    [retrieve_all_dev_info( request )( response ) {
 
       // query
-      q = "SELECT * FROM clients";
+      q = "SELECT * FROM clients WHERE ClientType = 2";
       q.i = request.Id;
       query@Database( q )( result );
 

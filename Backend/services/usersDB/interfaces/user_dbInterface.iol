@@ -173,7 +173,7 @@ interface user_dbInterface {
 		retrieve_admin_info( stringid )( admindata ),
 		retrieve_admin_info_from_email( email )( admindata ),
 		retrieve_client_info( stringid )( userdata ),
-		retrieve_all_client_info( void )( alluserdata ),
+		retrieve_all_dev_info( void )( alluserdata ),
 		retrieve_all_client_info_from_id_subset( clientidlist )( alluserdata ),
 		retrieve_client_info_from_email( email )( userdata ),
 		retrieve_client_anagraphics( stringid )( anagraphics ),
