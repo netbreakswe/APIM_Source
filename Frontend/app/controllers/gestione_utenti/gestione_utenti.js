@@ -2,7 +2,7 @@
 
 angular.module('APIM.gestione_utenti')
 
-.controller('gestione_utenti_ctrl', function($scope, $http) {
+.controller('gestione_utenti_ctrl', function($scope, $http, $mdDialog, $route) {
 
 	$scope.users = [];
 
@@ -36,7 +36,54 @@ angular.module('APIM.gestione_utenti')
 			});			
 		});
 
-		console.log($scope.users);
+		//console.log($scope.users);
     });
+
+
+    $scope.showConfirm = function(ev, IdClient, numActive) {
+
+		var messaggio = "";
+		var alert;
+		console.log("1");
+
+		if(numActive > 0){
+			messaggio = "L'utente ha registrato APi che risultano ancora attive. Provvedere alla loro disattivazione ed eliminazione prima di procedere con la cancellazione dell'utente.";
+			console.log("2");
+		    // Internal method
+		    var alert  = $mdDialog.alert({
+		        title: 'Attenzione',
+		        textContent: messaggio,
+		        ok: 'Chiudi'
+		      });
+
+		      $mdDialog
+		        .show( alert )
+		        .finally(function() {
+		          alert = undefined;
+		        });
+
+		}
+		else{
+			messaggio = "Vuoi confermare l'eliminazione?";
+			console.log("3");
+			// Appending dialog to document.body to cover sidenav in docs app
+			var confirm = $mdDialog.confirm()
+			.title('Eliminazione utente')
+			.textContent(messaggio)
+			.ariaLabel('Lucky day')
+			.targetEvent(ev)
+			.ok('Elimina')
+			.cancel('Annulla');
+			$mdDialog.show(confirm).then(function() {
+				console.log("http://localhost:8101/client_delete?Id=" + IdClient);
+				$http.post("http://localhost:8101/client_delete?Id=" + IdClient).then(function(response) {});	
+
+				$route.reload();
+
+			}, function() {
+			});
+		}
+		
+	};
  
 });

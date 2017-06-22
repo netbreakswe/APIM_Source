@@ -36,7 +36,7 @@
 					<tr ng-repeat="user in users">
 					
 						<td>
-							<a href="#!/gestione_utente_detail/Id={{user.IdClient}}">
+							<a href="#!/visualizza_utente/{{user.IdClient}}">
 								{{user.IdClient}}
 							</a>
 						</td>
@@ -46,7 +46,7 @@
 						</td>
 						
 						<td>
-							{{user.Name}}
+							{{user.Surname}}
 						</td>
 
 						<td>
@@ -57,7 +57,7 @@
 							{{user.Active_Ms_Number}}
 						</td>
 
-						<td><button type="button" ng-click="showConfirm($event, user.IdCLient)" class="btn btn-warning">Elimina</button></td>
+						<td><button type="button" ng-click="showConfirm($event, user.IdClient, user.Active_Ms_Number)" class="btn btn-warning">Elimina</button></td>
 						
                   </tr>
 
