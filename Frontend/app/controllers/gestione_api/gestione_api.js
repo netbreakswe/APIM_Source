@@ -4,11 +4,11 @@ angular.module('APIM.gestione_api')
 
 .controller('gestione_api_ctrl', function($scope, $http, $route, $mdDialog) {
 
-	$scope.servicesid = [];
+/*	$scope.servicesid = [];
 	$scope.servicesname = [];
 	$scope.serviceslogo = [];
 	$scope.servicesisactive = [];
-	$scope.servicesidpolicy = [];
+	$scope.servicesidpolicy = [];*/
 	$scope.services = [];
 
 	// recupera la lista di tutti microservizi con le informazioni da visualizzare nell'elenco

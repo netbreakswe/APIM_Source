@@ -201,6 +201,7 @@ main
       // query
       q = "SELECT IdClient FROM apikeys WHERE Remaining > 0 AND IdMS=:i";
       q.i = request.Id;
+      println@Console(q)();
       query@Database( q )( result );
 
       if( #result.row == 0 ) {

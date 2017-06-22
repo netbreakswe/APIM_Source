@@ -6,26 +6,37 @@ angular.module('APIM.gestione_utenti')
 
 	$scope.users = [];
 
-	// recupera la lista di tutti microservizi con le informazioni da visualizzare nell'elenco
-	$http.post("http://localhost:8121/retrieve_all_client_info").then(function(response) {
-		for(var i=0; i < response.data.alluserdata.length; i++) {
+	var num_ms = new Array();
+	var num_active_ms = new Array();
+
+
+	// recupera la lista di tutti gli utenti con le informazioni da visualizzare nell'elenco
+	$http.post("http://localhost:8101/retrieve_all_client_info").then(function(response) {
+		for(var i=0; i < response.data.users.length; i++) {
+
 			$scope.users.push({
 				Display: true,
-				IdMS: response.data.alluserdata[i].IdMS,
-				Name: response.data.alluserdata[i].Name,
-				Description: response.data.alluserdata[i].Description,
-				Version: response.data.alluserdata[i].Version,
-				LastUpdate: response.data.alluserdata[i].LastUpdate,
-				Developer: response.data.alluserdata[i].IdDeveloper,
-				Logo: response.data.alluserdata[i].Logo,
-				DocPDF: response.data.alluserdata[i].DocPDF,
-				DocExternal: response.data.alluserdata[i].DocExternal,
-				Profit: response.data.alluserdata[i].Profit,
-				IsActive: response.data.alluserdata[i].IsActive,
-				SLAGuaranteed: response.data.alluserdata[i].SLAGuaranteed,
-				Policy: response.data.alluserdata[i].Policy
+				IdClient: response.data.users[i].IdClient,
+				Name: response.data.users[i].Name,
+				Description: response.data.users[i].Surname
 			});
+
 		}
+		
+
+		angular.forEach($scope.users, function(value, key){
+			$http.post("http://localhost:8121/retrieve_active_msnumber_from_devid?Id=" + value.IdClient).then(function(response) {
+				value.Active_Ms_Number = response.data.$;
+			});
+		});
+
+		angular.forEach($scope.users, function(value, key){
+			$http.post("http://localhost:8121/retrieve_msnumber_from_devid?Id=" + value.IdClient).then(function(response) {
+				value.Ms_Number = response.data.$;
+			});			
+		});
+
+		console.log($scope.users);
     });
  
 });

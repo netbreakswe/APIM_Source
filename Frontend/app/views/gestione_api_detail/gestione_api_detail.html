@@ -81,7 +81,7 @@
 				                    <td>fgvfv2e3</td>
 				                    <td></td>
 				                    <td></td>
-				                    <td></td>
+				                    <td>{{av_Response_Time}} s</td>
 				                </tr>
 							</tbody>
 		                </table>
@@ -91,11 +91,15 @@
 							<thead>
 								<tr>
 									<th>Utenti con licenze attive</th>
+									<th>Nome</th>
+									<th>Cognome</th>
 								</tr>
 							</thead>
 							<tbody>
 				                <tr ng-repeat="user in users" >
-									<td><a href="#!/visualizza_utente/{{user.ID}}">{{user.Name}}</a></td>
+									<td><a href="#!/visualizza_utente/{{user.IdUser}}">{{user.IdUser}}</a></td>
+									<td>{{user.Name}}</td>
+									<td>{{user.Surname}}</td>
 				                </tr>
 							</tbody>
 		                </table>

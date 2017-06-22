@@ -4,8 +4,6 @@ angular.module('APIM.gestione_api_detail')
 
 .controller('gestione_api_detail_ctrl', function($scope, $http, $route, $mdDialog, $routeParams) {
 
-	//inizializzio lista utenti con licenze attive
-	$scope.users = [];
 
 	// funzione che recupera tutti i dati dell'API
 	$http.post("http://localhost:8121/retrieve_ms_info?Id="+$routeParams.IdMS).then(function(response) {
@@ -23,15 +21,24 @@ angular.module('APIM.gestione_api_detail')
         $scope.Policy = response.data.Policy;
 		
 		$scope.IdDeveloper = response.data.IdDeveloper;
+
 		$http.post("http://localhost:8101/retrieve_client_anagraphics?Id="+$scope.IdDeveloper).then(function(response) {
 			$scope.Developer = response.data.Name + " " + response.data.Surname;
 		});
+
+		console.log("http://localhost:8141/retrieve_average_response_time_from_msid?Id="+$routeParams.IdMS);
+		$http.post("http://localhost:8141/retrieve_average_response_time_from_msid?Id="+$routeParams.IdMS).then(function(response) {
+			$scope.av_Response_Time = response.data.$;
+		});
+
     }).then(function(response) {
 		// recupera il numero di licenze attive della API a partire dall'id
 		$http.post("http://localhost:8131/retrieve_active_apikey_number_from_msid?Id="+$scope.IdMS).then(function(response) {
 			$scope.ActiveLicenses = response.data.Licenses;
 		});
 	});
+
+	
 	
 	// inizializza lista categorie
 	$scope.categories = [];
@@ -47,14 +54,28 @@ angular.module('APIM.gestione_api_detail')
 		}
 	});
 
-	// recupera la lista di utenti con licenza attiva per l'API
-	$http.post("http://localhost:8121/retrieve_client_of_ms?Id="+$routeParams.IdMS).then(function(response) {
-		for(var i=0; i<response.data.users.length; i++) {
-			$scope.users.push({
-				IdUser: response.data.users[i].IdUser,
-				Name: response.data.users[i].Name
+	//inizializzio lista utenti con licenze attive
+	$scope.users = [];
+
+	var usersTMP = new Array(); 
+
+	// recupera la lista di id utente con licenza attiva per l'API
+	$http.post("http://localhost:8131/retrieve_active_apikey_userid_from_msid?Id="+$routeParams.IdMS).then(function(response) {
+		if(response.data.idlist){
+			for(var i=0; i<response.data.idlist.length; i++) {
+				var idtmp = response.data.idlist[i].Id;
+				usersTMP[i+1] = idtmp;
+			}//for
+			usersTMP.forEach(function(val){
+				$http.post("http://localhost:8101/retrieve_client_anagraphics?Id=" + val).then(function(response) {
+					$scope.users.push({
+						IdUser: val,
+						Name: response.data.Name,
+						Surname: response.data.Surname
+					});
+				});
 			});
-		}
+		}//if
 	});
 
 

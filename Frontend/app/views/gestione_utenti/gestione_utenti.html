@@ -21,9 +21,48 @@
 			<div class="col-md-11">
 				<h1>Gestione utenti</h1>
 				<div class="panel panel-default mainPanelAccount">
-					<p>
-						Da questo pannello puoi accedere a tutte le funzioni amministrative.
-					</p>
+					<table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Lista Utenti</th>
+                    <th>Nome</th>
+                    <th>Cognome</th>
+                    <th>API registrate</th>
+                    <th>API attive</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+					<tr ng-repeat="user in users">
+					
+						<td>
+							<a href="#!/gestione_utente_detail/Id={{user.IdClient}}">
+								{{user.IdClient}}
+							</a>
+						</td>
+					
+						<td>
+							{{user.Name}}
+						</td>
+						
+						<td>
+							{{user.Name}}
+						</td>
+
+						<td>
+							{{user.Ms_Number}}
+						</td>
+
+						<td>
+							{{user.Active_Ms_Number}}
+						</td>
+
+						<td><button type="button" ng-click="showConfirm($event, user.IdCLient)" class="btn btn-warning">Elimina</button></td>
+						
+                  </tr>
+
+                </tbody>
+              </table>
 				</div>
 			</div>
         </div>

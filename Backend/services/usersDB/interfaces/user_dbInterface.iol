@@ -105,6 +105,12 @@ type devidlist: void {
 	.devidlist[0,*]: stringid
 }
 
+// rappr di una lista di id client
+
+type clientidlist: void {
+	.clientidlist[0,*]: stringid
+}
+
 // rappr di un utente basic
 
 type basicclientdata: void {
@@ -151,17 +157,10 @@ type creditsupdata: void {
 	.Credits: int
 }
 
-// rappr delle info per il cambio della password
+// rappr delle info per il cambio di password
 
 type passupdata: void {
 	.IdClient: string
-	.Password: string
-}
-
-// rappr delle info per il recupero della password
-
-type recoverpassupdata: void {
-	.Email: string
 	.Password: string
 }
 
@@ -169,13 +168,13 @@ type recoverpassupdata: void {
 
 interface user_dbInterface {
 	RequestResponse:
-		email_exists( email )( bool ),
 	    user_exists( logininfo )( bool ),
 	    admin_exists( logininfo )( bool ),
 		retrieve_admin_info( stringid )( admindata ),
 		retrieve_admin_info_from_email( email )( admindata ),
 		retrieve_client_info( stringid )( userdata ),
 		retrieve_all_client_info( void )( alluserdata ),
+		retrieve_all_client_info_from_id_subset( clientidlist )( alluserdata ),
 		retrieve_client_info_from_email( email )( userdata ),
 		retrieve_client_anagraphics( stringid )( anagraphics ),
 		retrieve_client_type( id )( typeiddata ),
@@ -190,7 +189,6 @@ interface user_dbInterface {
 		client_moderation( smallentrydata )( void ),
 		client_update( userupdata )( void ),
 		client_password_change( passupdata )( void ),
-		client_password_recover( recoverpassupdata )( void ),
 		client_delete( stringid )( void ),
 		credits_update( creditsupdata )( void )
 }

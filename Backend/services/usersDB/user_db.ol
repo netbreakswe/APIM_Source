@@ -64,30 +64,6 @@ main
 {
 	
 
-    // recupero password, verifica se esiste un'email già registrata
-    [email_exists( request )( response ) {
-
-      // query
-      q = "SELECT Email FROM clients WHERE Email=:email";
-      q.email = request.Email;
-      query@Database( q )( result );
-
-      // se non lo trovi vuol dire che non esiste
-      if ( #result.row == 0 ) {
-          println@Console("Email not found")();
-        response = false
-      }
-      // altrimenti esiste
-      else {
-          println@Console("Email " + request.Email + " exists")();
-          response = true
-      }
-
-    }]
-
-
-
-
 	  // in seguito al login verifica se l'utente autenticato esista come cliente/developer e se si ritorna true
   	[user_exists( request )( response ) {
 
@@ -198,6 +174,81 @@ main
 
   	}]
 
+    // ritorna tutte le info di un cliente/developer sulla base del suo id
+    [retrieve_all_client_info( request )( response ) {
+
+      // query
+      q = "SELECT * FROM clients";
+      q.i = request.Id;
+      query@Database( q )( result );
+
+      println@Console(q)();
+
+      if ( #result.row == 0 ) {
+          println@Console("Client not found")()
+      }
+      else {
+        // scorre righe del risultato
+        for( i=0, i<#result.row, i++ ) {
+
+            s_i = #response.users; // ricava l'indice dove inserire il nuovo servizio
+            response.users[s_i].IdClient = result.row[i].IdClient;
+            response.users[s_i].Name = result.row[i].Name;
+            response.users[s_i].Surname = result.row[i].Surname;
+            response.users[s_i].Email = result.row[i].Email;
+            response.users[s_i].Password = result.row[i].Password;
+            response.users[s_i].Avatar = result.row[i].Avatar;
+            response.users[s_i].Credits = result.row[i].Credits;
+            response.users[s_i].ClientType = result.row[i].ClientType;
+            response.users[s_i].Registration = result.row[i].Registration;
+            response.users[s_i].AboutMe = result.row[i].AboutMe;
+            response.users[s_i].Citizenship = result.row[i].Citizenship;
+            response.users[s_i].LinkToSelf = result.row[i].LinkToSelf;
+            response.users[s_i].PayPal = result.row[i].PayPal
+
+        }
+      };
+      println@Console("Retrieved info about all client" )()
+
+    }]
+
+
+
+  /*  // ritorna tutte le info di un cliente sulla base di un subset di id
+    [retrieve_all_client_info_from_id_subset( request )( response ) {
+
+      // query
+      //q = "SELECT * FROM clients WHERE IdClient=:i";
+      q = "SELECT * FROM clients WHERE IdClient IN ";
+      //q.i = request.Id;
+
+      IdListClient = "(" + request.clientidlist[0].id;
+      for ( j=1, j<request.length, j++ ) {
+         IdListClient = IdListClient + " , " + request.clientidlist[j].id
+      };
+      IdListClient  = IdListClient + " )" ;
+
+      println@Console(IdListClient)();
+
+      q = q + IdListClient;
+
+      println@Console(q)();
+
+      query@Database( q )( result );
+
+      if ( #result.row == 0 ) {
+          println@Console("Client not found")()
+      }
+      else {
+        for ( i=0, i<#result.row, i++ ) {
+            println@Console( "Got client " + result.row[i].Name )();
+            response << result.row[i];
+            println@Console("Retrieved info about client " + response.Name + " " + response.Surname)()
+          }
+      }
+
+    }]
+*/
 
 
 
@@ -465,7 +516,7 @@ main
 
 
 
-    // cambia la password di un utente
+    // aggiorna i dati di un cliente
     [client_password_change( request )( response ) {
 
       // query
@@ -476,23 +527,6 @@ main
       };
       update@Database( q )( result );
       println@Console("Changing password of user with id " + request.IdClient)()
-
-    }]
-
-
-
-
-    // cambia la password di un utente che ha richiesto il recupero
-    [client_password_recover( request )( response ) {
-
-      // query
-      q = "UPDATE clients SET Password=:p WHERE Email=:e";
-      with( request ) {
-        q.e = .Email;
-        q.p = .Password
-      };
-      update@Database( q )( result );
-      println@Console("Changing password of user with email " + request.EMail + " after a recovery request")()
 
     }]
 
