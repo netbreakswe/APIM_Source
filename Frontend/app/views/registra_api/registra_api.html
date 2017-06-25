@@ -46,13 +46,17 @@
 							<textarea style="height: 100px; resize:vertical;" class="form-control" ng-model="interface"></textarea>
 							<input accept=".iol" IDS="{{$parent.$index}}" IDI="{{$index}}" type="file" onchange="angular.element(this).scope().saveInterface(this)" id="interface" name="interface" />
 							<p class="help-block" ng-if="$parent.$index == 0" ng-cloak>Inserisci l'interfaccia .iol del tuo servizio</p>
+							<!-- Per implementarezione subservizio di APIMarket futura
 							<p class="help-block" ng-if="$parent.$index > 0" ng-cloak>Inserisci l'interfaccia .iol del subservizio. Attenzione, deve essere un'interfaccia originale. Le interfacce ricavate da API Market non funzioneranno.</p>
+							-->
 						</div>
 					</div>
 				</div>
             </div>
+			<!-- Per implementarezione subservizio di APIMarket futura
 			<button class="btn btn-success" ng-click="addNewSubService()">Aggiungi SubServizio</button>
 			<button class="btn btn-danger" ng-click="removeSubService()">Rimuovi Subservizio</button>
+			-->
 
             <!-- Inserisci documentazione pdf -->
             <div class="form-group smallmargintop">

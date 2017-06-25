@@ -7,8 +7,8 @@
 			<div class="panel-heading">Amministrazione</div>
 			<!-- List group -->
 			<ul class="list-group">
-				<li class="list-group-item"><a href="#!/gestione_utenti">Utenti</a></li>
-				<li class="list-group-item"><a href="#!/gestione_api">API</a></li>
+				<li class="list-group-item"><a href="#!/gestione_utenti">Gestione utenti</a></li>
+				<li class="list-group-item"><a href="#!/gestione_api">Gestione API</a></li>
 			</ul>
 		</div>
 		
@@ -24,29 +24,30 @@
 					<table class="table table-striped">
                 <thead>
                   <tr>
-                    <th>Lista Utenti</th>
-                    <th>Nome</th>
-                    <th>Cognome</th>
+                    <th>#</th>
+                    <th>Utente</th>
+					<th>Tipologia</th>
                     <th>API registrate</th>
                     <th>API attive</th>
-
+					<th>Azioni disponibili:</th>
                   </tr>
                 </thead>
                 <tbody>
 					<tr ng-repeat="user in users">
 					
 						<td>
-							<a href="#!/visualizza_utente/{{user.IdClient}}">
-								{{user.IdClient}}
-							</a>
+							{{user.IdClient}}
 						</td>
 					
 						<td>
-							{{user.Name}}
+							<a href="#!/visualizza_utente/{{user.IdClient}}">
+								{{user.Name}} {{user.Surname}}
+							</a>
 						</td>
 						
 						<td>
-							{{user.Surname}}
+							<span ng-if="user.ClientType == 1">Base</span>
+							<span ng-if="user.ClientType == 2">Sviluppatore</span>
 						</td>
 
 						<td>
@@ -57,7 +58,7 @@
 							{{user.Active_Ms_Number}}
 						</td>
 
-						<td><button type="button" ng-click="showConfirm($event, user.IdClient, user.Active_Ms_Number)" class="btn btn-warning">Elimina</button></td>
+						<td><button type="button" ng-click="showConfirm($event, user.IdClient, user.Active_Ms_Number)" class="btn btn-danger">Elimina</button></td>
 						
                   </tr>
 

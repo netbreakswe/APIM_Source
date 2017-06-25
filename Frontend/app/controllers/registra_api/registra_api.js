@@ -58,6 +58,8 @@ angular.module('APIM.registra_api')
 		}
 	};
 	
+	/* Per implementarezione subservizio di APIMarket futura
+	
 	// aggiunge un subservizio alla lista subservizi nel form    
 	$scope.addNewSubService = function() {
 		$scope.subservices.push({
@@ -79,6 +81,8 @@ angular.module('APIM.registra_api')
 		}
 		// se è il servizio principale, non lo rimuove
 	};
+	
+	*/
 	
 	// inizializza l'interfaccia del servizio
 	$scope.subservices[0].interfaces.push("");

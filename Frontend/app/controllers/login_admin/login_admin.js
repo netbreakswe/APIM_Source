@@ -18,9 +18,10 @@ angular.module('APIM.login_admin')
         	$scope.ok = false;
 		} else {
 			var passmd5 = (MD5($scope.password));
+			console.log(passmd5);
 
 		   	//$http.post("http://localhost:8101/admin_exists?Email="+$scope.email+"&Password="+passmd5
-		   	$http.post("http://localhost:8101/admin_exists?Email="+$scope.email+"&Password="+$scope.password
+		   	$http.post("http://localhost:8101/admin_exists?Email="+$scope.email+"&Password="+passmd5
 	   		).then(function(response) {
 	        	if (response.data.$ == false) {
 	        	    $scope.errors.push("Informazioni di autenticazione errate");
@@ -28,15 +29,17 @@ angular.module('APIM.login_admin')
 	        	} else {
 	        		$http.post("http://localhost:8101/retrieve_admin_info_from_email?Email="+$scope.email).then(function(response) {
 						// dati della session
-	   					localStorage.setItem("Session", true);
+	   					localStorage.setItem("Session", "Admin");
 						localStorage.setItem("IdAdmin", response.data.IdAdmin);
 						localStorage.setItem("Name", response.data.Name);
-/*						localStorage.setItem("Surname", response.data.Surname);
-						localStorage.setItem("Avatar", response.data.Avatar);*/
+						localStorage.setItem("Surname", response.data.Surname);
+						localStorage.setItem("Avatar", "http://localhost:8000/resources/icons/netbreaklogo.png");
+						localStorage.setItem("ClientType", 3);
 						
 						$scope.Name = response.data.Name;
-/*						$scope.Surname = response.data.Surname;
-						$scope.Avatar = response.data.Avatar;*/
+						$scope.Surname = response.data.Surname;
+						$scope.Avatar = response.data.Avatar;
+						$scope.ClientType = localStorage.getItem("ClientType");
 
 						// reindirizzamento e reload per 
 						window.location.reload();

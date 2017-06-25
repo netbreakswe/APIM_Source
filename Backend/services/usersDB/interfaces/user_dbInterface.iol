@@ -49,7 +49,7 @@ type userdata: void {
 // rapr list utenti
 
 type alluserdata : void {
-	.users[0, *]: userdata
+	.users[0,*]: userdata
 }
 
 // rappr email di un utente
@@ -131,7 +131,6 @@ type basicclientdata: void {
 type smallentrydata: void {
 	.IdClient: string
 	.IdAdmin: string
-	.Timestamp: string
 	.ModType: int
 	.Report: string
 }
@@ -173,6 +172,7 @@ interface user_dbInterface {
 		retrieve_admin_info( stringid )( admindata ),
 		retrieve_admin_info_from_email( email )( admindata ),
 		retrieve_client_info( stringid )( userdata ),
+		retrieve_all_client_info( void )( alluserdata ),
 		retrieve_all_dev_info( void )( alluserdata ),
 		retrieve_all_client_info_from_id_subset( clientidlist )( alluserdata ),
 		retrieve_client_info_from_email( email )( userdata ),
@@ -189,6 +189,6 @@ interface user_dbInterface {
 		client_moderation( smallentrydata )( void ),
 		client_update( userupdata )( void ),
 		client_password_change( passupdata )( void ),
-		client_delete( stringid )( void ),
+		client_delete( smallentrydata )( void ),
 		credits_update( creditsupdata )( void )
 }

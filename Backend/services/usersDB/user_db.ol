@@ -136,7 +136,7 @@ main
 
       // query
       q = "SELECT * FROM admins WHERE Email=:m";
-      q.i = request.Id;
+      q.m = request.Email;
       query@Database( q )( result );
 
       if ( #result.row == 0 ) {
@@ -174,7 +174,50 @@ main
 
   	}]
 
-    // ritorna tutte le info di un cliente/developer sulla base del suo id
+
+
+    // ritorna tutte le info dei clienti
+    [retrieve_all_client_info( request )( response ) {
+
+      // query
+      q = "SELECT * FROM clients";
+      q.i = request.Id;
+      query@Database( q )( result );
+
+      println@Console(q)();
+
+      if ( #result.row == 0 ) {
+          println@Console("Client not found")()
+      }
+      else {
+        // scorre righe del risultato
+        for( i=0, i<#result.row, i++ ) {
+
+            s_i = #response.users; // ricava l'indice dove inserire il nuovo servizio
+            response.users[s_i].IdClient = result.row[i].IdClient;
+            response.users[s_i].Name = result.row[i].Name;
+            response.users[s_i].Surname = result.row[i].Surname;
+            response.users[s_i].Email = result.row[i].Email;
+            response.users[s_i].Password = result.row[i].Password;
+            response.users[s_i].Avatar = result.row[i].Avatar;
+            response.users[s_i].Credits = result.row[i].Credits;
+            response.users[s_i].ClientType = result.row[i].ClientType;
+            response.users[s_i].Registration = result.row[i].Registration;
+            response.users[s_i].AboutMe = result.row[i].AboutMe;
+            response.users[s_i].Citizenship = result.row[i].Citizenship;
+            response.users[s_i].LinkToSelf = result.row[i].LinkToSelf;
+            response.users[s_i].PayPal = result.row[i].PayPal
+
+        }
+      };
+      println@Console("Retrieved info about all client" )()
+
+    }]
+
+
+
+
+    // ritorna tutte le info dei developer
     [retrieve_all_dev_info( request )( response ) {
 
       // query
@@ -499,12 +542,26 @@ main
   	// apporta moderazione ad un cliente
   	[client_moderation( request )( response ) {
 
+      getCurrentDateValues@Time( void )( currdate ); // data corrente
+
+      length@StringUtils( string(currdate.day) )( dayl );
+      if( dayl == 1 ) {
+        currdate.day = "0" + string(currdate.day)
+      };
+
+      length@StringUtils( string(currdate.month) )( monthl );
+      if( monthl == 1 ) {
+        currdate.month = "0" + string(currdate.month)
+      };
+
+      timestamp = currdate.day + "/" + currdate.month + "/" + currdate.year;
+
     	// query
     	q = "INSERT INTO moderationlog (IdClient,IdAdmin,Timestamp,ModType,Report) VALUES (:ic,:ia,:t,:mt,:r)";
     	with( request ) {
       	q.ic = .IdClient;
 		    q.ia = .IdAdmin;
-		    q.t = .Timestamp;
+		    q.t = timestamp;
 		    q.mt = .ModType;
 		    q.r = .Report
     	};
@@ -560,13 +617,39 @@ main
   	// elimina un cliente
   	[client_delete( request )( response ) {
 
+      getCurrentDateValues@Time( void )( currdate ); // data corrente
+
+      length@StringUtils( string(currdate.day) )( dayl );
+      if( dayl == 1 ) {
+        currdate.day = "0" + string(currdate.day)
+      };
+
+      length@StringUtils( string(currdate.month) )( monthl );
+      if( monthl == 1 ) {
+        currdate.month = "0" + string(currdate.month)
+      };
+
+      timestamp = currdate.day + "/" + currdate.month + "/" + currdate.year;
+
+      // query
+      q = "INSERT INTO moderationlog (IdClient,IdAdmin,Timestamp,ModType,Report) VALUES (:ic,:ia,:t,:mt,:r)";
+      with( request ) {
+        q.ic = .IdClient;
+        q.ia = .IdAdmin;
+        q.t = timestamp;
+        q.mt = .ModType;
+        q.r = .Report
+      };
+      update@Database( q )( result );
+      println@Console("Creating new moderation entry")();
+      
     	// query
-    	q = "DELETE FROM clients WHERE IdClient=:i";
+    	p = "DELETE FROM clients WHERE IdClient=:i";
     	with( request ) {
-      	q.i = .Id
+      	p.i = .IdClient
     	};
-    	update@Database( q )( result );
-    	println@Console("Deleting client with id " + request.Id + " forever")()
+    	update@Database( p )( result2 );
+    	println@Console("Deleting client with id " + request.IdClient + " forever")()
 
   	}]
 

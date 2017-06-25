@@ -45,7 +45,7 @@
 
 <!-- Navbar -->
 <nav class="navbar navbar-default">
-  <div class="container-fluid">
+  <div ng-controller="auth_ctrl" class="container-fluid">
     <!-- Logo APIMarket -->
     <div class="navbar-header">
       <!-- Pulsante con Menu per Mobile -->
@@ -57,34 +57,61 @@
         <span class="icon-bar"></span>
       </button>
       <!-- Logo APIMarket -->
-	  <a class="navbar-brand" href="#!">
+	  <a ng-if="ClientType != 3" class="navbar-brand" href="#!" ng-cloak>
 		<img src="http://localhost:8000/resources/icons/netbreaklogo.png" class="netbreaklogo">APIMarket
-	</a>
+	  </a>
+	  <a ng-if="ClientType == 3" class="navbar-brand" href="#!/admin_home">
+		<img src="http://localhost:8000/resources/icons/netbreaklogo.png" class="netbreaklogo">APIMarket
+	  </a>
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		
 		<nav class="nav navbar-nav navbar-right">
-			<div ng-controller="auth_ctrl" class="container-fluid">
+			<div class="container-fluid">
 				<!-- navbar right da autenticato -->
-				<ul class="nav navbar-nav" ng-if="getSession()" ng-cloak>
-					<li class="dropdown">
-					<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img class="img-circle imagesmall avatarmarginr" ng-src="{{Avatar}}" alt="apilogo">{{Name}} {{Surname}}<span class="caret"></span></a>
-					<ul class="dropdown-menu">
-						<li><a href="#!/account">Gestione Account</a></li>
-						<li ng-if="ClientType == 2" ng-cloak><a href="#!/registra_api">Registrazione nuova API</a></li>
-						<li role="separator" class="divider"></li>
-						<li><a target="_self" href="http://localhost:8000/resources/user_manual/manuale_utente.pdf" download="manuale_utente.pdf">Manuale Utente</a></li>
-						<li role="separator" class="divider"></li>
-						<li><a href="#!/logout">Logout</a></li>
+				<div ng-if="ClientType != 3">
+				
+					<!-- Utente -->
+					<ul class="nav navbar-nav" ng-if="getSession()" ng-cloak>
+						<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img class="img-circle imagesmall avatarmarginr" ng-src="{{Avatar}}" alt="avatar utente">{{Name}} {{Surname}}<span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="#!/account">Gestione Account</a></li>
+							<li ng-if="ClientType == 2" ng-cloak><a href="#!/registra_api">Registrazione nuova API</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a target="_self" href="http://localhost:8000/resources/user_manual/manuale_utente.pdf" download="manuale_utente.pdf">Manuale Utente</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="#!/logout">Logout</a></li>
+						</ul>
+						</li>
 					</ul>
-				</ul>
-				<!-- navbar right da guest -->
-				<ul class="nav navbar-nav" ng-if="!getSession()" ng-cloak>
-					<li><a href="#!/login">Login</a></li>
-					<li><a href="#!/registra_utente">Registrati</a></li>
-				</ul>
+					<!-- navbar right da guest -->
+					<ul class="nav navbar-nav" ng-if="!getSession()" ng-cloak>
+						<li><a href="#!/login">Login</a></li>
+						<li><a href="#!/registra_utente">Registrati</a></li>
+					</ul>
+				</div>
+				
+				<!-- Admin -->
+				<div ng-if="ClientType == 3" ng-cloak>
+				
+					<ul class="nav navbar-nav" ng-cloak>
+						<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img class="img-circle imagesmall avatarmarginr" ng-src="{{Avatar}}" alt="avatar admin">{{Name}} {{Surname}}<span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="#!/gestione_utenti">Gestione utenti</a></li>
+							<li><a href="#!/gestione_api">Gestione API</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="#!/logout">Logout</a></li>
+						</ul>
+						</li>
+					</ul>
+				
+				</div>
+				
 			</div>
 		</nav>
+		
     </div>
   </div>
 </nav>

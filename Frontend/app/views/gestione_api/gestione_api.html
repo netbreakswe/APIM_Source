@@ -7,8 +7,8 @@
 			<div class="panel-heading">Amministrazione</div>
 			<!-- List group -->
 			<ul class="list-group">
-				<li class="list-group-item"><a href="#!/gestione_utenti">Utenti</a></li>
-				<li class="list-group-item"><a href="#!/gestione_api">API</a></li>
+				<li class="list-group-item"><a href="#!/gestione_utenti">Gestione utenti</a></li>
+				<li class="list-group-item"><a href="#!/gestione_api">Gestione API</a></li>
 			</ul>
 		</div>
 		
@@ -24,14 +24,12 @@
 
               <table class="table table-striped">
                 <thead>
-                  <tr>
-                    <th>Lista API</th>
-                    <th>Nome</th>
-                    <th>Stato</th>
-					<th></th>
-					<th></th>
-
-                  </tr>
+					<tr>
+						<th>Lista API</th>
+						<th>Nome</th>
+						<th>Attiva?</th>
+						<th colspan=2>Azioni disponibili:</th>
+					</tr>
                 </thead>
                 <tbody>
 					<tr ng-repeat="service in services">
@@ -63,7 +61,7 @@
 						</td>
 
 
-						<td><button type="button" ng-click="showConfirm($event, service.IdMS, service.IsActive)" class="btn btn-warning">Cancella API</button></td>
+						<td><button type="button" ng-click="showConfirm($event, service.IdMS, service.IsActive)" class="btn btn-danger">Cancella API</button></td>
 						
                   </tr>
 

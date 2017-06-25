@@ -11,14 +11,15 @@ angular.module('APIM.gestione_utenti')
 
 
 	// recupera la lista di tutti gli utenti con le informazioni da visualizzare nell'elenco
-	$http.post("http://localhost:8101/retrieve_all_dev_info").then(function(response) {
+	$http.post("http://localhost:8101/retrieve_all_client_info").then(function(response) {
 		for(var i=0; i < response.data.users.length; i++) {
 
 			$scope.users.push({
 				Display: true,
 				IdClient: response.data.users[i].IdClient,
 				Name: response.data.users[i].Name,
-				Description: response.data.users[i].Surname
+				Surname: response.data.users[i].Surname,
+				ClientType: response.data.users[i].ClientType
 			});
 
 		}
@@ -47,7 +48,7 @@ angular.module('APIM.gestione_utenti')
 		console.log("1");
 
 		if(numActive > 0){
-			messaggio = "L'utente ha registrato APi che risultano ancora attive. Provvedere alla loro disattivazione ed eliminazione prima di procedere con la cancellazione dell'utente.";
+			messaggio = "L'utente ha registrato API che risultano ancora attive. Provvedere alla loro disattivazione ed eliminazione prima di procedere con la cancellazione dell'utente.";
 			console.log("2");
 		    // Internal method
 		    var alert  = $mdDialog.alert({
@@ -75,8 +76,11 @@ angular.module('APIM.gestione_utenti')
 			.ok('Elimina')
 			.cancel('Annulla');
 			$mdDialog.show(confirm).then(function() {
-				console.log("http://localhost:8101/client_delete?Id=" + IdClient);
-				$http.post("http://localhost:8101/client_delete?Id=" + IdClient).then(function(response) {});	
+				$http.post("http://localhost:8101/client_delete?IdClient=" + IdClient +
+					"&IdAdmin=" + localStorage.getItem("IdAdmin") +
+					"&ModType=" + 4 +
+					"&Report=" + "Sospettato di traffici illegali"
+				);	
 
 				$route.reload();
 
