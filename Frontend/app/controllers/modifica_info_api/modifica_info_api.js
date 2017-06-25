@@ -4,6 +4,10 @@ angular.module('APIM.modifica_info_api')
 
 .controller('modifica_info_api_ctrl', function($scope, $http, $routeParams) {
 	
+	if(localStorage.getItem("Session") != 'true' || localStorage.getItem("ClientType") != 2) {
+		$location.path("!#");
+	};
+	
 	$scope.apicurr = $routeParams.api_id;
 	$scope.IdMS = Number($scope.apicurr);
 	
@@ -93,9 +97,6 @@ angular.module('APIM.modifica_info_api')
 				}
 			}
 			window.location.reload();
-		}
-		else {
-			console.log("ma cazzo");
 		}
 	};
 	

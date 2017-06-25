@@ -4,6 +4,10 @@ angular.module('APIM.registro_transazioni')
 
 .controller('registro_transazioni_ctrl', function($scope, $http) {
 	
+	if(localStorage.getItem("Session") != 'true') {
+		$location.path("!#");
+	};
+	
 	$scope.limit = 10;
 	
 	$scope.purchases = [];

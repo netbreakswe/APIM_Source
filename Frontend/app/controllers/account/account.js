@@ -4,6 +4,10 @@ angular.module('APIM.account')
 
 .controller('account_ctrl', function($scope, $http, $location, $window) {
 	
+	if(localStorage.getItem("Session") != 'true') {
+		$location.path("!#");
+	};
+	
 	$scope.errors = [];
 	$scope.ok = true;
 	

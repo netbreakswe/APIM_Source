@@ -3,6 +3,10 @@
 angular.module('APIM.api_registrate')
 
 .controller('api_registrate_ctrl', function($scope, $http, $rootScope) {
+	
+	if(localStorage.getItem("Session") != 'true') {
+		$location.path("!#");
+	};
 
 	// inizializza lista servizi
 	$scope.services = [];

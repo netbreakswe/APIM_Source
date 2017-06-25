@@ -3,6 +3,10 @@
 angular.module('APIM.login')
 
 .controller('login_ctrl', function($scope, $http, $location) {
+	
+	if(localStorage.getItem("Session") == 'true' || localStorage.getItem("Session") == 'Admin') {
+		$location.path("!#");
+	};
 
 	$scope.ok = true; // per fare display errori
 	$scope.errors = []; // lista di errori

@@ -3,6 +3,10 @@
 angular.module('APIM.gestione_api')
 
 .controller('gestione_api_ctrl', function($scope, $http, $route, $mdDialog) {
+	
+	if(localStorage.getItem("Session") != 'Admin') {
+		$location.path("!#");
+	};
 
 /*	$scope.servicesid = [];
 	$scope.servicesname = [];

@@ -4,6 +4,10 @@ angular.module('APIM.registra_utente')
 
 .controller('registra_utente_ctrl', function($scope, $http, $window, $location) {
 	
+	if(localStorage.getItem("Session") == 'true' || localStorage.getItem("Session") == 'Admin') {
+		$location.path("!#");
+	};
+	
   // lista Paesi del mondo
   $scope.countries = [
     "Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica",

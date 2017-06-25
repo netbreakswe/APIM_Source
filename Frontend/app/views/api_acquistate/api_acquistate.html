@@ -64,7 +64,8 @@
                     <th colspan=2>Lista API</th>
                     <th>Attiva?</th>
 					<th>Scadenza tra</th>
-					<th></th>
+					<th>Dettagli SLA</th>
+					<th>Azioni disponibili:</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -89,6 +90,12 @@
 						</td>
 						
 						<td>{{service.Remaining}} {{getRemainingSuffix(servicesidpolicy[service.IdMS])}}</td>
+						
+						<td class="text-center">
+							<a href="#!/visualizza_sla_api/{{service.IdMS}}">
+								<img ng-src="http://localhost:8000/resources/icons/visualizza_sla_api.png" alt="immagine sla" class="imagesmall">
+							</a>
+						</td>
 						
 						<td><button id="newapikey{{service.IdMS}}" type="button" ng-click="getNewAPIKey(service.APIKey,service.IdMS)" class="btn btn-warning">Nuova chiave API</button></td>
 						

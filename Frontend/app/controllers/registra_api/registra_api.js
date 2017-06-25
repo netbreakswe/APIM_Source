@@ -4,6 +4,10 @@ angular.module('APIM.registra_api')
 
 .controller('registra_api_ctrl', function($scope, $http, $window, $location) {
 	
+	if(localStorage.getItem("Session") != 'true' || localStorage.getItem("ClientType") != 2) {
+		$location.path("!#");
+	};
+	
 	// inizializza lista categorie apim
 	$scope.categories = [];
 

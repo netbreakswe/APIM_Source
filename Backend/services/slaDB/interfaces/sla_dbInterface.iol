@@ -52,6 +52,21 @@ type slasurveydataw: void {
 	.IsCompliant: bool
 }
 
+// rappr di una chiamata API
+
+type calldata: void {
+	.IdSLASurvey: int
+	.Timestamp: long
+	.ResponseTime: long
+	.IsCompliant: bool
+} 
+
+// rappr di una lista di chiamate API
+
+type callslist: void {
+	.callslist[0,*]: calldata
+}
+
 
 // read e write
 
@@ -62,6 +77,7 @@ interface sla_dbInterface {
 		retrieve_slasurvey_info( id )( slasurvey ),
 		retrieve_slasurvey_iscompliant( id )( bool ),
 		retrieve_average_response_time_from_msid( id )( long ),
+		retrieve_calls_list_from_msid( id )( callslist ),
 
 		slasurvey_insert( slasurveydataw )( void )
 }

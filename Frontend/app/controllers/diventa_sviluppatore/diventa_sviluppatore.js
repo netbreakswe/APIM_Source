@@ -4,6 +4,10 @@ angular.module('APIM.diventa_sviluppatore')
 
 .controller('diventa_sviluppatore_ctrl', function($scope, $http, $location) {
 	
+	if(localStorage.getItem("Session") != 'true') {
+		$location.path("!#");
+	};
+	
 	// 1000 è impostato fisso anche nell'operation developer_upgrade di user_db, in caso sarà da cambiare anche lì
 	$scope.CreditsNeeded = 1000;
 

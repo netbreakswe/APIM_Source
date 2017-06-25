@@ -3,6 +3,10 @@
 angular.module('APIM.gestione_utenti')
 
 .controller('gestione_utenti_ctrl', function($scope, $http, $mdDialog, $route) {
+	
+	if(localStorage.getItem("Session") != 'Admin') {
+		$location.path("!#");
+	};
 
 	$scope.users = [];
 

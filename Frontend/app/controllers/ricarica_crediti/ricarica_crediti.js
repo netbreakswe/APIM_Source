@@ -4,9 +4,9 @@ angular.module('APIM.ricarica_crediti')
 
 .controller('ricarica_crediti_ctrl', function($scope, $http, $location) {
 	
-	if( localStorage.getItem("Session") != 'true' ) {
-		$location.path("/");
-	}
+	if(localStorage.getItem("Session") != 'true') {
+		$location.path("!#");
+	};
 
 	// recupera i crediti ed il tipo dell'utente
 	$http.post("http://localhost:8101/retrieve_client_info?Id="+localStorage.getItem("IdClient")).then(function(response) {

@@ -1,0 +1,98 @@
+<div class="row">
+
+	<div class="col-xs-10 col-sm-10 col-md-3 col-xs-offset-1 col-sm-offset-1 col-md-offset-0">
+	
+		<div class="panel panel-primary">
+			<!-- Default panel contents -->
+			<div class="panel-heading">Gestione profilo</div>
+			<!-- List group -->
+			<ul class="list-group">
+				<li class="list-group-item"><a href="#!/account">Dati personali</a></li>
+				<li class="list-group-item"><a href="#!/cambio_password">Cambio password</a></li>
+				<li class="list-group-item"><a href="#!/api_acquistate">API acquistate</a></li>
+				<li class="list-group-item" ng-if="ClientType == 'Basic'">API registrate</li>
+				<li class="list-group-item" ng-if="ClientType == 'Developer'"><a href="#!/api_registrate">API registrate</a></li>
+			</ul>
+		</div>
+		
+		<div class="panel panel-primary">
+			<!-- Default panel contents -->
+			<div class="panel-heading">Crediti</div>
+			<!-- List group -->
+			<ul class="list-group">
+				<li class="list-group-item list-group-item-info"><b>Possiedi {{Credits}} crediti.</b></li>
+				<li class="list-group-item"><a href="#!/ricarica_crediti">Ricarica crediti</a></li>
+			</ul>
+		</div>
+		
+		<div class="panel panel-primary">
+			<!-- Default panel contents -->
+			<div class="panel-heading">Transazioni</div>
+			<!-- List group -->
+			<ul class="list-group">
+				<li class="list-group-item"><a href="#!/registro_transazioni">Registro transazioni</a></li>
+			</ul>
+		</div>
+		
+		<div class="panel panel-primary" ng-if="ClientType == 'Basic'">
+			<!-- Default panel contents -->
+			<div class="panel-heading">Altro</div>
+			<!-- List group -->
+			<ul class="list-group">
+				<li class="list-group-item"><a href="#!/diventa_sviluppatore"><b>Diventa Sviluppatore!</b></a></li>
+			</ul>
+		</div>
+		
+	</div>
+
+    <div class="col-xs-10 col-sm-10 col-md-7 col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
+		<div class="row">
+			<!-- UC12.2 e UC12.2.2 -->
+			<div class="col-md-11">
+				<div class="page-header">
+					<h1>Registro chiamate API "{{Name}}"</h1>
+					<img ng-src="{{Logo}}" alt="logo api" class="logomedium">
+				</div>
+				
+				<div class="thumbnail datiPersonaliForm">
+					Filtro:
+					<select ng-model="limit">
+						<option value="10" selected>Ultime 10 chiamate</option>
+						<option value="20">Ultime 20 chiamate</option>
+						<option value="Infinity">Tutte le chiamate</option>
+					</select>
+				</div>
+
+				<div class="panel panel-default mainPanelAccount">
+				
+					<table class="table">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Tempo di risposta</th>
+								<th>Rispetto della SLA</th>
+							</tr>
+						</thead>
+						<tbody>
+						
+							<tr ng-repeat="call in calls | limitTo:limit | orderBy:'-Timestamp'">
+								<td>{{call.IdSLASurvey}}</td>
+								<td>{{call.ResponseTime}} ms</td>
+								<td ng-if="call.IsCompliant == '1'">
+									<img src="http://localhost:8000/resources/icons/checked.png" alt="rispettata">
+								</td>
+								
+								<td ng-if="call.IsCompliant == '0'">
+									<img src="http://localhost:8000/resources/icons/unchecked.png" alt="non rispettata">
+								</td>
+							</tr>
+							
+						</tbody>
+					</table>
+					
+				</div>
+			</div>
+        </div>
+    </div>
+	
+</div>

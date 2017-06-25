@@ -163,6 +163,30 @@ main
 
 
 
+  // recupera la lista delle chiamate ad un servizio
+  [retrieve_calls_list_from_msid( request )( response ) {
+
+      // query
+      q = "SELECT IdSLASurvey,Timestamp,ResponseTime,IsCompliant FROM slasurveys WHERE IdMS=:i";
+      q.i = request.Id;
+      query@Database( q )( result );
+
+      if( #result.row == 0 ) {
+        println@Console("SLA surveys not found")()
+      }
+      else {
+        for( i=0, i<#result.row, i++ ) {
+          println@Console( "Got SLA survey number " + i )();
+          response.callslist[i] << result.row[i]
+        }
+      };
+      println@Console("Retrieved SLA surveys list of the ms with id " + request.Id)()
+
+  }]
+
+
+
+
   //inserisci info di sla
   [slasurvey_insert( request )( response ) {
 

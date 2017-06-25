@@ -32,6 +32,7 @@ angular.module('APIM.registra_api', []);
 angular.module('APIM.registra_utente', []);
 angular.module('APIM.registro_transazioni', []);
 angular.module('APIM.ricarica_crediti', []);
+angular.module('APIM.visualizza_sla_api', []);
 angular.module('APIM.visualizza_utente', []);
 
 // ordine alfabetico
@@ -69,6 +70,7 @@ angular.module('APIM', [
 	'APIM.registro_transazioni',
 	'APIM.ricarica_crediti',
 	'APIM.version',
+	'APIM.visualizza_sla_api',
 	'APIM.visualizza_utente'
 ])
 
@@ -241,6 +243,11 @@ angular.module('APIM', [
 		.when('/ricarica_crediti', {
 			controller: 'ricarica_crediti_ctrl',
 			templateUrl: 'views/ricarica_crediti/ricarica_crediti.html'
+		})
+		
+		.when('/visualizza_sla_api/:api_id', {
+			controller: 'visualizza_sla_api_ctrl',
+			templateUrl: 'views/visualizza_sla_api/visualizza_sla_api.html'
 		})
 		
 		.when('/visualizza_utente/:user_id', {

@@ -28,6 +28,7 @@
 						<th>Lista API</th>
 						<th>Nome</th>
 						<th>Attiva?</th>
+						<th>Dettagli SLA</th>
 						<th colspan=2>Azioni disponibili:</th>
 					</tr>
                 </thead>
@@ -51,6 +52,12 @@
 						<td ng-if="!service.IsActive">
 							<img src="http://localhost:8000/resources/icons/unchecked.png" alt="inattiva">
 						</td>
+						
+						<td class="text-center">
+							<a href="#!/visualizza_sla_api/{{service.IdMS}}">
+								<img ng-src="http://localhost:8000/resources/icons/visualizza_sla_api.png" alt="immagine sla" class="imagesmall">
+							</a>
+						</td>
 
 						<td ng-if="service.IsActive">
 							<button type="button" ng-click="disattivaAPI(service.IdMS)" class="btn btn-warning">Disattiva API</button>
@@ -59,7 +66,6 @@
 						<td ng-if="!service.IsActive">
 							<button type="button" ng-click="attivaAPI(service.IdMS)" class="btn btn-warning">Attiva API</button>
 						</td>
-
 
 						<td><button type="button" ng-click="showConfirm($event, service.IdMS, service.IsActive)" class="btn btn-danger">Cancella API</button></td>
 						
